@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, Outlet, Link, useLocation } from "react-router-dom";
 import {
   Avatar,
   Button as MuiButton,
   Drawer,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
@@ -15,31 +16,75 @@ import SendOutlined from "@mui/icons-material/SendOutlined";
 import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
 import MenuOutlined from "@mui/icons-material/MenuOutlined";
-import MailOutline from "@mui/icons-material/MailOutline";
-import ArrowForwardOutlined from "@mui/icons-material/ArrowForwardOutlined";
+import MenuOpenOutlined from "@mui/icons-material/MenuOpenOutlined";
+import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
+import ChevronRightOutlined from "@mui/icons-material/ChevronRightOutlined";
 import { useAuth } from "../auth";
 import { GreenHaulLogo } from "./Logo";
 
-export function Brand() {
+export function Brand({ collapsed = false }: { collapsed?: boolean }) {
+  if (collapsed) {
+    return (
+      <div className="brand-collapsed" style={{ display: "grid", placeItems: "center" }}>
+        <GreenHaulLogo
+          size={32}
+          style={{
+            borderRadius: 8,
+            boxShadow: "0 2px 10px rgba(14, 122, 75, 0.22)",
+            flexShrink: 0,
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
       <GreenHaulLogo
-        size={28}
+        size={30}
         style={{
-          borderRadius: 7,
-          boxShadow: "0 2px 8px rgba(14, 122, 75, 0.2)",
+          borderRadius: 8,
+          boxShadow: "0 2px 10px rgba(14, 122, 75, 0.22)",
           flexShrink: 0,
         }}
       />
-      <span style={{ fontWeight: 750, letterSpacing: "-0.4px" }}>GreenHaul Solutions</span>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.4px", color: "#081E14", lineHeight: 1.2 }}>
+          GreenHaul
+        </span>
+        <span style={{ fontWeight: 650, fontSize: 11, letterSpacing: "0.2px", color: "#0E7A4B", lineHeight: 1.2 }}>
+          Solutions
+        </span>
+      </div>
     </div>
   );
 }
 
 export function Layout() {
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("greenhaul_sidebar_collapsed") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("greenhaul_sidebar_collapsed", String(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
+
   const { username, logout } = useAuth();
   const location = useLocation();
+
   const nav = [
     ["OVERVIEW", "Dashboard", "/dashboard", DashboardOutlined],
     ["AUDIENCE", "Contacts", "/contacts", PeopleOutline],
@@ -48,94 +93,205 @@ export function Layout() {
     ["CAMPAIGNS", "Campaigns", "/campaigns", SendOutlined],
     ["SYSTEM", "Settings", "/settings", SettingsOutlined],
   ] as const;
+
   const current =
     nav.find(([, , path]) => location.pathname.startsWith(path))?.[1] ||
-    "GreenHaul Solutions";
+    "Workspace";
   const initials = username.slice(0, 2).toUpperCase();
 
-  const sidebar = (
-    <div className="sidebar">
-      <div className="sidebar-brand-wrap">
-        <Link
-          to="/dashboard"
-          onClick={() => setOpen(false)}
-          aria-label="GreenHaul Solutions dashboard"
-        >
-          <Brand />
-        </Link>
-        <span className="brand-subtitle">Campaign management</span>
-      </div>
-      <nav aria-label="Main navigation">
-        {nav.map(([section, name, path, Icon]) => (
-          <div key={path}>
-            {section && <div className="sidebar-label">{section}</div>}
-            <NavLink
-              className={({ isActive }) =>
-                "nav-link" + (isActive ? " active" : "")
-              }
-              to={path}
-              onClick={() => setOpen(false)}
+  const renderSidebarContent = (isMobile = false) => {
+    const isCollapsed = !isMobile && collapsed;
+
+    return (
+      <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+        {/* Sidebar Header */}
+        <div className="sidebar-header">
+          <Link
+            to="/dashboard"
+            onClick={() => setOpen(false)}
+            aria-label="GreenHaul Solutions dashboard"
+            style={{ textDecoration: "none" }}
+          >
+            <Brand collapsed={isCollapsed} />
+          </Link>
+
+          {!isMobile && (
+            <Tooltip
+              title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              placement={isCollapsed ? "right" : "bottom"}
+              arrow
             >
-              <Icon sx={{ fontSize: 19 }} />
-              <span>{name}</span>
-            </NavLink>
-          </div>
-        ))}
-      </nav>
-      <div className="sidebar-foot">
-        <div className="sidebar-system-pill">
-          <span className="system-status-dot" />
-          <span>GreenHaul Engine v2.4</span>
+              <IconButton
+                size="small"
+                onClick={toggleCollapsed}
+                className="sidebar-toggle-btn"
+                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {isCollapsed ? (
+                  <ChevronRightOutlined sx={{ fontSize: 17 }} />
+                ) : (
+                  <ChevronLeftOutlined sx={{ fontSize: 17 }} />
+                )}
+              </IconButton>
+            </Tooltip>
+          )}
         </div>
-        <div style={{ fontSize: 11, lineHeight: 1.5, color: "#6A8B7A", marginTop: 8 }}>
-          Precision audience, templates, and delivery telemetry.
+
+        {/* Navigation */}
+        <nav aria-label="Main navigation" style={{ flex: 1 }}>
+          {nav.map(([section, name, path, Icon]) => {
+            const linkContent = (
+              <NavLink
+                className={({ isActive }) =>
+                  "nav-link" + (isActive ? " active" : "")
+                }
+                to={path}
+                onClick={() => setOpen(false)}
+              >
+                <Icon sx={{ fontSize: 20, flexShrink: 0 }} />
+                {!isCollapsed && <span className="nav-label">{name}</span>}
+              </NavLink>
+            );
+
+            return (
+              <div key={path}>
+                {section && (
+                  <div className="sidebar-label">
+                    {isCollapsed ? <div className="sidebar-divider" /> : section}
+                  </div>
+                )}
+                {isCollapsed ? (
+                  <Tooltip title={name} placement="right" arrow enterDelay={200}>
+                    {linkContent}
+                  </Tooltip>
+                ) : (
+                  linkContent
+                )}
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar Footer */}
+        <div className="sidebar-foot">
+          {isCollapsed ? (
+            <Tooltip title="GreenHaul Engine v2.4 (Active)" placement="right" arrow>
+              <div className="sidebar-system-dot-wrap">
+                <span className="system-status-dot" />
+              </div>
+            </Tooltip>
+          ) : (
+            <>
+              <div className="sidebar-system-pill">
+                <span className="system-status-dot" />
+                <span>Engine v2.4 Active</span>
+              </div>
+              <div className="sidebar-engine-desc">
+                Precision delivery & audience workspace.
+              </div>
+            </>
+          )}
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+
+      {/* Desktop Permanent Drawer (Collapsible) */}
       <Drawer
         variant="permanent"
         className="desktop-sidebar"
         sx={{
+          width: collapsed ? 74 : 260,
+          transition: "width 0.22s cubic-bezier(0.2, 0, 0, 1)",
           "& .MuiDrawer-paper": {
-            width: 264,
+            width: collapsed ? 74 : 260,
             border: 0,
             height: "100%",
             overflowY: "auto",
+            overflowX: "hidden",
+            boxSizing: "border-box",
+            transition: "width 0.22s cubic-bezier(0.2, 0, 0, 1)",
           },
         }}
       >
-        {sidebar}
+        {renderSidebarContent(false)}
       </Drawer>
+
+      {/* Mobile Drawer (Slide in from left) */}
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
         sx={{
+          display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": {
-            width: 272,
+            width: 270,
             height: "100%",
             overflowY: "auto",
           },
         }}
       >
-        {sidebar}
+        {renderSidebarContent(true)}
       </Drawer>
-      <div className="workspace">
+
+      {/* Main Workspace */}
+      <div className={`workspace ${collapsed ? "collapsed" : ""}`}>
         <header className="topbar">
           <div className="topbar-context">
+            {/* Mobile Hamburger Button */}
             <IconButton
               className="mobile-menu"
               aria-label="Open navigation"
               onClick={() => setOpen(true)}
+              size="small"
+              sx={{
+                display: { xs: "inline-flex", md: "none" },
+                color: "#476254",
+                mr: 0.5,
+              }}
             >
               <MenuOutlined />
             </IconButton>
+
+            {/* Desktop Quick Toggle Button */}
+            <Tooltip
+              title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              arrow
+            >
+              <IconButton
+                className="desktop-sidebar-toggle"
+                onClick={toggleCollapsed}
+                size="small"
+                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                sx={{
+                  display: { xs: "none", md: "inline-flex" },
+                  color: "#476254",
+                  mr: 1,
+                  border: "1px solid #dce8e1",
+                  borderRadius: "8px",
+                  bgcolor: "#f9fcfb",
+                  width: 32,
+                  height: 32,
+                  "&:hover": {
+                    bgcolor: "#eaf8f0",
+                    color: "#0e7a4b",
+                    borderColor: "#0e7a4b",
+                  },
+                }}
+              >
+                {collapsed ? (
+                  <MenuOutlined sx={{ fontSize: 18 }} />
+                ) : (
+                  <MenuOpenOutlined sx={{ fontSize: 18 }} />
+                )}
+              </IconButton>
+            </Tooltip>
+
             <span className="context-kicker">Workspace /</span>
             <span className="context-title">{current}</span>
           </div>
@@ -143,8 +299,9 @@ export function Layout() {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div className="topbar-live-badge">
               <span className="pulse-dot" />
-              <span>Engine Active</span>
+              <span>Live Engine</span>
             </div>
+
             <MuiButton
               component={Link}
               to="/campaigns/create"
@@ -153,9 +310,12 @@ export function Layout() {
               startIcon={<SendOutlined sx={{ fontSize: 15 }} />}
               sx={{
                 fontSize: 12.5,
-                fontWeight: 650,
+                fontWeight: 700,
                 minHeight: 36,
+                px: 2,
+                borderRadius: "10px",
                 display: { xs: "none", sm: "inline-flex" },
+                boxShadow: "0 6px 18px rgba(14, 122, 75, 0.2)",
               }}
             >
               New Campaign
@@ -164,12 +324,13 @@ export function Layout() {
             <div className="topbar-user">
               <Avatar
                 sx={{
-                  width: 31,
-                  height: 31,
+                  width: 30,
+                  height: 30,
                   bgcolor: "#EAF8F0",
                   color: "#075C39",
                   fontSize: 11.5,
-                  fontWeight: 700,
+                  fontWeight: 750,
+                  border: "1px solid #caebd8",
                 }}
               >
                 {initials}
@@ -179,7 +340,8 @@ export function Layout() {
                 sx={{
                   fontWeight: 650,
                   display: { xs: "none", sm: "block" },
-                  maxWidth: 140,
+                  maxWidth: 130,
+                  color: "#183226",
                 }}
                 noWrap
               >
@@ -188,15 +350,23 @@ export function Layout() {
               <MuiButton
                 variant="text"
                 size="small"
-                startIcon={<LogoutOutlined />}
+                startIcon={<LogoutOutlined sx={{ fontSize: 16 }} />}
                 onClick={logout}
                 aria-label="Sign out"
+                sx={{
+                  minHeight: 32,
+                  px: 1,
+                  color: "#6B8477",
+                  fontSize: 12,
+                  "&:hover": { color: "#C0392B", bgcolor: "#FDEAEA" },
+                }}
               >
                 <span className="signout-label">Sign out</span>
               </MuiButton>
             </div>
           </div>
         </header>
+
         <main id="main" className="page">
           <Outlet />
         </main>

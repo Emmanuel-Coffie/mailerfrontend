@@ -38,19 +38,19 @@ export const theme = createTheme({
   shape: { borderRadius: 12 },
   typography: {
     fontFamily:
-      "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+      "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     fontSize: 14,
     h1: {
-      fontSize: 31,
-      lineHeight: 1.18,
-      fontWeight: 700,
-      letterSpacing: "-.9px",
+      fontSize: 30,
+      lineHeight: 1.2,
+      fontWeight: 750,
+      letterSpacing: "-.8px",
     },
     h2: {
       fontSize: 18,
       lineHeight: 1.3,
       fontWeight: 700,
-      letterSpacing: "-.35px",
+      letterSpacing: "-.3px",
     },
     h3: { fontSize: 15, lineHeight: 1.4, fontWeight: 700 },
     button: { textTransform: "none", fontWeight: 650, letterSpacing: "-.1px" },
