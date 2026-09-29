@@ -67,7 +67,7 @@ export function PageHeading({
   actions?: ReactNode;
 }) {
   useEffect(() => {
-    document.title = `${title} · MailFlow`;
+    document.title = `${title} · GreenHaul Solutions`;
   }, [title]);
   return (
     <div className="page-heading">

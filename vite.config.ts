@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
-  server: { port: 5173, strictPort: true },
+  server: { host: "0.0.0.0", port: 3000 },
   // Scan lazy pages before first navigation to avoid optimization reloads.
   optimizeDeps: { entries: ["index.html", "src/pages/*.tsx"] },
   test: {
@@ -14,10 +14,16 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          charts: ["recharts"],
-          mui: ["@mui/material", "@emotion/react", "@emotion/styled"],
-          react: ["react", "react-dom", "react-router-dom"],
+        manualChunks(id: string) {
+          if (id.includes("recharts")) return "charts";
+          if (id.includes("@mui") || id.includes("@emotion")) return "mui";
+          if (
+            id.includes("react-router-dom") ||
+            id.includes("/node_modules/react/") ||
+            id.includes("/node_modules/react-dom/")
+          ) {
+            return "react";
+          }
         },
       },
     },

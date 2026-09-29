@@ -1,0 +1,6 @@
+{
+  "name": "MailFlow",
+  "description": "Email campaign management application for creating, managing, and tracking email campaigns and contacts.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

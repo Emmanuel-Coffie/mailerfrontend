@@ -16,15 +16,25 @@ import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
 import MenuOutlined from "@mui/icons-material/MenuOutlined";
 import MailOutline from "@mui/icons-material/MailOutline";
+import ArrowForwardOutlined from "@mui/icons-material/ArrowForwardOutlined";
 import { useAuth } from "../auth";
 
 export function Brand() {
   return (
-    <div className="brand">
-      <span className="brand-mark" aria-hidden="true">
-        <MailOutline fontSize="small" />
-      </span>
-      MailFlow
+    <div className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+      <img
+        src="/src/assets/images/greenhaul_logo_1790701516483.jpg"
+        alt="GreenHaul Solutions"
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: 7,
+          objectFit: "cover",
+          boxShadow: "0 2px 8px rgba(14, 122, 75, 0.2)",
+          flexShrink: 0,
+        }}
+      />
+      <span style={{ fontWeight: 750, letterSpacing: "-0.4px" }}>GreenHaul Solutions</span>
     </div>
   );
 }
@@ -43,7 +53,7 @@ export function Layout() {
   ] as const;
   const current =
     nav.find(([, , path]) => location.pathname.startsWith(path))?.[1] ||
-    "MailFlow";
+    "GreenHaul Solutions";
   const initials = username.slice(0, 2).toUpperCase();
 
   const sidebar = (
@@ -52,7 +62,7 @@ export function Layout() {
         <Link
           to="/dashboard"
           onClick={() => setOpen(false)}
-          aria-label="MailFlow dashboard"
+          aria-label="GreenHaul Solutions dashboard"
         >
           <Brand />
         </Link>
@@ -76,8 +86,26 @@ export function Layout() {
         ))}
       </nav>
       <div className="sidebar-foot">
-        Keep your audience, content, campaigns, and delivery insights in one
-        focused workspace.
+        <Link
+          to="/"
+          className="sidebar-marketing-link"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            color: "#92B8A4",
+            fontSize: 12,
+            fontWeight: 600,
+            marginBottom: 10,
+            textDecoration: "none",
+          }}
+        >
+          <span>Product Overview</span>
+          <ArrowForwardOutlined sx={{ fontSize: 13 }} />
+        </Link>
+        <div style={{ fontSize: 11.5, lineHeight: 1.6, color: "#6A8B7A" }}>
+          Focused audience, content, campaigns, and delivery telemetry.
+        </div>
       </div>
     </div>
   );
@@ -114,39 +142,73 @@ export function Layout() {
             <span className="context-kicker">Workspace /</span>
             <span className="context-title">{current}</span>
           </div>
-          <div className="topbar-user">
-            <Avatar
-              sx={{
-                width: 31,
-                height: 31,
-                bgcolor: "#EAF8F0",
-                color: "#075C39",
-                fontSize: 11.5,
-                fontWeight: 700,
-              }}
-            >
-              {initials}
-            </Avatar>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 650,
-                display: { xs: "none", sm: "block" },
-                maxWidth: 140,
-              }}
-              noWrap
-            >
-              {username}
-            </Typography>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <MuiButton
+              component={Link}
+              to="/"
               variant="text"
               size="small"
-              startIcon={<LogoutOutlined />}
-              onClick={logout}
-              aria-label="Sign out"
+              sx={{
+                color: "#4A6154",
+                fontWeight: 650,
+                fontSize: 12.5,
+                display: { xs: "none", md: "inline-flex" },
+                "&:hover": { color: "#0E7A4B" },
+              }}
             >
-              <span className="signout-label">Sign out</span>
+              Landing Page
             </MuiButton>
+            <MuiButton
+              component={Link}
+              to="/campaigns/create"
+              size="small"
+              variant="contained"
+              startIcon={<SendOutlined sx={{ fontSize: 15 }} />}
+              sx={{
+                fontSize: 12.5,
+                fontWeight: 650,
+                minHeight: 36,
+                display: { xs: "none", sm: "inline-flex" },
+              }}
+            >
+              New Campaign
+            </MuiButton>
+
+            <div className="topbar-user">
+              <Avatar
+                sx={{
+                  width: 31,
+                  height: 31,
+                  bgcolor: "#EAF8F0",
+                  color: "#075C39",
+                  fontSize: 11.5,
+                  fontWeight: 700,
+                }}
+              >
+                {initials}
+              </Avatar>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 650,
+                  display: { xs: "none", sm: "block" },
+                  maxWidth: 140,
+                }}
+                noWrap
+              >
+                {username}
+              </Typography>
+              <MuiButton
+                variant="text"
+                size="small"
+                startIcon={<LogoutOutlined />}
+                onClick={logout}
+                aria-label="Sign out"
+              >
+                <span className="signout-label">Sign out</span>
+              </MuiButton>
+            </div>
           </div>
         </header>
         <main id="main" className="page">

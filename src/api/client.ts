@@ -1,11 +1,17 @@
 import axios, { AxiosError } from "axios";
 import type { ApiError } from "./types";
+import { mockAdapter } from "./mock";
 
 export const baseURL = (
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+  import.meta.env.VITE_API_BASE_URL || ""
 ).replace(/\/$/, "");
 export const publicClient = axios.create({ baseURL, timeout: 40000 });
 export const client = axios.create({ baseURL, timeout: 40000 });
+
+if (!import.meta.env.VITE_API_BASE_URL && import.meta.env.MODE !== "test") {
+  publicClient.defaults.adapter = mockAdapter;
+  client.defaults.adapter = mockAdapter;
+}
 let access = "";
 let refresh = "";
 let refreshFlight: Promise<string> | null = null;
