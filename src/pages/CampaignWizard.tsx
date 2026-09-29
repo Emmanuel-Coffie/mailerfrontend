@@ -128,7 +128,7 @@ export function CampaignWizard() {
     }
     if (step === 2 && !html && !text) {
       setError({
-        message: "Add HTML or plain text content, or select a template.",
+        message: "Add message content or select a template.",
         fieldErrors: {},
       });
       return;
@@ -336,7 +336,7 @@ export function CampaignWizard() {
                       color="text.secondary"
                       sx={{ mt: 2 }}
                     >
-                      Django will prepare the audience and exclude inactive,
+                      The system will prepare the audience and exclude inactive,
                       invalid, and suppressed addresses when you continue.
                     </Typography>
                   </>
@@ -366,10 +366,14 @@ export function CampaignWizard() {
                       selected template when the campaign is submitted.
                     </Alert>
                     <Field name="subject" label="Subject" required />
-                    <Field name="html_content" label="HTML content" multiline />
+                    <Field
+                      name="html_content"
+                      label="Formatted message content"
+                      multiline
+                    />
                     <Field
                       name="text_content"
-                      label="Plain text content"
+                      label="Plain text message"
                       multiline
                     />
                     <Typography variant="caption">

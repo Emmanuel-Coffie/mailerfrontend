@@ -19,9 +19,8 @@ import { theme } from "./theme";
 import { AuthProvider, ProtectedRoute } from "./auth";
 import { NoticeProvider, PageHeading, Loading } from "./components/ui";
 import { Layout } from "./components/Layout";
-const Login = lazy(() =>
-  import("./pages/Login").then((module) => ({ default: module.Login })),
-);
+import { Login } from "./pages/Login";
+
 const Dashboard = lazy(() =>
   import("./pages/Dashboard").then((module) => ({ default: module.Dashboard })),
 );
@@ -82,9 +81,7 @@ function Providers() {
       <CssBaseline />
       <AuthProvider>
         <NoticeProvider>
-          <Suspense fallback={<Loading />}>
-            <Outlet />
-          </Suspense>
+          <Outlet />
         </NoticeProvider>
       </AuthProvider>
     </ThemeProvider>
@@ -118,7 +115,7 @@ function RouteError() {
         <Typography color="text.secondary" sx={{ my: 2.2 }}>
           {notFound
             ? "The page may have moved or the address may be incorrect."
-            : "An unexpected page error occurred. Your saved records remain on the server."}
+            : "An unexpected page error occurred. Your saved records remain safe and intact."}
         </Typography>
         <MuiButton component="a" href="/dashboard">
           Return to dashboard
@@ -140,7 +137,11 @@ export const routes = [
         element: <ProtectedRoute />,
         children: [
           {
-            element: <Layout />,
+            element: (
+              <Suspense fallback={<Loading rows={6} />}>
+                <Layout />
+              </Suspense>
+            ),
             children: [
               { path: "/dashboard", element: <Dashboard /> },
               { path: "/contacts", element: <Contacts /> },

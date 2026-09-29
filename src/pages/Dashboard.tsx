@@ -25,6 +25,7 @@ import {
   Empty,
   ErrorNotice,
   Loading,
+  DashboardSkeleton,
   PageHeading,
   StatusChip,
 } from "../components/ui";
@@ -127,7 +128,7 @@ export function Dashboard() {
       <ErrorNotice error={state.error} retry={state.reload} />
       {!d ? (
         state.loading ? (
-          <Loading rows={6} />
+          <DashboardSkeleton />
         ) : null
       ) : (
         <>

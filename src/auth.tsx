@@ -16,7 +16,18 @@ const AuthContext = createContext({
 });
 export function AuthProvider({ children }: { children: ReactNode }) {
   const token = useSyncExternalStore(session.subscribe, session.get);
-  const [username, setUsername] = useState("Administrator");
+  const [username, setUsername] = useState(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      try {
+        const saved = window.localStorage.getItem("mailflow_auth_user_v1");
+        if (saved) return saved;
+      } catch {
+        // ignore
+      }
+    }
+    return "Administrator";
+  });
+
   return (
     <AuthContext.Provider
       value={{
@@ -25,6 +36,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login: async (u, p) => {
           await authApi.login(u, p);
           setUsername(u);
+          try {
+            if (typeof window !== "undefined" && window.localStorage) {
+              window.localStorage.setItem("mailflow_auth_user_v1", u);
+            }
+          } catch {
+            // ignore
+          }
         },
         logout: authApi.logout,
       }}

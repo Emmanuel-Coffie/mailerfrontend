@@ -9,6 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import AddOutlined from "@mui/icons-material/AddOutlined";
+import FormatListBulletedOutlined from "@mui/icons-material/FormatListBulletedOutlined";
+import SearchOffOutlined from "@mui/icons-material/SearchOffOutlined";
+import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
 import { listsApi } from "../api/lists";
 import { contactsApi } from "../api/contacts";
 import { normalizeError } from "../api/client";
@@ -20,6 +23,7 @@ import {
   Empty,
   ErrorNotice,
   Loading,
+  TableSkeleton,
   PageHeading,
   Pager,
   SearchField,
@@ -76,15 +80,17 @@ export function Lists() {
       />
       <ErrorNotice error={error || state.error} retry={state.reload} />
       <section className="panel" style={{ padding: 0 }}>
-        <div className="toolbar">
-          <SearchField
-            value={String(query.query.search || "")}
-            onChange={(v) => query.set("search", v)}
-            placeholder="Search lists"
-          />
-        </div>
+        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+          <div className="toolbar">
+            <SearchField
+              value={String(query.query.search || "")}
+              onChange={(v) => query.set("search", v)}
+              placeholder="Search lists"
+            />
+          </div>
+        )}
         {state.loading ? (
-          <Loading />
+          <TableSkeleton rows={5} cols={4} />
         ) : (
           <DataTable
             rows={state.data?.results || []}
@@ -119,15 +125,61 @@ export function Lists() {
               },
             ]}
             empty={
-              <Empty
-                title={query.key ? "No matching lists" : "No contact lists"}
-                description="Create a list to organize contacts for a campaign."
-                action={
-                  <MuiButton onClick={() => setEditing(null)}>
-                    Create list
-                  </MuiButton>
-                }
-              />
+              query.key ? (
+                <Empty
+                  badgeText="Filtered Lists"
+                  icon={
+                    <SearchOffOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No matching lists"
+                  description="We couldn't find any contact lists matching your search term."
+                  action={
+                    <MuiButton variant="outlined" onClick={query.clear}>
+                      Clear search
+                    </MuiButton>
+                  }
+                />
+              ) : (
+                <Empty
+                  badgeText="Audience Segments"
+                  icon={
+                    <FormatListBulletedOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No contact lists yet"
+                  description="Group your contacts into targeted segments to send personalized campaigns tailored to specific audiences."
+                  action={
+                    <MuiButton
+                      variant="contained"
+                      startIcon={<AddOutlined />}
+                      onClick={() => setEditing(null)}
+                    >
+                      Create list
+                    </MuiButton>
+                  }
+                  features={[
+                    {
+                      title: "Segment by Customer Type",
+                      description:
+                        "Group leads, subscribers, or VIP clients for customized email flows.",
+                      icon: (
+                        <PeopleAltOutlined sx={{ fontSize: 16 }} />
+                      ),
+                    },
+                    {
+                      title: "Direct Campaign Inclusion",
+                      description:
+                        "Easily pick target lists in the campaign wizard with one click.",
+                      icon: (
+                        <FormatListBulletedOutlined sx={{ fontSize: 16 }} />
+                      ),
+                    },
+                  ]}
+                />
+              )
             }
           />
         )}
@@ -260,7 +312,7 @@ export function ListDetail() {
           </Typography>
         </div>
         {members.loading ? (
-          <Loading />
+          <TableSkeleton rows={5} cols={5} />
         ) : (
           <DataTable
             rows={members.data?.results || []}

@@ -22,6 +22,7 @@ import {
   ErrorNotice,
   Filter,
   Loading,
+  TableSkeleton,
   Metric,
   PageHeading,
   Pager,
@@ -68,7 +69,7 @@ export function RecipientTable({
       </div>
       <ErrorNotice error={state.error} retry={state.reload} />
       {state.loading && !state.data ? (
-        <Loading />
+        <TableSkeleton rows={5} cols={5} />
       ) : (
         <DataTable
           rows={state.data?.results || []}

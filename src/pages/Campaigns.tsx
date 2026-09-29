@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button as MuiButton } from "@mui/material";
 import AddOutlined from "@mui/icons-material/AddOutlined";
+import CampaignOutlined from "@mui/icons-material/CampaignOutlined";
+import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
+import SearchOffOutlined from "@mui/icons-material/SearchOffOutlined";
+import SendOutlined from "@mui/icons-material/SendOutlined";
+import TuneOutlined from "@mui/icons-material/TuneOutlined";
+import AutoGraphOutlined from "@mui/icons-material/AutoGraphOutlined";
 import { campaignsApi } from "../api/campaigns";
 import { useQuery, useResource, date, label } from "../hooks";
 import {
@@ -9,6 +15,7 @@ import {
   ErrorNotice,
   Filter,
   Loading,
+  TableSkeleton,
   PageHeading,
   Pager,
   SearchField,
@@ -43,24 +50,26 @@ export function Campaigns() {
       />
       <ErrorNotice error={state.error} retry={state.reload} />
       <section className="panel" style={{ padding: 0 }}>
-        <div className="toolbar">
-          <SearchField
-            value={String(query.query.search || "")}
-            onChange={(v) => query.set("search", v)}
-            placeholder="Search campaigns"
-          />
-          <Filter
-            name="Status"
-            value={String(query.query.status || "")}
-            onChange={(v) => query.set("status", v)}
-            options={campaignStatuses.map((value) => ({
-              value,
-              label: label(value),
-            }))}
-          />
-        </div>
+        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+          <div className="toolbar">
+            <SearchField
+              value={String(query.query.search || "")}
+              onChange={(v) => query.set("search", v)}
+              placeholder="Search campaigns"
+            />
+            <Filter
+              name="Status"
+              value={String(query.query.status || "")}
+              onChange={(v) => query.set("status", v)}
+              options={campaignStatuses.map((value) => ({
+                value,
+                label: label(value),
+              }))}
+            />
+          </div>
+        )}
         {state.loading ? (
-          <Loading />
+          <TableSkeleton rows={6} cols={6} />
         ) : (
           <DataTable
             rows={state.data?.results || []}
@@ -104,15 +113,74 @@ export function Campaigns() {
               },
             ]}
             empty={
-              <Empty
-                title={query.key ? "No matching campaigns" : "No campaigns yet"}
-                description="Start with a message and an audience. We’ll guide you through the rest."
-                action={
-                  <MuiButton component={Link} to="/campaigns/create">
-                    Create campaign
-                  </MuiButton>
-                }
-              />
+              query.key ? (
+                <Empty
+                  badgeText="Filtered Campaigns"
+                  icon={
+                    <SearchOffOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No matching campaigns"
+                  description="We couldn't find any campaigns matching your query or selected status filter."
+                  action={
+                    <MuiButton variant="outlined" onClick={query.clear}>
+                      Clear filters
+                    </MuiButton>
+                  }
+                />
+              ) : (
+                <Empty
+                  badgeText="Campaign Workspace"
+                  icon={
+                    <CampaignOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No campaigns yet"
+                  description="You haven't launched or scheduled any campaigns yet. Compose a personalized broadcast to communicate with your contacts."
+                  action={
+                    <MuiButton
+                      variant="contained"
+                      component={Link}
+                      to="/campaigns/create"
+                      startIcon={<AddOutlined />}
+                    >
+                      Create campaign
+                    </MuiButton>
+                  }
+                  secondaryAction={
+                    <MuiButton
+                      variant="outlined"
+                      component={Link}
+                      to="/templates"
+                      startIcon={<DescriptionOutlined />}
+                    >
+                      Browse templates
+                    </MuiButton>
+                  }
+                  features={[
+                    {
+                      title: "Step-by-Step Wizard",
+                      description:
+                        "Easily configure subject, rich message content, and audience segments.",
+                      icon: <TuneOutlined sx={{ fontSize: 16 }} />,
+                    },
+                    {
+                      title: "Targeted Audience Delivery",
+                      description:
+                        "Deliver to all active contacts or select specific curated recipient lists.",
+                      icon: <SendOutlined sx={{ fontSize: 16 }} />,
+                    },
+                    {
+                      title: "Performance Analytics",
+                      description:
+                        "Monitor real-time delivery rate, opened counts, and engagement trends.",
+                      icon: <AutoGraphOutlined sx={{ fontSize: 16 }} />,
+                    },
+                  ]}
+                />
+              )
             }
           />
         )}

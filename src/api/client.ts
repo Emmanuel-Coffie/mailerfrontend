@@ -8,14 +8,44 @@ export const baseURL = (
 export const publicClient = axios.create({ baseURL, timeout: 40000 });
 export const client = axios.create({ baseURL, timeout: 40000 });
 
-// Only use mockAdapter if explicitly requested via VITE_USE_MOCK=true.
-// Otherwise, all requests hit the real backend API.
-if (import.meta.env.VITE_USE_MOCK === "true") {
+// Use mockAdapter if explicitly requested via VITE_USE_MOCK=true,
+// or by default when running without a remote backend API configured.
+const useMock =
+  import.meta.env.VITE_USE_MOCK === "true" ||
+  (!baseURL && import.meta.env.VITE_USE_MOCK !== "false");
+
+if (useMock) {
   publicClient.defaults.adapter = mockAdapter;
   client.defaults.adapter = mockAdapter;
 }
-let access = "";
-let refresh = "";
+
+const STORAGE_TOKEN_KEY = "mailflow_auth_tokens_v1";
+
+function loadStoredTokens(): { access: string; refresh: string } {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return { access: "", refresh: "" };
+  }
+  try {
+    const raw = window.localStorage.getItem(STORAGE_TOKEN_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (
+        parsed &&
+        typeof parsed.access === "string" &&
+        typeof parsed.refresh === "string"
+      ) {
+        return parsed;
+      }
+    }
+  } catch {
+    // ignore parsing failure
+  }
+  return { access: "", refresh: "" };
+}
+
+const initialTokens = loadStoredTokens();
+let access = initialTokens.access;
+let refresh = initialTokens.refresh;
 let refreshFlight: Promise<string> | null = null;
 let epoch = 0;
 const listeners = new Set<() => void>();
@@ -25,12 +55,27 @@ export const session = {
     epoch++;
     access = tokens.access;
     refresh = tokens.refresh;
+    try {
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem(STORAGE_TOKEN_KEY, JSON.stringify(tokens));
+      }
+    } catch {
+      // ignore
+    }
     listeners.forEach((fn) => fn());
   },
   clear: () => {
     epoch++;
     access = "";
     refresh = "";
+    try {
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.removeItem(STORAGE_TOKEN_KEY);
+        window.localStorage.removeItem("mailflow_auth_user_v1");
+      }
+    } catch {
+      // ignore
+    }
     listeners.forEach((fn) => fn());
   },
   subscribe: (fn: () => void) => {
@@ -108,12 +153,12 @@ export function normalizeError(error: unknown): ApiError {
                 : statusCode === 429
                   ? "Too many requests were sent. Please wait a moment and try again."
                   : statusCode && statusCode >= 500
-                    ? "The server could not complete the request. Please try again."
+                    ? "Unable to complete the request right now. Please try again."
                     : statusCode
                       ? "The request could not be completed. Please try again."
                       : error.code === "ECONNABORTED"
-                        ? "The server took too long to respond. Check that it is running and try again."
-                        : "Unable to reach the server. Check your connection and confirm the backend is running.";
+                        ? "The request took too long to complete. Please try again."
+                        : "Unable to reach the service. Please check your internet connection and try again.";
     const message =
       typeof data?.detail === "string"
         ? data.detail

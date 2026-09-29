@@ -122,9 +122,9 @@ export function ErrorNotice({
         : error.statusCode === 404
           ? "The requested record may have been removed or the link may be outdated."
           : error.statusCode && error.statusCode >= 500
-            ? "The server returned an unexpected error. Your saved data has not been changed."
+            ? "An unexpected issue occurred. Your saved information remains safe. Please try again."
             : !error.statusCode
-              ? "Check your internet connection and confirm that the backend is running."
+              ? "Unable to reach the service. Please check your internet connection and try again."
               : undefined;
   return (
     <Alert
@@ -172,37 +172,241 @@ export function Loading({ rows = 4 }: { rows?: number }) {
     </Box>
   );
 }
+
+export function TableSkeleton({
+  rows = 6,
+  cols = 5,
+}: {
+  rows?: number;
+  cols?: number;
+}) {
+  return (
+    <Box
+      aria-label="Loading table"
+      aria-busy="true"
+      sx={{
+        border: "1px solid #dce8e1",
+        borderRadius: 3.5,
+        overflow: "hidden",
+        bgcolor: "#ffffff",
+      }}
+    >
+      {/* Header row */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          px: 2.5,
+          py: 2,
+          bgcolor: "#f6faf7",
+          borderBottom: "1px solid #e2ede7",
+        }}
+      >
+        {Array.from({ length: cols }, (_, i) => (
+          <Skeleton
+            key={i}
+            variant="text"
+            width={i === 0 ? "28%" : `${68 / (cols - 1)}%`}
+            height={22}
+          />
+        ))}
+      </Box>
+      {/* Body rows */}
+      <Box sx={{ p: 1 }}>
+        {Array.from({ length: rows }, (_, r) => (
+          <Box
+            key={r}
+            sx={{
+              display: "flex",
+              gap: 2,
+              px: 2,
+              py: 1.8,
+              borderBottom: r === rows - 1 ? "none" : "1px solid #edf4f0",
+              alignItems: "center",
+            }}
+          >
+            {Array.from({ length: cols }, (_, c) => (
+              <Skeleton
+                key={c}
+                variant={c === 0 ? "rectangular" : "text"}
+                width={c === 0 ? "28%" : `${68 / (cols - 1)}%`}
+                height={c === 0 ? 20 : 22}
+                sx={{ borderRadius: 1 }}
+              />
+            ))}
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
+export function MetricSkeleton() {
+  return (
+    <Box
+      className="panel metric-card"
+      sx={{
+        p: 2.5,
+        display: "flex",
+        flexDirection: "column",
+        gap: 1.5,
+      }}
+    >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Skeleton variant="text" width="45%" height={22} />
+        <Skeleton variant="circular" width={28} height={28} />
+      </Box>
+      <Skeleton variant="rectangular" width="40%" height={38} sx={{ borderRadius: 1.5 }} />
+      <Skeleton variant="text" width="65%" height={18} />
+    </Box>
+  );
+}
+
+export function DashboardSkeleton() {
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3.2 }} aria-label="Loading dashboard" aria-busy="true">
+      {/* Executive Banner */}
+      <Skeleton
+        variant="rectangular"
+        height={68}
+        sx={{ borderRadius: 3.5, bgcolor: "rgba(7, 30, 19, 0.08)" }}
+      />
+      {/* 4 Metric Cards */}
+      <div className="grid grid-4">
+        <MetricSkeleton />
+        <MetricSkeleton />
+        <MetricSkeleton />
+        <MetricSkeleton />
+      </div>
+      {/* Main Grid: Chart and Status Panel */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
+          gap: 3,
+        }}
+      >
+        <Box
+          className="panel"
+          sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Skeleton variant="text" width="40%" height={28} />
+            <Skeleton variant="rectangular" width={90} height={32} sx={{ borderRadius: 2 }} />
+          </Box>
+          <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 2 }} />
+        </Box>
+        <Box
+          className="panel"
+          sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <Skeleton variant="text" width="55%" height={28} />
+          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
+          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
+          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
+          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
+        </Box>
+      </Box>
+      {/* Table Skeleton */}
+      <TableSkeleton rows={5} cols={5} />
+    </Box>
+  );
+}
+export interface EmptyStateFeature {
+  title: string;
+  description: string;
+  icon?: ReactNode;
+}
+
+export function EmptyState({
+  title = "No items found",
+  description = "Get started by adding your first entry.",
+  icon,
+  badgeText,
+  action,
+  secondaryAction,
+  features,
+}: {
+  title?: string;
+  description?: string;
+  icon?: ReactNode;
+  badgeText?: string;
+  action?: ReactNode;
+  secondaryAction?: ReactNode;
+  features?: EmptyStateFeature[];
+}) {
+  return (
+    <div className="empty-state-container">
+      {badgeText && (
+        <div className="empty-state-badge">
+          <span className="empty-state-badge-dot" />
+          <span>{badgeText}</span>
+        </div>
+      )}
+
+      <div className="empty-state-icon-wrap">
+        {icon || <InboxOutlined sx={{ fontSize: 32, color: "#0E7A4B" }} />}
+      </div>
+
+      <Typography variant="h2" className="empty-state-title">
+        {title}
+      </Typography>
+
+      <Typography variant="body1" className="empty-state-desc">
+        {description}
+      </Typography>
+
+      {(action || secondaryAction) && (
+        <div className="empty-state-actions">
+          {action}
+          {secondaryAction}
+        </div>
+      )}
+
+      {features && features.length > 0 && (
+        <div className="empty-state-features-grid">
+          {features.map((feat, idx) => (
+            <div key={idx} className="empty-feature-card">
+              <div className="empty-feature-header">
+                {feat.icon && <div className="empty-feature-icon">{feat.icon}</div>}
+                <div className="empty-feature-title">{feat.title}</div>
+              </div>
+              <div className="empty-feature-desc">{feat.description}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Empty({
   title = "No results",
   description = "Try another search or clear your filters.",
   action,
+  secondaryAction,
+  icon,
+  badgeText,
+  features,
 }: {
   title?: string;
   description?: string;
   action?: ReactNode;
+  secondaryAction?: ReactNode;
+  icon?: ReactNode;
+  badgeText?: string;
+  features?: EmptyStateFeature[];
 }) {
   return (
-    <Box sx={{ textAlign: "center", py: 7, px: 3, maxWidth: 520, mx: "auto" }}>
-      <Box
-        sx={{
-          width: 48,
-          height: 48,
-          display: "grid",
-          placeItems: "center",
-          borderRadius: 3,
-          bgcolor: "#EAF8F0",
-          mx: "auto",
-          mb: 1.5,
-        }}
-      >
-        <InboxOutlined sx={{ fontSize: 25, color: "#0E7A4B" }} />
-      </Box>
-      <Typography variant="h2">{title}</Typography>
-      <Typography color="text.secondary" sx={{ mt: 1, mb: 2 }}>
-        {description}
-      </Typography>
-      {action}
-    </Box>
+    <EmptyState
+      title={title}
+      description={description}
+      action={action}
+      secondaryAction={secondaryAction}
+      icon={icon}
+      badgeText={badgeText}
+      features={features}
+    />
   );
 }
 export function Metric({
@@ -489,7 +693,7 @@ export function EmailPreview({ html, text }: { html: string; text?: string }) {
         />
       ) : (
         <Typography color="text.secondary">
-          No HTML content. The plain text version will be used.
+          No formatted message provided. The plain text version will be used.
         </Typography>
       )}
       {text && (

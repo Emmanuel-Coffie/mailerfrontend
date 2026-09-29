@@ -42,9 +42,8 @@ export function Settings() {
             </Detail>
           ))}
           <Alert severity="info" sx={{ mt: 3 }}>
-            Configuration is managed by your administrator on the server.
-            Secrets are never displayed here. These indicators show configured
-            values, not a live connection test.
+            Configuration is managed securely by your administrator. Security
+            credentials are kept private. These indicators show active settings.
           </Alert>
         </section>
       )}

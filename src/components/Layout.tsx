@@ -30,7 +30,7 @@ export function Brand({ collapsed = false }: { collapsed?: boolean }) {
           size={32}
           style={{
             borderRadius: 8,
-            boxShadow: "0 2px 10px rgba(14, 122, 75, 0.22)",
+            boxShadow: "0 2px 12px rgba(7, 30, 19, 0.4)",
             flexShrink: 0,
           }}
         />
@@ -41,18 +41,18 @@ export function Brand({ collapsed = false }: { collapsed?: boolean }) {
   return (
     <div className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
       <GreenHaulLogo
-        size={30}
+        size={32}
         style={{
           borderRadius: 8,
-          boxShadow: "0 2px 10px rgba(14, 122, 75, 0.22)",
+          boxShadow: "0 2px 12px rgba(7, 30, 19, 0.4)",
           flexShrink: 0,
         }}
       />
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.4px", color: "#081E14", lineHeight: 1.2 }}>
+        <span style={{ fontWeight: 800, fontSize: 15.5, letterSpacing: "-0.4px", color: "#FFFFFF", lineHeight: 1.2 }}>
           GreenHaul
         </span>
-        <span style={{ fontWeight: 650, fontSize: 11, letterSpacing: "0.2px", color: "#0E7A4B", lineHeight: 1.2 }}>
+        <span style={{ fontWeight: 650, fontSize: 11, letterSpacing: "0.4px", color: "#4ADE80", lineHeight: 1.2 }}>
           Solutions
         </span>
       </div>
@@ -150,6 +150,7 @@ export function Layout() {
               >
                 <Icon sx={{ fontSize: 20, flexShrink: 0 }} />
                 {!isCollapsed && <span className="nav-label">{name}</span>}
+                {isCollapsed && <span className="collapsed-active-indicator" />}
               </NavLink>
             );
 
@@ -175,7 +176,7 @@ export function Layout() {
         {/* Sidebar Footer */}
         <div className="sidebar-foot">
           {isCollapsed ? (
-            <Tooltip title="GreenHaul Engine v2.4 (Active)" placement="right" arrow>
+            <Tooltip title="System Active" placement="right" arrow>
               <div className="sidebar-system-dot-wrap">
                 <span className="system-status-dot" />
               </div>
@@ -184,10 +185,10 @@ export function Layout() {
             <>
               <div className="sidebar-system-pill">
                 <span className="system-status-dot" />
-                <span>Engine v2.4 Active</span>
+                <span>System Active</span>
               </div>
               <div className="sidebar-engine-desc">
-                Precision delivery & audience workspace.
+                Precision campaign workspace.
               </div>
             </>
           )}
@@ -212,6 +213,7 @@ export function Layout() {
           "& .MuiDrawer-paper": {
             width: collapsed ? 74 : 260,
             border: 0,
+            backgroundColor: "#061810",
             height: "100%",
             overflowY: "auto",
             overflowX: "hidden",
@@ -232,6 +234,7 @@ export function Layout() {
           "& .MuiDrawer-paper": {
             width: 270,
             height: "100%",
+            backgroundColor: "#061810",
             overflowY: "auto",
           },
         }}
@@ -258,40 +261,6 @@ export function Layout() {
               <MenuOutlined />
             </IconButton>
 
-            {/* Desktop Quick Toggle Button */}
-            <Tooltip
-              title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              arrow
-            >
-              <IconButton
-                className="desktop-sidebar-toggle"
-                onClick={toggleCollapsed}
-                size="small"
-                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                sx={{
-                  display: { xs: "none", md: "inline-flex" },
-                  color: "#476254",
-                  mr: 1,
-                  border: "1px solid #dce8e1",
-                  borderRadius: "8px",
-                  bgcolor: "#f9fcfb",
-                  width: 32,
-                  height: 32,
-                  "&:hover": {
-                    bgcolor: "#eaf8f0",
-                    color: "#0e7a4b",
-                    borderColor: "#0e7a4b",
-                  },
-                }}
-              >
-                {collapsed ? (
-                  <MenuOutlined sx={{ fontSize: 18 }} />
-                ) : (
-                  <MenuOpenOutlined sx={{ fontSize: 18 }} />
-                )}
-              </IconButton>
-            </Tooltip>
-
             <span className="context-kicker">Workspace /</span>
             <span className="context-title">{current}</span>
           </div>
@@ -299,7 +268,7 @@ export function Layout() {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div className="topbar-live-badge">
               <span className="pulse-dot" />
-              <span>Live Engine</span>
+              <span>System Online</span>
             </div>
 
             <MuiButton

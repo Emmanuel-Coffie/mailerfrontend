@@ -1,6 +1,6 @@
 {
-  "name": "MailFlow",
-  "description": "Email campaign management application for creating, managing, and tracking email campaigns and contacts.",
+  "name": "GreenHaul Solutions",
+  "description": "GreenHaul Solutions — Precision email campaign management, audience segmentation, and delivery operations.",
   "permissions": [],
   "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

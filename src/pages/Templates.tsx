@@ -2,6 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button as MuiButton, TextField, Typography } from "@mui/material";
 import AddOutlined from "@mui/icons-material/AddOutlined";
+import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
+import SearchOffOutlined from "@mui/icons-material/SearchOffOutlined";
+import DesignServicesOutlined from "@mui/icons-material/DesignServicesOutlined";
+import CodeOutlined from "@mui/icons-material/CodeOutlined";
+import CampaignOutlined from "@mui/icons-material/CampaignOutlined";
 import { templatesApi } from "../api/templates";
 import type { EmailTemplate, ApiError, Preview } from "../api/types";
 import { normalizeError } from "../api/client";
@@ -13,6 +18,7 @@ import {
   Empty,
   ErrorNotice,
   Loading,
+  TableSkeleton,
   PageHeading,
   Pager,
   SearchField,
@@ -22,8 +28,8 @@ import { EditorForm, type FieldSpec } from "../components/forms";
 export const templateFields: FieldSpec[] = [
   { name: "name", label: "Template name", required: true, maxLength: 255 },
   { name: "subject", label: "Subject", required: true, maxLength: 998 },
-  { name: "html_content", label: "HTML content", multiline: true },
-  { name: "text_content", label: "Plain text content", multiline: true },
+  { name: "html_content", label: "Formatted message content", multiline: true },
+  { name: "text_content", label: "Plain text message", multiline: true },
 ];
 export function Templates() {
   const query = useQuery();
@@ -49,15 +55,17 @@ export function Templates() {
       />
       <ErrorNotice error={error || state.error} retry={state.reload} />
       <section className="panel" style={{ padding: 0 }}>
-        <div className="toolbar">
-          <SearchField
-            value={String(query.query.search || "")}
-            onChange={(v) => query.set("search", v)}
-            placeholder="Search templates"
-          />
-        </div>
+        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+          <div className="toolbar">
+            <SearchField
+              value={String(query.query.search || "")}
+              onChange={(v) => query.set("search", v)}
+              placeholder="Search templates"
+            />
+          </div>
+        )}
         {state.loading ? (
-          <Loading />
+          <TableSkeleton rows={5} cols={4} />
         ) : (
           <DataTable
             rows={state.data?.results || []}
@@ -95,15 +103,74 @@ export function Templates() {
               },
             ]}
             empty={
-              <Empty
-                title="No templates found"
-                description="Create a reusable message with a personal touch."
-                action={
-                  <MuiButton component={Link} to="/templates/create">
-                    Create template
-                  </MuiButton>
-                }
-              />
+              query.key ? (
+                <Empty
+                  badgeText="Filtered Search"
+                  icon={
+                    <SearchOffOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No templates found"
+                  description="We couldn't find any templates matching your search criteria."
+                  action={
+                    <MuiButton variant="outlined" onClick={query.clear}>
+                      Clear search
+                    </MuiButton>
+                  }
+                />
+              ) : (
+                <Empty
+                  badgeText="Template Studio"
+                  icon={
+                    <DescriptionOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No templates yet"
+                  description="Design reusable email layouts with formatted message styling and plain-text fallbacks to accelerate your campaign workflow."
+                  action={
+                    <MuiButton
+                      variant="contained"
+                      component={Link}
+                      to="/templates/create"
+                      startIcon={<AddOutlined />}
+                    >
+                      Create template
+                    </MuiButton>
+                  }
+                  secondaryAction={
+                    <MuiButton
+                      variant="outlined"
+                      component={Link}
+                      to="/campaigns/create"
+                      startIcon={<CampaignOutlined />}
+                    >
+                      Create campaign
+                    </MuiButton>
+                  }
+                  features={[
+                    {
+                      title: "Dual Format Support",
+                      description:
+                        "Craft formatted HTML and clean plain-text versions for maximum deliverability.",
+                      icon: <CodeOutlined sx={{ fontSize: 16 }} />,
+                    },
+                    {
+                      title: "Instant Campaign Preset",
+                      description:
+                        "Reuse templates as starter bases for future campaign broadcasts.",
+                      icon: <DesignServicesOutlined sx={{ fontSize: 16 }} />,
+                    },
+                    {
+                      title: "Live Safe Sandbox",
+                      description:
+                        "Test and review your email design within an isolated, responsive preview sandbox.",
+                      icon: <DescriptionOutlined sx={{ fontSize: 16 }} />,
+                    },
+                  ]}
+                />
+              )
             }
           />
         )}

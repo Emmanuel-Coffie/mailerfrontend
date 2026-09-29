@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { campaignsApi } from "../api/campaigns";
 import { useResource, label } from "../hooks";
-import { ErrorNotice, Loading, Metric, PageHeading } from "../components/ui";
+import { ErrorNotice, Loading, Metric, MetricSkeleton, PageHeading } from "../components/ui";
 import { RecipientTable } from "./CampaignDetail";
 export const rate = (value: number | null) =>
   value === null ? "—" : `${value}%`;
@@ -38,7 +38,11 @@ export function Analytics() {
       <ErrorNotice error={state.error} retry={state.reload} />
       {!a ? (
         state.loading ? (
-          <Loading />
+          <div className="grid grid-4">
+            {Array.from({ length: 8 }, (_, i) => (
+              <MetricSkeleton key={i} />
+            ))}
+          </div>
         ) : null
       ) : (
         <>

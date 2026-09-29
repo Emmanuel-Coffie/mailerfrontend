@@ -10,6 +10,12 @@ import {
 } from "@mui/material";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import UploadFileOutlined from "@mui/icons-material/UploadFileOutlined";
+import PersonAddOutlined from "@mui/icons-material/PersonAddOutlined";
+import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
+import CloudUploadOutlined from "@mui/icons-material/CloudUploadOutlined";
+import SearchOffOutlined from "@mui/icons-material/SearchOffOutlined";
+import FormatListBulletedOutlined from "@mui/icons-material/FormatListBulletedOutlined";
+import VerifiedOutlined from "@mui/icons-material/VerifiedOutlined";
 import { contactsApi } from "../api/contacts";
 import { listsApi } from "../api/lists";
 import type { Contact, ApiError } from "../api/types";
@@ -23,6 +29,7 @@ import {
   ErrorNotice,
   Filter,
   Loading,
+  TableSkeleton,
   PageHeading,
   Pager,
   SearchField,
@@ -123,48 +130,50 @@ export function Contacts() {
       />
       <ErrorNotice error={error || state.error} retry={state.reload} />
       <section className="panel" style={{ padding: 0 }}>
-        <div className="toolbar">
-          <SearchField
-            value={String(query.query.search || "")}
-            onChange={(v) => query.set("search", v)}
-            placeholder="Name, email, or company"
-          />
-          <Filter
-            name="Status"
-            value={String(query.query.status || "")}
-            onChange={(v) => query.set("status", v)}
-            options={["active", "unsubscribed", "bounced", "suppressed"].map(
-              (value) => ({ value, label: label(value) }),
-            )}
-          />
-          <Filter
-            name="Lists"
-            value={String(query.query.contact_lists || "")}
-            onChange={(v) => query.set("contact_lists", v)}
-            options={(lists.data || []).map((l) => ({
-              value: String(l.id),
-              label: l.name,
-            }))}
-          />
-          <TextField
-            label="Company"
-            value={query.query.company || ""}
-            onChange={(e) => query.set("company", e.target.value)}
-            sx={{ width: 160 }}
-          />
-          <Filter
-            name="Ordering"
-            value={String(query.query.ordering || "")}
-            onChange={(v) => query.set("ordering", v)}
-            options={[
-              { value: "email", label: "Email A–Z" },
-              { value: "-created_at", label: "Newest first" },
-              { value: "company", label: "Company A–Z" },
-            ]}
-          />
-        </div>
+        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+          <div className="toolbar">
+            <SearchField
+              value={String(query.query.search || "")}
+              onChange={(v) => query.set("search", v)}
+              placeholder="Name, email, or company"
+            />
+            <Filter
+              name="Status"
+              value={String(query.query.status || "")}
+              onChange={(v) => query.set("status", v)}
+              options={["active", "unsubscribed", "bounced", "suppressed"].map(
+                (value) => ({ value, label: label(value) }),
+              )}
+            />
+            <Filter
+              name="Lists"
+              value={String(query.query.contact_lists || "")}
+              onChange={(v) => query.set("contact_lists", v)}
+              options={(lists.data || []).map((l) => ({
+                value: String(l.id),
+                label: l.name,
+              }))}
+            />
+            <TextField
+              label="Company"
+              value={query.query.company || ""}
+              onChange={(e) => query.set("company", e.target.value)}
+              sx={{ width: 160 }}
+            />
+            <Filter
+              name="Ordering"
+              value={String(query.query.ordering || "")}
+              onChange={(v) => query.set("ordering", v)}
+              options={[
+                { value: "email", label: "Email A–Z" },
+                { value: "-created_at", label: "Newest first" },
+                { value: "company", label: "Company A–Z" },
+              ]}
+            />
+          </div>
+        )}
         {state.loading ? (
-          <Loading />
+          <TableSkeleton rows={7} cols={6} />
         ) : (
           <DataTable
             rows={state.data?.results || []}
@@ -212,25 +221,75 @@ export function Contacts() {
               },
             ]}
             empty={
-              <Empty
-                title={query.key ? "No matching contacts" : "No contacts yet"}
-                description={
-                  query.key
-                    ? "Try another search or clear the filters."
-                    : "Import a CSV or add your first contact to begin."
-                }
-                action={
-                  query.key ? (
+              query.key ? (
+                <Empty
+                  badgeText="Filtered Search"
+                  icon={
+                    <SearchOffOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No matching contacts"
+                  description="We couldn't find any contacts matching your search criteria or active filters. Try adjusting your search term."
+                  action={
                     <MuiButton variant="outlined" onClick={query.clear}>
                       Clear filters
                     </MuiButton>
-                  ) : (
-                    <MuiButton onClick={() => setEditing(null)}>
+                  }
+                />
+              ) : (
+                <Empty
+                  badgeText="Audience Directory"
+                  icon={
+                    <PeopleAltOutlined
+                      sx={{ fontSize: 32, color: "#0E7A4B" }}
+                    />
+                  }
+                  title="No contacts yet"
+                  description="Your audience address book is currently empty. Add individual contacts or import a full CSV list to launch precision campaigns."
+                  action={
+                    <MuiButton
+                      variant="contained"
+                      startIcon={<PersonAddOutlined />}
+                      onClick={() => setEditing(null)}
+                    >
                       Add contact
                     </MuiButton>
-                  )
-                }
-              />
+                  }
+                  secondaryAction={
+                    <MuiButton
+                      variant="outlined"
+                      component={Link}
+                      to="/contacts/import"
+                      startIcon={<CloudUploadOutlined />}
+                    >
+                      Import CSV
+                    </MuiButton>
+                  }
+                  features={[
+                    {
+                      title: "Bulk CSV Import",
+                      description:
+                        "Upload thousands of contacts at once with automated column mapping and verification.",
+                      icon: <CloudUploadOutlined sx={{ fontSize: 16 }} />,
+                    },
+                    {
+                      title: "Audience Lists",
+                      description:
+                        "Organize contacts into custom target segments for tailored delivery.",
+                      icon: (
+                        <FormatListBulletedOutlined sx={{ fontSize: 16 }} />
+                      ),
+                    },
+                    {
+                      title: "Health Validation",
+                      description:
+                        "The system automatically screens for inactive, bounced, and suppressed addresses.",
+                      icon: <VerifiedOutlined sx={{ fontSize: 16 }} />,
+                    },
+                  ]}
+                />
+              )
             }
           />
         )}

@@ -152,8 +152,7 @@ export function ImportContacts() {
           </Typography>
           <Alert severity="info">
             Existing contacts are kept. Invalid addresses and duplicate rows are
-            skipped. The server enforces the upload size limit (5 MB by
-            default).
+            skipped. Maximum upload file size is 5 MB.
           </Alert>
         </aside>
       </div>
