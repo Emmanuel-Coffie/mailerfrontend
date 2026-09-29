@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Alert,
   Button as MuiButton,
@@ -14,12 +14,11 @@ import {
 import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
 import ArrowForwardOutlined from "@mui/icons-material/ArrowForwardOutlined";
-import ArrowBackOutlined from "@mui/icons-material/ArrowBackOutlined";
 import PersonOutline from "@mui/icons-material/PersonOutline";
 import LockOutlined from "@mui/icons-material/LockOutlined";
-import BoltOutlined from "@mui/icons-material/BoltOutlined";
 import { useAuth } from "../auth";
 import { normalizeError } from "../api/client";
+import { GreenHaulLogo } from "../components/Logo";
 
 const schema = z.object({
   username: z.string().min(1, "Enter your username."),
@@ -27,17 +26,22 @@ const schema = z.object({
 });
 
 export function Login() {
-  const { login } = useAuth();
+  const { login, authenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
-  const [quickSigning, setQuickSigning] = useState(false);
+
+  // If already authenticated, redirect immediately to dashboard
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [authenticated, navigate]);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
@@ -54,48 +58,24 @@ export function Login() {
     );
   };
 
-  const handleQuickDemo = async () => {
-    setError("");
-    setQuickSigning(true);
-    setValue("username", "admin", { shouldValidate: true });
-    setValue("password", "greenhaul2026", { shouldValidate: true });
-    try {
-      await login("admin", "greenhaul2026");
-      handleSuccessfulAuth();
-    } catch (e) {
-      setError(normalizeError(e).message);
-    } finally {
-      setQuickSigning(false);
-    }
-  };
-
   return (
     <div className="login-minimal-shell">
       {/* Ambient background decoration */}
       <div className="login-bg-dots" aria-hidden="true" />
       <div className="login-bg-glow" aria-hidden="true" />
 
-      {/* Top back navigation - directly leads to overview */}
-      <div className="login-minimal-nav">
-        <Link
-          to="/"
-          className="login-back-pill"
-          aria-label="Back to overview"
-        >
-          <ArrowBackOutlined sx={{ fontSize: 16 }} className="back-arrow-icon" />
-          <span>Back to overview</span>
-        </Link>
-      </div>
-
       {/* Centered Minimal Card */}
       <div className="login-minimal-card">
         {/* Brand Logo & Name */}
         <div className="login-minimal-brand">
           <div className="logo-frame">
-            <img
-              src="/src/assets/images/greenhaul_logo_1790701516483.jpg"
-              alt="GreenHaul Solutions logo"
-              className="login-minimal-logo"
+            <GreenHaulLogo
+              size={56}
+              style={{
+                borderRadius: 14,
+                width: "100%",
+                height: "100%",
+              }}
             />
           </div>
           <span className="login-brand-tag">GREENHAUL SOLUTIONS</span>
@@ -208,7 +188,7 @@ export function Login() {
           <MuiButton
             type="submit"
             fullWidth
-            loading={isSubmitting || quickSigning}
+            loading={isSubmitting}
             endIcon={<ArrowForwardOutlined sx={{ fontSize: 17 }} />}
             sx={{
               mt: 1.2,
@@ -222,24 +202,6 @@ export function Login() {
             Sign in
           </MuiButton>
         </form>
-
-        {/* Quick Demo Sign-in Option */}
-        <div className="login-minimal-demo">
-          <button
-            type="button"
-            className="demo-pill-btn"
-            onClick={handleQuickDemo}
-            disabled={isSubmitting || quickSigning}
-          >
-            <div className="demo-pill-icon">
-              <BoltOutlined sx={{ fontSize: 15 }} />
-            </div>
-            <div className="demo-pill-content">
-              <strong>Quick Demo Sign-In</strong>
-              <span>1-click access with demo operator</span>
-            </div>
-          </button>
-        </div>
 
         {/* Minimal Footer */}
         <div className="login-minimal-foot">

@@ -19,9 +19,6 @@ import { theme } from "./theme";
 import { AuthProvider, ProtectedRoute } from "./auth";
 import { NoticeProvider, PageHeading, Loading } from "./components/ui";
 import { Layout } from "./components/Layout";
-const Landing = lazy(() =>
-  import("./pages/Landing").then((module) => ({ default: module.Landing })),
-);
 const Login = lazy(() =>
   import("./pages/Login").then((module) => ({ default: module.Login })),
 );
@@ -135,9 +132,9 @@ export const routes = [
     element: <Providers />,
     errorElement: <RouteError />,
     children: [
-      { path: "/", element: <Landing /> },
-      { path: "/landing", element: <Landing /> },
+      { path: "/", element: <Login /> },
       { path: "/login", element: <Login /> },
+      { path: "/landing", element: <Navigate to="/" replace /> },
       { path: "/unsubscribe/:token", element: <Unsubscribe /> },
       {
         element: <ProtectedRoute />,

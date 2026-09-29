@@ -131,6 +131,45 @@ export function Dashboard() {
         ) : null
       ) : (
         <>
+          <div className="dashboard-executive-strip">
+            <div className="exec-title">
+              <span className="exec-tag">GreenHaul Hub</span>
+              <Typography sx={{ fontWeight: 700, fontSize: 14.5, color: "#fff" }}>
+                Enterprise Campaign Delivery & Audience Workspace
+              </Typography>
+            </div>
+            <div className="exec-links">
+              <MuiButton
+                component={Link}
+                to="/contacts/import"
+                size="small"
+                variant="outlined"
+                sx={{
+                  color: "#95e8ba",
+                  borderColor: "rgba(149, 232, 186, 0.4)",
+                  fontSize: 12,
+                  "&:hover": { borderColor: "#95e8ba", bgcolor: "rgba(149, 232, 186, 0.08)" },
+                }}
+              >
+                Import Contacts
+              </MuiButton>
+              <MuiButton
+                component={Link}
+                to="/templates"
+                size="small"
+                variant="outlined"
+                sx={{
+                  color: "#95e8ba",
+                  borderColor: "rgba(149, 232, 186, 0.4)",
+                  fontSize: 12,
+                  "&:hover": { borderColor: "#95e8ba", bgcolor: "rgba(149, 232, 186, 0.08)" },
+                }}
+              >
+                Templates
+              </MuiButton>
+            </div>
+          </div>
+
           <div className="grid grid-4">
             <DashboardMetric
               title="Total contacts"

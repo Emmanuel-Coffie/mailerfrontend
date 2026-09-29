@@ -18,18 +18,15 @@ import MenuOutlined from "@mui/icons-material/MenuOutlined";
 import MailOutline from "@mui/icons-material/MailOutline";
 import ArrowForwardOutlined from "@mui/icons-material/ArrowForwardOutlined";
 import { useAuth } from "../auth";
+import { GreenHaulLogo } from "./Logo";
 
 export function Brand() {
   return (
     <div className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-      <img
-        src="/src/assets/images/greenhaul_logo_1790701516483.jpg"
-        alt="GreenHaul Solutions"
+      <GreenHaulLogo
+        size={28}
         style={{
-          width: 28,
-          height: 28,
           borderRadius: 7,
-          objectFit: "cover",
           boxShadow: "0 2px 8px rgba(14, 122, 75, 0.2)",
           flexShrink: 0,
         }}
@@ -86,25 +83,12 @@ export function Layout() {
         ))}
       </nav>
       <div className="sidebar-foot">
-        <Link
-          to="/"
-          className="sidebar-marketing-link"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            color: "#92B8A4",
-            fontSize: 12,
-            fontWeight: 600,
-            marginBottom: 10,
-            textDecoration: "none",
-          }}
-        >
-          <span>Product Overview</span>
-          <ArrowForwardOutlined sx={{ fontSize: 13 }} />
-        </Link>
-        <div style={{ fontSize: 11.5, lineHeight: 1.6, color: "#6A8B7A" }}>
-          Focused audience, content, campaigns, and delivery telemetry.
+        <div className="sidebar-system-pill">
+          <span className="system-status-dot" />
+          <span>GreenHaul Engine v2.4</span>
+        </div>
+        <div style={{ fontSize: 11, lineHeight: 1.5, color: "#6A8B7A", marginTop: 8 }}>
+          Precision audience, templates, and delivery telemetry.
         </div>
       </div>
     </div>
@@ -118,14 +102,27 @@ export function Layout() {
       <Drawer
         variant="permanent"
         className="desktop-sidebar"
-        sx={{ "& .MuiDrawer-paper": { width: 264, border: 0 } }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 264,
+            border: 0,
+            height: "100%",
+            overflowY: "auto",
+          },
+        }}
       >
         {sidebar}
       </Drawer>
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
-        sx={{ "& .MuiDrawer-paper": { width: 272 } }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 272,
+            height: "100%",
+            overflowY: "auto",
+          },
+        }}
       >
         {sidebar}
       </Drawer>
@@ -144,21 +141,10 @@ export function Layout() {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <MuiButton
-              component={Link}
-              to="/"
-              variant="text"
-              size="small"
-              sx={{
-                color: "#4A6154",
-                fontWeight: 650,
-                fontSize: 12.5,
-                display: { xs: "none", md: "inline-flex" },
-                "&:hover": { color: "#0E7A4B" },
-              }}
-            >
-              Landing Page
-            </MuiButton>
+            <div className="topbar-live-badge">
+              <span className="pulse-dot" />
+              <span>Engine Active</span>
+            </div>
             <MuiButton
               component={Link}
               to="/campaigns/create"

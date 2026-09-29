@@ -8,7 +8,9 @@ export const baseURL = (
 export const publicClient = axios.create({ baseURL, timeout: 40000 });
 export const client = axios.create({ baseURL, timeout: 40000 });
 
-if (!import.meta.env.VITE_API_BASE_URL && import.meta.env.MODE !== "test") {
+// Only use mockAdapter if explicitly requested via VITE_USE_MOCK=true.
+// Otherwise, all requests hit the real backend API.
+if (import.meta.env.VITE_USE_MOCK === "true") {
   publicClient.defaults.adapter = mockAdapter;
   client.defaults.adapter = mockAdapter;
 }
