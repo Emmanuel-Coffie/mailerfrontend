@@ -71,10 +71,13 @@ export function PageHeading({
   }, [title]);
   return (
     <div className="page-heading">
-      <div>
-        <Typography variant="h1">{title}</Typography>
+      <div className="page-title-group">
+        <div className="page-title-row">
+          <span className="page-title-accent" />
+          <Typography variant="h1" className="page-title-text">{title}</Typography>
+        </div>
         {description && (
-          <Typography color="text.secondary" sx={{ mt: 1 }}>
+          <Typography className="page-title-sub">
             {description}
           </Typography>
         )}
