@@ -6,3 +6,7 @@ dist/
 .DS_Store
 coverage/
 .vite/
+work/
+test-results/
+playwright-report/
+.impeccable/review/

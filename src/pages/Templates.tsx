@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Button as MuiButton, TextField, Typography } from "@mui/material";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
@@ -24,7 +29,12 @@ import {
   SearchField,
   useNotice,
 } from "../components/ui";
-import { EditorForm, type FieldSpec } from "../components/forms";
+import { EditorForm, Field, type FieldSpec } from "../components/forms";
+import {
+  EmailDesignerField,
+  StarterGallery,
+} from "../components/EmailDesigner";
+import { starterDesign, renderEmail, designText } from "../email/design";
 export const templateFields: FieldSpec[] = [
   { name: "name", label: "Template name", required: true, maxLength: 255 },
   { name: "subject", label: "Subject", required: true, maxLength: 998 },
@@ -32,6 +42,7 @@ export const templateFields: FieldSpec[] = [
   { name: "text_content", label: "Plain text message", multiline: true },
 ];
 export function Templates() {
+  const navigate = useNavigate();
   const query = useQuery();
   const state = useResource(() => templatesApi.list(query.query), query.key);
   const [deleting, setDeleting] = useState<EmailTemplate>();
@@ -54,8 +65,24 @@ export function Templates() {
         }
       />
       <ErrorNotice error={error || state.error} retry={state.reload} />
+      <div className="template-intro">
+        <div>
+          <h2>Your next message, beautifully started.</h2>
+          <p>Pick a starting point. Every detail is yours to edit.</p>
+        </div>
+      </div>
+      <StarterGallery
+        onChoose={(starter) => navigate(`/templates/create?starter=${starter}`)}
+      />
+      <div className="template-intro">
+        <div>
+          <h2>Saved templates</h2>
+          <p>Your reusable designs, ready for the next conversation.</p>
+        </div>
+      </div>
       <section className="panel" style={{ padding: 0 }}>
-        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+        {(Boolean(query.key) ||
+          (state.data && state.data.results.length > 0)) && (
           <div className="toolbar">
             <SearchField
               value={String(query.query.search || "")}
@@ -207,6 +234,9 @@ export function Templates() {
 }
 export function TemplateEditor() {
   const { id } = useParams();
+  const [params] = useSearchParams();
+  const starter = params.get("starter");
+  const startingDesign = !id && starter ? starterDesign(starter) : undefined;
   const navigate = useNavigate();
   const state = useResource(
     () => (id ? templatesApi.get(id) : Promise.resolve(null)),
@@ -226,7 +256,7 @@ export function TemplateEditor() {
     <>
       <PageHeading
         title={id ? "Edit template" : "Create template"}
-        description="Make it personal. Keep it clear."
+        description="Your words. Your style. An email worth opening."
         actions={
           <MuiButton component={Link} to="/templates" variant="outlined">
             All templates
@@ -237,91 +267,108 @@ export function TemplateEditor() {
       {id && state.error ? null : state.loading ? (
         <Loading />
       ) : (
-        <div className="grid grid-2">
-          <section className="panel">
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Supported variables:{" "}
-              {"{{first_name}}, {{last_name}}, {{company}}, {{position}}"}
-            </Typography>
-            <EditorForm
-              key={id || "new"}
-              initial={{
-                name: state.data?.name || "",
-                subject: state.data?.subject || "",
-                html_content: state.data?.html_content || "",
-                text_content: state.data?.text_content || "",
-              }}
-              fields={templateFields}
-              onSave={async (values) => {
-                if (id) await templatesApi.update(id, values);
-                else await templatesApi.create(values);
-                notice("Template saved");
-              }}
-              onDone={() => void navigate("/templates")}
-              submitLabel="Save template"
-            />
-          </section>
-          <section className="panel">
-            <Typography variant="h2">Preview saved template</Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ mt: 1, mb: 3 }}
-            >
-              Preview uses the saved version. Save changes before previewing
-              them.
-            </Typography>
-            {id ? (
-              <>
-                <div className="grid grid-2">
-                  {Object.entries(sample).map(([key, value]) => (
-                    <TextField
-                      key={key}
-                      label={label(key)}
-                      value={value}
-                      onChange={(e) =>
-                        setSample({ ...sample, [key]: e.target.value })
+        <div className="template-editor-form">
+          <EditorForm
+            key={id || "new"}
+            initial={{
+              name: state.data?.name || "",
+              subject: state.data?.subject || "",
+              html_content:
+                state.data?.html_content ||
+                (startingDesign ? renderEmail(startingDesign) : ""),
+              text_content:
+                state.data?.text_content ||
+                (startingDesign ? designText(startingDesign) : ""),
+            }}
+            fields={[]}
+            onSave={async (values) => {
+              if (id) await templatesApi.update(id, values);
+              else await templatesApi.create(values);
+              notice("Template saved");
+            }}
+            onDone={() => void navigate("/templates")}
+            submitLabel="Save template"
+          >
+            <section className="template-editor-meta">
+              <div className="grid grid-2">
+                <Field {...templateFields[0]} />
+                <Field {...templateFields[1]} />
+              </div>
+            </section>
+            <EmailDesignerField />
+            <details className="plain-text-details">
+              <summary>Plain text & accessibility</summary>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                A readable fallback for inboxes that do not display formatted
+                emails. Visual edits regenerate this version; make any final
+                text adjustments after designing.
+              </Typography>
+              <Field {...templateFields[3]} />
+            </details>
+          </EditorForm>
+          {id && (
+            <section className="panel saved-preview-panel">
+              <Typography variant="h2">Preview saved template</Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 1, mb: 3 }}
+              >
+                Preview uses the saved version. Save changes before previewing
+                them.
+              </Typography>
+              {id ? (
+                <>
+                  <div className="grid grid-2">
+                    {Object.entries(sample).map(([key, value]) => (
+                      <TextField
+                        key={key}
+                        label={label(key)}
+                        value={value}
+                        onChange={(e) =>
+                          setSample({ ...sample, [key]: e.target.value })
+                        }
+                      />
+                    ))}
+                  </div>
+                  <MuiButton
+                    variant="outlined"
+                    loading={busy}
+                    sx={{ my: 2 }}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(undefined);
+                      try {
+                        setPreview(
+                          await templatesApi.preview(Number(id), sample),
+                        );
+                      } catch (e) {
+                        setError(normalizeError(e));
+                      } finally {
+                        setBusy(false);
                       }
-                    />
-                  ))}
-                </div>
-                <MuiButton
-                  variant="outlined"
-                  loading={busy}
-                  sx={{ my: 2 }}
-                  onClick={async () => {
-                    setBusy(true);
-                    setError(undefined);
-                    try {
-                      setPreview(
-                        await templatesApi.preview(Number(id), sample),
-                      );
-                    } catch (e) {
-                      setError(normalizeError(e));
-                    } finally {
-                      setBusy(false);
-                    }
-                  }}
-                >
-                  Preview template
-                </MuiButton>
-                <ErrorNotice error={error} />
-                {preview && (
-                  <>
-                    <Typography variant="h3" sx={{ mb: 2 }}>
-                      {preview.subject}
-                    </Typography>
-                    <EmailPreview html={preview.html} text={preview.text} />
-                  </>
-                )}
-              </>
-            ) : (
-              <Empty
-                title="Save to preview"
-                description="Create the template, then open it to preview with sample contact details."
-              />
-            )}
-          </section>
+                    }}
+                  >
+                    Preview template
+                  </MuiButton>
+                  <ErrorNotice error={error} />
+                  {preview && (
+                    <>
+                      <Typography variant="h3" sx={{ mb: 2 }}>
+                        {preview.subject}
+                      </Typography>
+                      <EmailPreview html={preview.html} text={preview.text} />
+                    </>
+                  )}
+                </>
+              ) : (
+                <Empty
+                  title="Save to preview"
+                  description="Create the template, then open it to preview with sample contact details."
+                />
+              )}
+            </section>
+          )}
         </div>
       )}
     </>

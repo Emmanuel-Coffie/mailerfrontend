@@ -35,6 +35,7 @@ import {
   useNotice,
 } from "../components/ui";
 import { Field, UnsavedGuard, type FormValues } from "../components/forms";
+import { EmailDesignerField } from "../components/EmailDesigner";
 const steps = [
   "Campaign",
   "Recipients",
@@ -228,7 +229,7 @@ export function CampaignWizard() {
         {saved.error ? null : saved.loading ? (
           <Loading />
         ) : (
-          <div className="wizard-layout">
+          <div className={`wizard-layout${step === 2 ? " is-content" : ""}`}>
             <section className="panel">
               <Typography variant="overline" color="text.secondary">
                 Step {step + 1} of 7
@@ -366,11 +367,26 @@ export function CampaignWizard() {
                       selected template when the campaign is submitted.
                     </Alert>
                     <Field name="subject" label="Subject" required />
-                    <Field
-                      name="html_content"
-                      label="Formatted message content"
-                      multiline
+                    <EmailDesignerField
+                      fallbackHtml={chosenTemplate?.html_content}
+                      fallbackText={chosenTemplate?.text_content}
                     />
+                    {chosenTemplate &&
+                      (values.html_content || values.text_content) && (
+                        <MuiButton
+                          variant="text"
+                          onClick={() => {
+                            form.setValue("html_content", "", {
+                              shouldDirty: true,
+                            });
+                            form.setValue("text_content", "", {
+                              shouldDirty: true,
+                            });
+                          }}
+                        >
+                          Use saved template content
+                        </MuiButton>
+                      )}
                     <Field
                       name="text_content"
                       label="Plain text message"

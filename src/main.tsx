@@ -6,3 +6,7 @@ import "@fontsource/inter/latin-700.css";
 import "./styles.css";
 import App from "./App";
 createRoot(document.getElementById("root")!).render(<App />);
+
+import "@fontsource/manrope/latin-500.css";
+import "@fontsource/manrope/latin-600.css";
+import "@fontsource/manrope/latin-700.css";
