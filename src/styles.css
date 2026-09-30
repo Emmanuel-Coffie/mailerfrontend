@@ -837,7 +837,7 @@ img {
 }
 .login-shell {
   display: grid;
-  grid-template-columns: minmax(320px, 38vw) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   height: 100vh;
   max-height: 100vh;
   height: 100dvh;
@@ -852,7 +852,7 @@ img {
   max-height: 100vh;
   max-height: 100dvh;
   overflow: hidden;
-  padding: clamp(22px, 3.6vh, 42px) clamp(22px, 3vw, 44px);
+  padding: clamp(26px, 4.2vh, 52px) clamp(32px, 4.5vw, 64px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -864,28 +864,28 @@ img {
   color: #9ebdb7;
 }
 .login-story h2 {
-  font: 600 clamp(22px, 2.4vw, 34px)/1.18 var(--font-display);
+  font: 600 clamp(24px, 2.6vw, 38px)/1.15 var(--font-display);
   letter-spacing: -0.035em;
   color: #f2f7f3;
-  max-width: 440px;
-  margin: 0 0 12px;
+  max-width: 460px;
+  margin: 0 0 14px;
 }
 .login-story > div > p {
-  font-size: 13.5px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.65;
   color: #b8ceca;
-  max-width: 380px;
-  margin: 0 0 clamp(10px, 1.8vh, 18px);
+  max-width: 420px;
+  margin: 0 0 clamp(12px, 2vh, 22px);
 }
 .login-letter {
   position: relative;
   background: #e3ede5;
   color: #214846;
-  padding: clamp(16px, 2.2vh, 22px) clamp(18px, 2vw, 24px);
-  max-width: 310px;
+  padding: clamp(16px, 2.4vh, 24px) clamp(20px, 2.2vw, 26px);
+  max-width: 320px;
   width: fit-content;
-  min-width: 260px;
-  margin: clamp(12px, 1.8vh, 20px) 0 clamp(8px, 1.4vh, 16px);
+  min-width: 270px;
+  margin: clamp(12px, 1.8vh, 22px) 0 clamp(8px, 1.4vh, 16px);
   transform: rotate(-3.2deg);
   transform-origin: top left;
   border-radius: 6px;
@@ -919,19 +919,19 @@ img {
   display: block;
 }
 .login-letter h3 {
-  font: 600 clamp(18px, 1.9vw, 23px)/1.22 var(--font-display);
+  font: 600 clamp(18px, 2vw, 24px)/1.22 var(--font-display);
   color: #1a4240;
-  margin: clamp(10px, 1.4vh, 15px) 0 clamp(8px, 1.2vh, 12px);
+  margin: clamp(10px, 1.5vh, 16px) 0 clamp(8px, 1.2vh, 12px);
   letter-spacing: -0.03em;
 }
 .login-letter p {
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.6;
   color: #214846;
   margin: 0;
 }
 .login-story-foot {
-  font-size: 11px;
+  font-size: 11.5px;
   color: #b8ceca;
   letter-spacing: 0.02em;
 }
@@ -942,28 +942,23 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 2.5vh, 32px) clamp(20px, 3vw, 48px);
-  background:
-    radial-gradient(circle at 85% 15%, rgba(20, 128, 94, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 15% 85%, rgba(15, 23, 42, 0.03) 0%, transparent 45%),
-    #f8fafc;
+  padding: clamp(24px, 4vh, 48px) clamp(32px, 5vw, 64px);
+  background: #ffffff;
 }
 .login-form-inner {
   width: 100%;
-  max-width: 410px;
-  background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-radius: 20px;
-  padding: clamp(24px, 3.4vh, 36px) clamp(24px, 2.5vw, 36px);
-  box-shadow:
-    0 20px 48px -12px rgba(15, 23, 42, 0.08),
-    0 1px 3px rgba(15, 23, 42, 0.04);
+  max-width: 390px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 .login-badge-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -972,7 +967,7 @@ img {
   border: 1px solid #d1fae5;
   border-radius: 20px;
   padding: 4px 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .login-badge-dot {
   width: 6px;
@@ -983,26 +978,29 @@ img {
 }
 .login-title {
   font-family: var(--font-display) !important;
-  font-size: clamp(24px, 2.2vw, 28px) !important;
+  font-size: clamp(28px, 2.6vw, 36px) !important;
   font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: -0.035em !important;
   color: #0f172a !important;
-  line-height: 1.2 !important;
-  margin: 0 0 6px !important;
+  line-height: 1.15 !important;
+  margin: 0 0 8px !important;
 }
 .login-subtitle {
-  font-size: 13.5px;
+  font-size: 14px;
   color: #64748b;
-  line-height: 1.5;
-  margin: 0 0 20px;
+  line-height: 1.6;
+  margin: 0 0 24px;
 }
 .login-form-inner .MuiOutlinedInput-root {
   border-radius: 12px;
-  background: #fdfefe;
+  background: #f8fafc;
   transition: all 0.2s ease;
 }
 .login-form-inner .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #94a3b8;
+}
+.login-form-inner .MuiOutlinedInput-root.Mui-focused {
+  background: #ffffff;
 }
 .login-form-inner .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: #14805e;
@@ -1024,8 +1022,8 @@ img {
   box-shadow: 0 12px 24px -4px rgba(20, 128, 94, 0.45) !important;
 }
 .login-form-foot {
-  margin-top: 18px;
-  padding-top: 14px;
+  margin-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid #f1f5f9;
 }
 .login-security-tag {
@@ -1039,8 +1037,8 @@ img {
   background: #f0fdf4;
   border: 1px solid #dcfce7;
   border-radius: 8px;
-  padding: 5px 12px;
-  margin-bottom: 8px;
+  padding: 6px 12px;
+  margin-bottom: 10px;
 }
 .login-foot-note {
   font-size: 11.5px;
@@ -1051,7 +1049,7 @@ img {
 }
 .login-mobile-brand {
   display: none;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .login-mobile-brand .brand small {
   color: var(--muted);
@@ -1924,8 +1922,8 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f8fafc;
-    padding: 16px;
+    background: #ffffff;
+    padding: 24px 20px;
   }
   .login-story {
     display: none;
@@ -1936,30 +1934,30 @@ img {
     height: auto;
     max-height: 100%;
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
     background: transparent;
     overflow: hidden;
   }
   .login-mobile-brand {
     display: flex;
-    justify-content: center;
-    margin-bottom: 14px;
+    justify-content: flex-start;
+    margin-bottom: 18px;
   }
   .login-form-inner {
-    background: #ffffff;
-    padding: 24px 22px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
   }
   .login-form-inner h1 {
     font-size: 26px;
-    text-align: center;
+    text-align: left;
   }
   .login-form-inner > p {
-    text-align: center;
-    margin: 4px 0 16px;
-    font-size: 13px;
+    text-align: left;
+    margin: 4px 0 18px;
+    font-size: 13.5px;
   }
   .template-intro {
     align-items: flex-start;
