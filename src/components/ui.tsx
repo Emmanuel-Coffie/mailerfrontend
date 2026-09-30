@@ -72,8 +72,8 @@ export function PageHeading({
   return (
     <div className="page-heading">
       <div className="page-title-group">
+        <div className="page-title-kicker">Campaign Workspace</div>
         <div className="page-title-row">
-          <span className="page-title-accent" />
           <Typography variant="h1" className="page-title-text">
             {title}
           </Typography>
@@ -82,7 +82,7 @@ export function PageHeading({
           <Typography className="page-title-sub">{description}</Typography>
         )}
       </div>
-      <div className="actions">{actions}</div>
+      {actions && <div className="actions">{actions}</div>}
     </div>
   );
 }

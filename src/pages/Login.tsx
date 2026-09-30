@@ -94,8 +94,14 @@ export function Login() {
           <div className="login-mobile-brand">
             <Brand />
           </div>
-          <Typography variant="h1">Welcome back</Typography>
-          <p>
+          <div className="login-badge-pill">
+            <span className="login-badge-dot" />
+            <span>Campaign Workspace</span>
+          </div>
+          <Typography variant="h1" className="login-title">
+            Welcome back
+          </Typography>
+          <p className="login-subtitle">
             Sign in to your workspace. Your next great conversation is waiting.
           </p>
           <form
@@ -111,7 +117,7 @@ export function Login() {
             })}
           >
             {error && (
-              <Alert severity="error" sx={{ mb: 2.2, borderRadius: 2 }}>
+              <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
                 <strong>Sign in failed.</strong> {error}
               </Alert>
             )}
@@ -130,7 +136,7 @@ export function Login() {
                     startAdornment: (
                       <InputAdornment position="start">
                         <PersonOutline
-                          sx={{ color: "#7A9285", fontSize: 19 }}
+                          sx={{ color: "#14805e", fontSize: 19 }}
                         />
                       </InputAdornment>
                     ),
@@ -152,7 +158,7 @@ export function Login() {
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockOutlined sx={{ color: "#7A9285", fontSize: 19 }} />
+                        <LockOutlined sx={{ color: "#14805e", fontSize: 19 }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -181,21 +187,28 @@ export function Login() {
               fullWidth
               loading={isSubmitting}
               endIcon={<ArrowForwardOutlined sx={{ fontSize: 17 }} />}
+              className="login-submit-btn"
               sx={{
-                mt: 1.2,
+                mt: 1,
                 minHeight: 48,
                 fontSize: 14.5,
                 fontWeight: 700,
                 borderRadius: "12px",
-                boxShadow: "0 8px 24px rgba(14, 122, 75, 0.22)",
+                boxShadow: "0 8px 24px rgba(20, 128, 94, 0.28)",
               }}
             >
               Sign in
             </MuiButton>
           </form>
           <div className="login-form-foot">
-            Use your workspace account to continue. Need access? Contact your
-            administrator.
+            <div className="login-security-tag">
+              <LockOutlined sx={{ fontSize: 13, color: "#14805e" }} />
+              <span>Enterprise authentication · TLS 1.3 encrypted</span>
+            </div>
+            <p className="login-foot-note">
+              Use your workspace account to continue. Need access? Contact your
+              administrator.
+            </p>
           </div>
         </div>
       </section>
