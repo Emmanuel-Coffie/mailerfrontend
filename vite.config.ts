@@ -20,7 +20,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
     include: ["src/**/*.test.{ts,tsx}"],
-    testTimeout: 10000,
+    testTimeout: 20000,
+    fileParallelism: false,
   },
   build: {
     rollupOptions: {

@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T17:53:42.947Z",
+  "title": "Design System: GreenHaul Solutions",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "primary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0588 188.83)",
+          "oklch(26.43% 0.0588 188.83)",
+          "oklch(37.86% 0.0588 188.83)",
+          "oklch(49.29% 0.0588 188.83)",
+          "oklch(60.71% 0.0588 188.83)",
+          "oklch(72.14% 0.0588 188.83)",
+          "oklch(83.57% 0.0588 188.83)",
+          "oklch(95.00% 0.0588 188.83)"
+        ]
+      },
+      "dark": {
+        "role": "primary",
+        "displayName": "dark",
+        "tonalRamp": [
+          "oklch(15.00% 0.0433 190.69)",
+          "oklch(26.43% 0.0433 190.69)",
+          "oklch(37.86% 0.0433 190.69)",
+          "oklch(49.29% 0.0433 190.69)",
+          "oklch(60.71% 0.0433 190.69)",
+          "oklch(72.14% 0.0433 190.69)",
+          "oklch(83.57% 0.0433 190.69)",
+          "oklch(95.00% 0.0433 190.69)"
+        ]
+      },
+      "bright": {
+        "role": "primary",
+        "displayName": "bright",
+        "tonalRamp": [
+          "oklch(15.00% 0.0638 185.66)",
+          "oklch(26.43% 0.0638 185.66)",
+          "oklch(37.86% 0.0638 185.66)",
+          "oklch(49.29% 0.0638 185.66)",
+          "oklch(60.71% 0.0638 185.66)",
+          "oklch(72.14% 0.0638 185.66)",
+          "oklch(83.57% 0.0638 185.66)",
+          "oklch(95.00% 0.0638 185.66)"
+        ]
+      },
+      "soft": {
+        "role": "primary",
+        "displayName": "soft",
+        "tonalRamp": [
+          "oklch(15.00% 0.0094 171.79)",
+          "oklch(26.43% 0.0094 171.79)",
+          "oklch(37.86% 0.0094 171.79)",
+          "oklch(49.29% 0.0094 171.79)",
+          "oklch(60.71% 0.0094 171.79)",
+          "oklch(72.14% 0.0094 171.79)",
+          "oklch(83.57% 0.0094 171.79)",
+          "oklch(95.00% 0.0094 171.79)"
+        ]
+      },
+      "greenBorder": {
+        "role": "primary",
+        "displayName": "greenBorder",
+        "tonalRamp": [
+          "oklch(15.00% 0.0206 169.27)",
+          "oklch(26.43% 0.0206 169.27)",
+          "oklch(37.86% 0.0206 169.27)",
+          "oklch(49.29% 0.0206 169.27)",
+          "oklch(60.71% 0.0206 169.27)",
+          "oklch(72.14% 0.0206 169.27)",
+          "oklch(83.57% 0.0206 169.27)",
+          "oklch(95.00% 0.0206 169.27)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "background",
+        "tonalRamp": [
+          "oklch(15.00% 0.0034 247.86)",
+          "oklch(26.43% 0.0034 247.86)",
+          "oklch(37.86% 0.0034 247.86)",
+          "oklch(49.29% 0.0034 247.86)",
+          "oklch(60.71% 0.0034 247.86)",
+          "oklch(72.14% 0.0034 247.86)",
+          "oklch(83.57% 0.0034 247.86)",
+          "oklch(95.00% 0.0034 247.86)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 89.88)",
+          "oklch(26.43% 0.0000 89.88)",
+          "oklch(37.86% 0.0000 89.88)",
+          "oklch(49.29% 0.0000 89.88)",
+          "oklch(60.71% 0.0000 89.88)",
+          "oklch(72.14% 0.0000 89.88)",
+          "oklch(83.57% 0.0000 89.88)",
+          "oklch(95.00% 0.0000 89.88)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "text",
+        "tonalRamp": [
+          "oklch(15.00% 0.0266 211.50)",
+          "oklch(26.43% 0.0266 211.50)",
+          "oklch(37.86% 0.0266 211.50)",
+          "oklch(49.29% 0.0266 211.50)",
+          "oklch(60.71% 0.0266 211.50)",
+          "oklch(72.14% 0.0266 211.50)",
+          "oklch(83.57% 0.0266 211.50)",
+          "oklch(95.00% 0.0266 211.50)"
+        ]
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "secondary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0191 215.58)",
+          "oklch(26.43% 0.0191 215.58)",
+          "oklch(37.86% 0.0191 215.58)",
+          "oklch(49.29% 0.0191 215.58)",
+          "oklch(60.71% 0.0191 215.58)",
+          "oklch(72.14% 0.0191 215.58)",
+          "oklch(83.57% 0.0191 215.58)",
+          "oklch(95.00% 0.0191 215.58)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.0185 215.54)",
+          "oklch(26.43% 0.0185 215.54)",
+          "oklch(37.86% 0.0185 215.54)",
+          "oklch(49.29% 0.0185 215.54)",
+          "oklch(60.71% 0.0185 215.54)",
+          "oklch(72.14% 0.0185 215.54)",
+          "oklch(83.57% 0.0185 215.54)",
+          "oklch(95.00% 0.0185 215.54)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "border",
+        "tonalRamp": [
+          "oklch(15.00% 0.0077 228.86)",
+          "oklch(26.43% 0.0077 228.86)",
+          "oklch(37.86% 0.0077 228.86)",
+          "oklch(49.29% 0.0077 228.86)",
+          "oklch(60.71% 0.0077 228.86)",
+          "oklch(72.14% 0.0077 228.86)",
+          "oklch(83.57% 0.0077 228.86)",
+          "oklch(95.00% 0.0077 228.86)"
+        ]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "subtle",
+        "tonalRamp": [
+          "oklch(15.00% 0.0045 214.33)",
+          "oklch(26.43% 0.0045 214.33)",
+          "oklch(37.86% 0.0045 214.33)",
+          "oklch(49.29% 0.0045 214.33)",
+          "oklch(60.71% 0.0045 214.33)",
+          "oklch(72.14% 0.0045 214.33)",
+          "oklch(83.57% 0.0045 214.33)",
+          "oklch(95.00% 0.0045 214.33)"
+        ]
+      },
+      "sidebar": {
+        "role": "neutral",
+        "displayName": "sidebar",
+        "tonalRamp": [
+          "oklch(15.00% 0.0445 197.52)",
+          "oklch(26.43% 0.0445 197.52)",
+          "oklch(37.86% 0.0445 197.52)",
+          "oklch(49.29% 0.0445 197.52)",
+          "oklch(60.71% 0.0445 197.52)",
+          "oklch(72.14% 0.0445 197.52)",
+          "oklch(83.57% 0.0445 197.52)",
+          "oklch(95.00% 0.0445 197.52)"
+        ]
+      },
+      "sidebarSurface": {
+        "role": "neutral",
+        "displayName": "sidebarSurface",
+        "tonalRamp": [
+          "oklch(15.00% 0.0467 195.36)",
+          "oklch(26.43% 0.0467 195.36)",
+          "oklch(37.86% 0.0467 195.36)",
+          "oklch(49.29% 0.0467 195.36)",
+          "oklch(60.71% 0.0467 195.36)",
+          "oklch(72.14% 0.0467 195.36)",
+          "oklch(83.57% 0.0467 195.36)",
+          "oklch(95.00% 0.0467 195.36)"
+        ]
+      },
+      "sidebarText": {
+        "role": "neutral",
+        "displayName": "sidebarText",
+        "tonalRamp": [
+          "oklch(15.00% 0.0059 170.45)",
+          "oklch(26.43% 0.0059 170.45)",
+          "oklch(37.86% 0.0059 170.45)",
+          "oklch(49.29% 0.0059 170.45)",
+          "oklch(60.71% 0.0059 170.45)",
+          "oklch(72.14% 0.0059 170.45)",
+          "oklch(83.57% 0.0059 170.45)",
+          "oklch(95.00% 0.0059 170.45)"
+        ]
+      },
+      "sidebarMuted": {
+        "role": "neutral",
+        "displayName": "sidebarMuted",
+        "tonalRamp": [
+          "oklch(15.00% 0.0232 186.37)",
+          "oklch(26.43% 0.0232 186.37)",
+          "oklch(37.86% 0.0232 186.37)",
+          "oklch(49.29% 0.0232 186.37)",
+          "oklch(60.71% 0.0232 186.37)",
+          "oklch(72.14% 0.0232 186.37)",
+          "oklch(83.57% 0.0232 186.37)",
+          "oklch(95.00% 0.0232 186.37)"
+        ]
+      },
+      "success": {
+        "role": "neutral",
+        "displayName": "success",
+        "tonalRamp": [
+          "oklch(15.00% 0.0882 164.41)",
+          "oklch(26.43% 0.0882 164.41)",
+          "oklch(37.86% 0.0882 164.41)",
+          "oklch(49.29% 0.0882 164.41)",
+          "oklch(60.71% 0.0882 164.41)",
+          "oklch(72.14% 0.0882 164.41)",
+          "oklch(83.57% 0.0882 164.41)",
+          "oklch(95.00% 0.0882 164.41)"
+        ]
+      },
+      "warning": {
+        "role": "neutral",
+        "displayName": "warning",
+        "tonalRamp": [
+          "oklch(15.00% 0.1102 69.50)",
+          "oklch(26.43% 0.1102 69.50)",
+          "oklch(37.86% 0.1102 69.50)",
+          "oklch(49.29% 0.1102 69.50)",
+          "oklch(60.71% 0.1102 69.50)",
+          "oklch(72.14% 0.1102 69.50)",
+          "oklch(83.57% 0.1102 69.50)",
+          "oklch(95.00% 0.1102 69.50)"
+        ]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "error",
+        "tonalRamp": [
+          "oklch(15.00% 0.1633 24.30)",
+          "oklch(26.43% 0.1633 24.30)",
+          "oklch(37.86% 0.1633 24.30)",
+          "oklch(49.29% 0.1633 24.30)",
+          "oklch(60.71% 0.1633 24.30)",
+          "oklch(72.14% 0.1633 24.30)",
+          "oklch(83.57% 0.1633 24.30)",
+          "oklch(95.00% 0.1633 24.30)"
+        ]
+      },
+      "info": {
+        "role": "neutral",
+        "displayName": "info",
+        "tonalRamp": [
+          "oklch(15.00% 0.0858 243.01)",
+          "oklch(26.43% 0.0858 243.01)",
+          "oklch(37.86% 0.0858 243.01)",
+          "oklch(49.29% 0.0858 243.01)",
+          "oklch(60.71% 0.0858 243.01)",
+          "oklch(72.14% 0.0858 243.01)",
+          "oklch(83.57% 0.0858 243.01)",
+          "oklch(95.00% 0.0858 243.01)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Page title",
+        "purpose": "Responsive application page headings."
+      },
+      "body": {
+        "displayName": "Interface body",
+        "purpose": "Application copy; email output uses portable fonts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "0 24px 80px rgba(23,63,64,.18)",
+        "purpose": "Structural dialog elevation."
+      },
+      {
+        "name": "menu",
+        "value": "0 12px 32px rgba(23,63,64,.12)",
+        "purpose": "Floating menu elevation."
+      },
+      {
+        "name": "email-paper",
+        "value": "0 12px 32px #20343812",
+        "purpose": "Separate email paper from the workbench."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-background",
+        "value": "background-color .16s ease",
+        "purpose": "Button state feedback; suppressed with reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-min",
+        "value": "1700px"
+      },
+      {
+        "name": "inspector-stack-max",
+        "value": "1200px"
+      },
+      {
+        "name": "drawer-max",
+        "value": "899px"
+      },
+      {
+        "name": "mobile-max",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main task action.",
+      "html": "<button class=\"ds-primary\">Save changes</button>",
+      "css": ".ds-primary{background:var(--color-primary,#245c58);color:var(--color-surface,#fff);border:0;border-radius:8px;min-height:42px;padding:6px 18px;font:600 14px Inter,sans-serif;transition:background-color .16s ease}.ds-primary:hover{background:var(--color-dark,#193f3d)}.ds-primary:focus-visible{outline:3px solid #668eae;outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action with a quiet border.",
+      "html": "<button class=\"ds-secondary\">Cancel</button>",
+      "css": ".ds-secondary{background:var(--color-surface,#fff);color:var(--color-text,#203438);border:1px solid var(--color-border,#dfe5e8);border-radius:8px;min-height:42px;padding:6px 18px;font:600 14px Inter,sans-serif}.ds-secondary:hover{background:var(--color-soft,#e8f0ed);border-color:var(--color-greenBorder,#cbdcd5)}.ds-secondary:focus-visible{outline:3px solid #668eae;outline-offset:3px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Visual specimen of the outlined MUI field; runtime validation remains in forms.tsx.",
+      "html": "<label class=\"ds-label\">Template name<input class=\"ds-input\" value=\"Company update\"></label>",
+      "css": ".ds-label{display:grid;gap:7px;color:var(--color-secondary,#627175);font:13px Inter,sans-serif}.ds-input{background:var(--color-surface,#fff);color:var(--color-text,#203438);border:1px solid var(--color-border,#dfe5e8);border-radius:8px;min-height:44px;padding:0 14px;font:14px Inter,sans-serif}.ds-input:hover{border-color:var(--color-text,#203438)}.ds-input:focus-visible{outline:3px solid #668eae;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Active navigation within the teal rail.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-link\" href=\"#templates\" aria-current=\"page\">Templates <span>→</span></a></nav>",
+      "css": ".ds-nav{background:var(--color-sidebar,#173f40);padding:18px}.ds-link{display:flex;justify-content:space-between;padding:13px 14px;border-radius:8px;background:#dcebe2;color:#173f40;text-decoration:none;font:600 13px Inter,sans-serif}.ds-link:hover{background:#e8f0ed}.ds-link:focus-visible{outline:3px solid #668eae;outline-offset:3px}"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Text and color together identify status.",
+      "html": "<span class=\"ds-chip\">● Active</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:6px;background:#ecfdf3;color:#166534;font:600 11.5px Inter,sans-serif}"
+    },
+    {
+      "name": "Work Surface",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat bordered task surface.",
+      "html": "<section class=\"ds-card\"><h2>Campaign details</h2><p>Prepare your next update.</p></section>",
+      "css": ".ds-card{padding:26px;border:1px solid var(--color-border,#dfe5e8);border-radius:12px;background:var(--color-surface,#fff);color:var(--color-text,#203438)}.ds-card h2{margin:0 0 10px;font:700 19px/1.4 Manrope,Inter,sans-serif;letter-spacing:-.02em}.ds-card p{margin:0;color:var(--color-secondary,#627175);font:13px/1.6 Inter,sans-serif}"
+    },
+    {
+      "name": "Selected Email Section",
+      "kind": "custom",
+      "description": "The email canvas selects actual content for inspector editing.",
+      "html": "<button class=\"ds-section\" aria-pressed=\"true\"><strong>A company update</strong><p>News from our team.</p></button>",
+      "css": ".ds-section{display:block;width:100%;padding:22px 28px;border:0;background:#fff;color:#203d3c;text-align:left;outline:2px solid #3b7a6e;outline-offset:-2px;font:15px/1.75 Arial,sans-serif}.ds-section strong{font-size:32px;line-height:1.2}.ds-section p{margin-bottom:0}.ds-section:hover{outline:1px dashed #638c7c;outline-offset:-1px}.ds-section:focus-visible{outline:3px solid #668eae;outline-offset:-3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Correspondence Studio",
+    "overview": "A calm operations workspace opens into a spacious email workbench. Ink teal navigation, cool porcelain surfaces and pale eucalyptus selections give dense campaign information a clear hierarchy. Manrope headings and Inter body text make the interface feel composed and practical.\n\nThe supplied logo remains the identity anchor. `public/brand-logo.jpg` is the exact user asset, unchanged; do not redraw or recolor it. Starter email artwork is composed from HTML and CSS, with muted content-specific colors.",
+    "keyCharacteristics": [
+      "Ink teal navigation and flat bordered work surfaces.",
+      "Manrope headings paired with compact Inter interface text.",
+      "A selectable email canvas with a contextual inspector."
+    ],
+    "rules": [
+      {
+        "name": "The Shared Palette Rule",
+        "body": "Change shared colors in the theme and preserve the CSS variable bridge.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do reuse theme colors through the CSS variable bridge.",
+      "Do preserve the exact supplied logo asset.",
+      "Do retain keyboard focus, reduced-motion and forced-colors treatments.",
+      "Do keep email rendering independent of application web fonts."
+    ],
+    "donts": [
+      "Don't create page-specific replacements for shared form and table behaviors.",
+      "Don't replace existing HTML silently when opening the visual designer.",
+      "Don't claim demo previews verify delivery or rendering in every email client."
+    ]
+  }
+}

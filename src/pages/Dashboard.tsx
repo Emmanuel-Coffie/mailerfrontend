@@ -30,7 +30,7 @@ import {
   StatusChip,
 } from "../components/ui";
 
-const chartColors = ["#0E7A4B", "#708078", "#D98C10", "#A1AEA7"];
+const chartColors = ["#387b6f", "#899caa", "#b39363", "#a298b5"];
 
 function DashboardMetric({
   title,
@@ -61,8 +61,8 @@ function DashboardMetric({
               display: "grid",
               placeItems: "center",
               borderRadius: 2.5,
-              bgcolor: "#EAF8F0",
-              color: "#0E7A4B",
+              bgcolor: "#eef3f1",
+              color: "#387b6f",
               "& svg": { fontSize: 18 },
             }}
           >
@@ -132,45 +132,40 @@ export function Dashboard() {
         ) : null
       ) : (
         <>
-          <div className="dashboard-executive-strip">
-            <div className="exec-title">
-              <span className="exec-tag">GreenHaul Hub</span>
-              <Typography sx={{ fontWeight: 700, fontSize: 14.5, color: "#fff" }}>
-                Enterprise Campaign Delivery & Audience Workspace
-              </Typography>
+          <section className="dashboard-welcome">
+            <div>
+              <h2>Make every conversation count.</h2>
+              <p>
+                Bring your audience closer with thoughtful messages, beautifully
+                designed and ready to send.
+              </p>
+              <div className="actions">
+                <MuiButton
+                  component={Link}
+                  to="/templates/create"
+                  endIcon={<ArrowForwardOutlined />}
+                >
+                  Design an email
+                </MuiButton>
+                <MuiButton
+                  component={Link}
+                  to="/contacts/import"
+                  variant="text"
+                >
+                  Import contacts
+                </MuiButton>
+              </div>
             </div>
-            <div className="exec-links">
-              <MuiButton
-                component={Link}
-                to="/contacts/import"
-                size="small"
-                variant="outlined"
-                sx={{
-                  color: "#95e8ba",
-                  borderColor: "rgba(149, 232, 186, 0.4)",
-                  fontSize: 12,
-                  "&:hover": { borderColor: "#95e8ba", bgcolor: "rgba(149, 232, 186, 0.08)" },
-                }}
-              >
-                Import Contacts
-              </MuiButton>
-              <MuiButton
-                component={Link}
-                to="/templates"
-                size="small"
-                variant="outlined"
-                sx={{
-                  color: "#95e8ba",
-                  borderColor: "rgba(149, 232, 186, 0.4)",
-                  fontSize: 12,
-                  "&:hover": { borderColor: "#95e8ba", bgcolor: "rgba(149, 232, 186, 0.08)" },
-                }}
-              >
-                Templates
-              </MuiButton>
+            <div className="welcome-note" aria-hidden="true">
+              <MarkEmailReadOutlined fontSize="small" />
+              <span>FROM GREENHAUL, WITH PURPOSE</span>
+              <strong>
+                A little more personal.
+                <br />A lot more possibility.
+              </strong>
+              <p>The next great connection starts with a thoughtful hello.</p>
             </div>
-          </div>
-
+          </section>
           <div className="grid grid-4">
             <DashboardMetric
               title="Total contacts"
@@ -253,6 +248,7 @@ export function Dashboard() {
                           }}
                         />
                         <Bar
+                          isAnimationActive={false}
                           dataKey="recipients"
                           name="Recipients"
                           fill="#D5E4DC"
@@ -260,9 +256,10 @@ export function Dashboard() {
                           maxBarSize={42}
                         />
                         <Bar
+                          isAnimationActive={false}
                           dataKey="delivered"
                           name="Delivered"
-                          fill="#0E7A4B"
+                          fill="#387b6f"
                           radius={[5, 5, 0, 0]}
                           maxBarSize={42}
                         />
@@ -307,6 +304,7 @@ export function Dashboard() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
+                      isAnimationActive={false}
                       data={audienceData}
                       dataKey="value"
                       nameKey="name"

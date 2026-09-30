@@ -12,12 +12,14 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "format": "prettier --write src",
-    "format:check": "prettier --check src"
+    "format:check": "prettier --check src",
+    "test:frontend": "playwright test -c playwright.frontend.config.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/inter": "^5.2.0",
+    "@fontsource/manrope": "^5.3.0",
     "@hookform/resolvers": "^5.2.0",
     "@mui/icons-material": "^7.3.0",
     "@mui/material": "^7.3.0",

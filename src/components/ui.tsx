@@ -74,12 +74,12 @@ export function PageHeading({
       <div className="page-title-group">
         <div className="page-title-row">
           <span className="page-title-accent" />
-          <Typography variant="h1" className="page-title-text">{title}</Typography>
+          <Typography variant="h1" className="page-title-text">
+            {title}
+          </Typography>
         </div>
         {description && (
-          <Typography className="page-title-sub">
-            {description}
-          </Typography>
+          <Typography className="page-title-sub">{description}</Typography>
         )}
       </div>
       <div className="actions">{actions}</div>
@@ -255,11 +255,22 @@ export function MetricSkeleton() {
         gap: 1.5,
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Skeleton variant="text" width="45%" height={22} />
         <Skeleton variant="circular" width={28} height={28} />
       </Box>
-      <Skeleton variant="rectangular" width="40%" height={38} sx={{ borderRadius: 1.5 }} />
+      <Skeleton
+        variant="rectangular"
+        width="40%"
+        height={38}
+        sx={{ borderRadius: 1.5 }}
+      />
       <Skeleton variant="text" width="65%" height={18} />
     </Box>
   );
@@ -267,7 +278,11 @@ export function MetricSkeleton() {
 
 export function DashboardSkeleton() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3.2 }} aria-label="Loading dashboard" aria-busy="true">
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: 3.2 }}
+      aria-label="Loading dashboard"
+      aria-busy="true"
+    >
       {/* Executive Banner */}
       <Skeleton
         variant="rectangular"
@@ -293,21 +308,52 @@ export function DashboardSkeleton() {
           className="panel"
           sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Skeleton variant="text" width="40%" height={28} />
-            <Skeleton variant="rectangular" width={90} height={32} sx={{ borderRadius: 2 }} />
+            <Skeleton
+              variant="rectangular"
+              width={90}
+              height={32}
+              sx={{ borderRadius: 2 }}
+            />
           </Box>
-          <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 2 }} />
+          <Skeleton
+            variant="rectangular"
+            height={250}
+            sx={{ borderRadius: 2 }}
+          />
         </Box>
         <Box
           className="panel"
           sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
         >
           <Skeleton variant="text" width="55%" height={28} />
-          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
-          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
-          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
-          <Skeleton variant="rectangular" height={48} sx={{ borderRadius: 2 }} />
+          <Skeleton
+            variant="rectangular"
+            height={48}
+            sx={{ borderRadius: 2 }}
+          />
+          <Skeleton
+            variant="rectangular"
+            height={48}
+            sx={{ borderRadius: 2 }}
+          />
+          <Skeleton
+            variant="rectangular"
+            height={48}
+            sx={{ borderRadius: 2 }}
+          />
+          <Skeleton
+            variant="rectangular"
+            height={48}
+            sx={{ borderRadius: 2 }}
+          />
         </Box>
       </Box>
       {/* Table Skeleton */}
@@ -371,7 +417,9 @@ export function EmptyState({
           {features.map((feat, idx) => (
             <div key={idx} className="empty-feature-card">
               <div className="empty-feature-header">
-                {feat.icon && <div className="empty-feature-icon">{feat.icon}</div>}
+                {feat.icon && (
+                  <div className="empty-feature-icon">{feat.icon}</div>
+                )}
                 <div className="empty-feature-title">{feat.title}</div>
               </div>
               <div className="empty-feature-desc">{feat.description}</div>
@@ -682,10 +730,21 @@ export function Pager({
   );
 }
 export function EmailPreview({ html, text }: { html: string; text?: string }) {
-  const policy =
-    "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; img-src data:;\">";
+  const [images, setImages] = useState(false);
+  const policy = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:${images ? " https:" : ""};">`;
   return (
     <>
+      {/<img\s/i.test(html) && (
+        <MuiButton
+          type="button"
+          variant="text"
+          size="small"
+          onClick={() => setImages(!images)}
+          sx={{ mb: 1 }}
+        >
+          {images ? "Hide external images" : "Load external images"}
+        </MuiButton>
+      )}
       {html ? (
         <iframe
           title="Email content preview"
