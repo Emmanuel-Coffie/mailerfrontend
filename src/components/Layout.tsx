@@ -54,7 +54,7 @@ interface NavSection {
 
 const navigationSections: NavSection[] = [
   {
-    title: "Campaigns",
+    title: "Workspace",
     items: [
       { name: "Dashboard", path: "/dashboard", Icon: DashboardOutlined },
       { name: "Campaigns", path: "/campaigns", Icon: SendOutlined },
@@ -108,6 +108,13 @@ export function Layout() {
   const displayEmail = username ? `${username}@greenhaul.io` : "stanelorm@gmail.com";
   const initials = (username || "BK").slice(0, 2).toUpperCase();
 
+  const isItemActive = (path: string) => {
+    if (path === "/dashboard") {
+      return location.pathname === "/dashboard" || location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
+
   const renderNavLinks = (mobile = false) => (
     <nav aria-label="Main navigation" className="sidebar-nav">
       {navigationSections.map((section, idx) => (
@@ -118,38 +125,42 @@ export function Layout() {
             <div className="sidebar-label">{section.title}</div>
           )}
           <div className="sidebar-items-list">
-            {section.items.map(({ name, path, Icon }) => (
-              <Tooltip
-                key={path}
-                title={!mobile && collapsed ? name : ""}
-                placement="right"
-                arrow
-              >
-                <NavLink
-                  aria-label={name}
-                  className={({ isActive }) =>
-                    `nav-link${isActive ? " active" : ""}`
-                  }
-                  to={path}
-                  onClick={() => setOpen(false)}
+            {section.items.map(({ name, path, Icon }) => {
+              const active = isItemActive(path);
+              return (
+                <Tooltip
+                  key={path}
+                  title={!mobile && collapsed ? name : ""}
+                  placement="right"
+                  arrow
                 >
-                  <span className="active-indicator-bar" />
-                  <div className="nav-icon-wrap">
-                    <Icon fontSize="small" />
-                    <span className="active-dot" />
-                  </div>
-                  {(mobile || !collapsed) && (
-                    <>
-                      <span className="nav-label-text">{name}</span>
-                      <EastOutlined
-                        className="nav-arrow"
-                        sx={{ fontSize: 13 }}
-                      />
-                    </>
-                  )}
-                </NavLink>
-              </Tooltip>
-            ))}
+                  <NavLink
+                    aria-label={name}
+                    className={({ isActive }) =>
+                      `nav-link${isActive || active ? " active" : ""}`
+                    }
+                    to={path}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="active-indicator-bar" />
+                    <div className="nav-icon-wrap">
+                      <Icon fontSize="small" />
+                      <span className="active-dot" />
+                    </div>
+                    {(mobile || !collapsed) && (
+                      <>
+                        <span className="nav-label-text">{name}</span>
+                        <EastOutlined
+                          className="nav-arrow"
+                          sx={{ fontSize: 13 }}
+                        />
+                      </>
+                    )}
+                    <span className="active-underline" />
+                  </NavLink>
+                </Tooltip>
+              );
+            })}
           </div>
         </div>
       ))}
@@ -175,9 +186,6 @@ export function Layout() {
       {/* Collapse Toggle Bar at the very TOP of the sidebar */}
       {!mobile && (
         <div className={`sidebar-header-bar ${collapsed ? "collapsed" : ""}`}>
-          {!collapsed && (
-            <span className="sidebar-section-title">Navigation</span>
-          )}
           <IconButton
             size="small"
             className="sidebar-collapse-btn"
@@ -322,7 +330,7 @@ export function Layout() {
             startIcon={<AddOutlined />}
             className="topbar-create"
           >
-            New campaign
+            <span className="topbar-btn-label">New campaign</span>
           </Button>
 
           <Tooltip title={`${displayName} · Account`}>
@@ -378,7 +386,17 @@ export function Layout() {
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
-        slotProps={{ paper: { sx: { width: 280, maxWidth: "90vw" } } }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 290,
+              maxWidth: "88vw",
+              bgcolor: "#173f40",
+              color: "#f2f7f3",
+              overflow: "hidden",
+            },
+          },
+        }}
       >
         {sidebar(true)}
       </Drawer>
