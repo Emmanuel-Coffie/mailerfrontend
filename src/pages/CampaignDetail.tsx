@@ -150,6 +150,7 @@ export function CampaignDetail() {
     <>
       <PageHeading
         title={c?.name || "Campaign detail"}
+        kicker="Campaign Overview"
         description={c?.subject}
         actions={
           <>

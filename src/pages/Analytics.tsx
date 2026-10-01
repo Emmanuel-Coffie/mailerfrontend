@@ -24,7 +24,8 @@ export function Analytics() {
     <>
       <PageHeading
         title="Campaign analytics"
-        description="A closer look at delivery and engagement."
+        kicker="Performance Telemetry"
+        description="Inspect real-time delivery telemetry, open rate tracking, recipient click activity, and bounce diagnostics."
         actions={
           <MuiButton
             component={Link}

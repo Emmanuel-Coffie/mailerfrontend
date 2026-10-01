@@ -61,29 +61,34 @@ export function PageHeading({
   title,
   description,
   actions,
+  kicker,
 }: {
   title: string;
   description?: string;
   actions?: ReactNode;
+  kicker?: string;
 }) {
   useEffect(() => {
     document.title = `${title} · GreenHaul Solutions`;
   }, [title]);
   return (
-    <div className="page-heading">
-      <div className="page-title-group">
-        <div className="page-title-kicker">Campaign Workspace</div>
+    <header className="page-heading">
+      <div className="page-heading-content">
+        <div className="page-title-eyebrow">
+          <span className="page-title-dot" aria-hidden="true" />
+          <span className="page-title-kicker">
+            {kicker || "Campaign Workspace"}
+          </span>
+        </div>
         <div className="page-title-row">
           <Typography variant="h1" className="page-title-text">
             {title}
           </Typography>
         </div>
-        {description && (
-          <Typography className="page-title-sub">{description}</Typography>
-        )}
+        {description && <p className="page-title-sub">{description}</p>}
       </div>
-      {actions && <div className="actions">{actions}</div>}
-    </div>
+      {actions && <div className="page-heading-actions actions">{actions}</div>}
+    </header>
   );
 }
 export function StatusChip({ status }: { status: string }) {

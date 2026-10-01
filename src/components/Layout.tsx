@@ -74,10 +74,10 @@ const layoutStyles = String.raw`
     --gh-surface: #ffffff;
     --gh-text: #18251f;
     --gh-muted: #74827b;
-    --gh-border: #e6ece9;
-    --gh-sidebar-expanded: 220px;
-    --gh-sidebar-collapsed: 76px;
-    --gh-topbar-height: 68px;
+    --gh-border: #e2e8e5;
+    --gh-sidebar-expanded: 236px;
+    --gh-sidebar-collapsed: 72px;
+    --gh-topbar-height: 66px;
   }
 
   .gh-app-shell {
@@ -103,13 +103,152 @@ const layoutStyles = String.raw`
     top: 16px;
   }
 
+  /* 1. TOP NAV COVERS FULL WIDTH */
+  .gh-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--gh-topbar-height);
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--gh-border);
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 3px rgba(18, 61, 51, 0.04);
+  }
+
+  .gh-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .gh-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .gh-topbar-toggle-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 9px !important;
+    border: 1px solid #d8e2de !important;
+    color: #173d33 !important;
+    background: #f7faf8 !important;
+    transition: all 160ms ease !important;
+    flex-shrink: 0;
+  }
+
+  .gh-topbar-toggle-btn:hover {
+    background: #eef6f2 !important;
+    border-color: #178a64 !important;
+    color: #178a64 !important;
+    transform: translateY(-1px);
+  }
+
+  .gh-topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+  }
+
+  .gh-topbar-brand .gh-brand-copy strong {
+    display: block;
+    color: #0d3028;
+    font: 800 17px/1.15 var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  .gh-topbar-brand .gh-brand-copy small {
+    display: block;
+    margin-top: 1px;
+    color: #178a64;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .gh-topbar-divider {
+    width: 1px;
+    height: 22px;
+    background: #e2e8e5;
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .gh-breadcrumb {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #72847c;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
+  .gh-breadcrumb-workspace {
+    color: #72847c;
+  }
+
+  .gh-breadcrumb-separator {
+    color: #b5c3bc;
+  }
+
+  .gh-breadcrumb-current {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #102d24;
+    font-weight: 700;
+  }
+
+  .gh-create-button.MuiButton-root {
+    min-height: 40px;
+    border-radius: 10px;
+    padding-inline: 15px;
+    background: #176d52;
+    box-shadow: 0 6px 16px rgba(23,109,82,.15);
+    font-size: 12.5px;
+    font-weight: 760;
+    text-transform: none;
+  }
+
+  .gh-create-button.MuiButton-root:hover {
+    background: #135f47;
+    box-shadow: 0 7px 18px rgba(23,109,82,.20);
+  }
+
+  .gh-create-button.MuiButton-root:active {
+    transform: translateY(1px);
+  }
+
+  .gh-top-avatar-button.MuiIconButton-root {
+    padding: 2px;
+  }
+
+  /* 2. SIDE NAV STARTS UNDER TOPBAR */
   .gh-desktop-sidebar {
     position: fixed;
-    inset: 0 auto 0 0;
+    top: var(--gh-topbar-height);
+    left: 0;
+    bottom: 0;
     width: var(--gh-sidebar-expanded);
+    height: calc(100dvh - var(--gh-topbar-height));
     z-index: 1200;
     background: linear-gradient(180deg, var(--gh-deep) 0%, var(--gh-deeper) 100%);
-    transition: width 180ms ease;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .gh-app-shell.gh-is-collapsed .gh-desktop-sidebar {
@@ -117,87 +256,91 @@ const layoutStyles = String.raw`
   }
 
   .gh-sidebar {
-    min-height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 17px 13px 14px;
+    padding: 14px 12px;
     color: #eef8f3;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .gh-sidebar.gh-collapsed {
-    padding-inline: 10px;
+    padding-inline: 8px;
   }
 
-  .gh-sidebar-brand-row {
-    min-height: 52px;
+  .gh-sidebar-header-bar {
+    min-height: 42px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 0 8px 14px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
 
-  .gh-sidebar.gh-collapsed .gh-sidebar-brand-row {
-    justify-content: center;
-    padding-inline: 0;
-  }
-
-  .gh-brand {
-    display: inline-flex;
+  .gh-sidebar-expanded-header {
+    width: 100%;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    min-width: 0;
-    color: inherit;
-    text-decoration: none;
+    justify-content: space-between;
+    padding: 0 4px;
   }
 
-  .gh-brand-copy {
-    min-width: 0;
-  }
-
-  .gh-brand-copy strong {
-    display: block;
-    color: #ffffff;
-    font-size: 14px;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-  }
-
-  .gh-brand-copy small {
-    display: block;
-    margin-top: 3px;
-    color: #a6c5b9;
+  .gh-sidebar-section-title {
     font-size: 10px;
-    line-height: 1.1;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #79a193;
   }
 
   .gh-sidebar-collapse {
-    margin-left: auto !important;
-    width: 30px !important;
-    height: 30px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    width: 28px !important;
+    height: 28px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #aac8bd !important;
-    background: rgba(255,255,255,.04) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    transition: all 160ms ease !important;
   }
 
   .gh-sidebar-collapse:hover {
     color: #ffffff !important;
-    background: rgba(255,255,255,.08) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
   }
 
-  .gh-sidebar.gh-collapsed .gh-sidebar-collapse {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0 !important;
+  /* HIGH-VISIBILITY EXPAND BUTTON ON COLLAPSED RAIL */
+  .gh-sidebar-expand-rail-btn {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(59, 198, 146, 0.5) !important;
+    color: #3bc692 !important;
+    background: rgba(59, 198, 146, 0.12) !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 180ms ease !important;
+    box-shadow: 0 4px 14px rgba(18, 61, 51, 0.3) !important;
+  }
+
+  .gh-sidebar-expand-rail-btn:hover {
+    color: #ffffff !important;
+    background: #178a64 !important;
+    border-color: #3bc692 !important;
+    transform: scale(1.06) !important;
+    box-shadow: 0 6px 18px rgba(59, 198, 146, 0.4) !important;
   }
 
   .gh-sidebar-nav {
-    margin-top: 2px;
+    margin-top: 4px;
+    flex: 1;
   }
 
   .gh-sidebar-section {
-    margin-top: 9px;
+    margin-top: 10px;
   }
 
   .gh-sidebar-section:first-child {
@@ -205,19 +348,19 @@ const layoutStyles = String.raw`
   }
 
   .gh-sidebar-label {
-    padding: 10px 10px 7px;
+    padding: 8px 10px 6px;
     color: #78a395;
     font-size: 9px;
     line-height: 1;
-    font-weight: 700;
+    font-weight: 750;
     letter-spacing: .14em;
     text-transform: uppercase;
   }
 
   .gh-sidebar-divider {
     height: 1px;
-    margin: 12px 10px 8px;
-    background: rgba(255,255,255,.08);
+    margin: 10px 8px 6px;
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .gh-sidebar-items {
@@ -235,14 +378,14 @@ const layoutStyles = String.raw`
     border-radius: 11px;
     color: #c6dcd3;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 540;
     transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
   }
 
   .gh-nav-link:hover {
     color: #ffffff;
-    background: rgba(255,255,255,.055);
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .gh-nav-link:active {
@@ -251,7 +394,7 @@ const layoutStyles = String.raw`
 
   .gh-nav-link.gh-active {
     color: #ffffff;
-    background: rgba(255,255,255,.10);
+    background: rgba(255, 255, 255, 0.11);
     font-weight: 700;
   }
 
@@ -261,7 +404,7 @@ const layoutStyles = String.raw`
     left: 0;
     top: 10px;
     bottom: 10px;
-    width: 3px;
+    width: 3.5px;
     border-radius: 999px;
     background: var(--gh-accent-bright);
   }
@@ -294,8 +437,7 @@ const layoutStyles = String.raw`
 
   .gh-sidebar.gh-collapsed .gh-sidebar-label,
   .gh-sidebar.gh-collapsed .gh-nav-text,
-  .gh-sidebar.gh-collapsed .gh-nav-chevron,
-  .gh-sidebar.gh-collapsed .gh-brand-copy {
+  .gh-sidebar.gh-collapsed .gh-nav-chevron {
     display: none;
   }
 
@@ -310,13 +452,13 @@ const layoutStyles = String.raw`
 
   .gh-sidebar-user {
     margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,.09);
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
   }
 
   .gh-sidebar-user-button {
     width: 100%;
-    min-height: 54px;
+    min-height: 52px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -331,7 +473,7 @@ const layoutStyles = String.raw`
   }
 
   .gh-sidebar-user-button:hover {
-    background: rgba(255,255,255,.055);
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .gh-sidebar-user-info {
@@ -343,14 +485,14 @@ const layoutStyles = String.raw`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 700;
   }
 
   .gh-sidebar-user-role {
     margin-top: 3px;
     color: #93b4a8;
-    font-size: 9px;
+    font-size: 9.5px;
   }
 
   .gh-sidebar.gh-collapsed .gh-sidebar-user-button {
@@ -363,102 +505,28 @@ const layoutStyles = String.raw`
     display: none;
   }
 
+  /* 3. WORKSPACE CONTAINER POSITIONING */
   .gh-workspace {
-    min-height: 100dvh;
+    min-height: calc(100dvh - var(--gh-topbar-height));
+    margin-top: var(--gh-topbar-height);
     margin-left: var(--gh-sidebar-expanded);
-    transition: margin-left 180ms ease;
+    transition: margin-left 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .gh-app-shell.gh-is-collapsed .gh-workspace {
     margin-left: var(--gh-sidebar-collapsed);
   }
 
-  .gh-topbar {
-    position: sticky;
-    top: 0;
-    z-index: 1100;
-    height: var(--gh-topbar-height);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 0 24px;
-    border-bottom: 1px solid var(--gh-border);
-    background: rgba(255,255,255,.94);
-    backdrop-filter: blur(16px);
-  }
-
-  .gh-topbar-left,
-  .gh-topbar-right {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .gh-topbar-left {
-    gap: 11px;
-  }
-
-  .gh-topbar-right {
-    gap: 10px;
-  }
-
-  .gh-mobile-menu,
-  .gh-mobile-brand {
-    display: none !important;
-  }
-
-  .gh-breadcrumb {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #89968f;
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .gh-breadcrumb-separator {
-    color: #c2cbc6;
-  }
-
-  .gh-breadcrumb-current {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #1e2b25;
-    font-weight: 720;
-  }
-
-  .gh-create-button.MuiButton-root {
-    min-height: 40px;
-    border-radius: 10px;
-    padding-inline: 15px;
-    background: #176d52;
-    box-shadow: 0 6px 16px rgba(23,109,82,.15);
-    font-size: 12px;
-    font-weight: 760;
-    text-transform: none;
-  }
-
-  .gh-create-button.MuiButton-root:hover {
-    background: #135f47;
-    box-shadow: 0 7px 18px rgba(23,109,82,.20);
-  }
-
-  .gh-create-button.MuiButton-root:active {
-    transform: translateY(1px);
-  }
-
-  .gh-top-avatar-button.MuiIconButton-root {
-    padding: 2px;
-  }
-
   .gh-page {
     min-width: 0;
     max-width: 1480px;
     margin: 0 auto;
-    padding: 28px 30px 40px;
+    padding: 30px 32px 48px;
     outline: none;
+  }
+
+  .gh-mobile-menu {
+    display: none !important;
   }
 
   .gh-mobile-bottom-nav {
@@ -552,25 +620,22 @@ const layoutStyles = String.raw`
       display: none;
     }
 
+    .gh-topbar-toggle-btn {
+      display: none !important;
+    }
+
     .gh-workspace,
     .gh-app-shell.gh-is-collapsed .gh-workspace {
-      margin-left: 0;
+      margin-left: 0 !important;
     }
 
-    .gh-mobile-menu,
-    .gh-mobile-brand {
+    .gh-mobile-menu {
       display: inline-flex !important;
-    }
-
-    .gh-mobile-brand {
-      align-items: center;
-      color: var(--gh-deep);
-      text-decoration: none;
     }
 
     .gh-breadcrumb-workspace,
     .gh-breadcrumb-separator {
-      display: none;
+      display: none !important;
     }
 
     .gh-topbar {
@@ -578,7 +643,7 @@ const layoutStyles = String.raw`
     }
 
     .gh-page {
-      padding: 22px 16px 92px;
+      padding: 20px 16px 92px;
     }
 
     .gh-mobile-bottom-nav {
@@ -618,10 +683,15 @@ const layoutStyles = String.raw`
     }
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 540px) {
     .gh-topbar {
-      height: 62px;
+      height: 60px;
       gap: 8px;
+      padding: 0 10px;
+    }
+
+    .gh-topbar-brand .gh-brand-copy small {
+      display: none;
     }
 
     .gh-breadcrumb {
@@ -629,8 +699,8 @@ const layoutStyles = String.raw`
     }
 
     .gh-create-button.MuiButton-root {
-      min-width: 40px;
-      width: 40px;
+      min-width: 38px;
+      width: 38px;
       padding: 0;
     }
 
@@ -659,10 +729,10 @@ const layoutStyles = String.raw`
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <span className="gh-brand">
-      <GreenHaulLogo size={compact ? 31 : 36} />
+    <span className="gh-brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+      <GreenHaulLogo size={compact ? 30 : 34} />
       {!compact && (
-        <span className="gh-brand-copy">
+        <span className="gh-brand-copy" style={{ minWidth: 0 }}>
           <strong>GreenHaul</strong>
           <small>Mailer Workspace</small>
         </span>
@@ -805,39 +875,51 @@ export function Layout() {
 
   const sidebar = (mobile = false) => (
     <div className={`gh-sidebar${!mobile && collapsed ? " gh-collapsed" : ""}`}>
-      <div className="gh-sidebar-brand-row">
-        <Link
-          to="/dashboard"
-          aria-label="GreenHaul Mailer dashboard"
-          onClick={() => setOpen(false)}
-          style={{ textDecoration: "none" }}
-        >
-          <Brand />
-        </Link>
-
+      {/* Sidebar Top Header & Expand / Collapse Controls */}
+      <div className="gh-sidebar-header-bar">
         {mobile ? (
-          <IconButton
-            onClick={() => setOpen(false)}
-            aria-label="Close navigation"
-            sx={{ ml: "auto", color: "#d8e9e2" }}
-          >
-            <CloseOutlined />
-          </IconButton>
-        ) : (
-          <Tooltip title={collapsed ? "Expand sidebar" : "Collapse sidebar"} arrow>
-            <IconButton
-              className="gh-sidebar-collapse"
-              size="small"
-              onClick={toggleSidebar}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          <>
+            <Link
+              to="/dashboard"
+              aria-label="GreenHaul Mailer dashboard"
+              onClick={() => setOpen(false)}
+              style={{ textDecoration: "none" }}
             >
-              {collapsed ? (
-                <EastOutlined sx={{ fontSize: 15 }} />
-              ) : (
-                <WestOutlined sx={{ fontSize: 15 }} />
-              )}
+              <Brand />
+            </Link>
+            <IconButton
+              onClick={() => setOpen(false)}
+              aria-label="Close navigation"
+              sx={{ ml: "auto", color: "#d8e9e2" }}
+            >
+              <CloseOutlined />
+            </IconButton>
+          </>
+        ) : collapsed ? (
+          <Tooltip title="Expand sidebar" placement="right" arrow>
+            <IconButton
+              className="gh-sidebar-expand-rail-btn"
+              onClick={toggleSidebar}
+              aria-label="Expand sidebar"
+              size="small"
+            >
+              <EastOutlined sx={{ fontSize: 18 }} />
             </IconButton>
           </Tooltip>
+        ) : (
+          <div className="gh-sidebar-expanded-header">
+            <span className="gh-sidebar-section-title">Workspace Directory</span>
+            <Tooltip title="Collapse sidebar" arrow>
+              <IconButton
+                className="gh-sidebar-collapse"
+                size="small"
+                onClick={toggleSidebar}
+                aria-label="Collapse sidebar"
+              >
+                <WestOutlined sx={{ fontSize: 15 }} />
+              </IconButton>
+            </Tooltip>
+          </div>
         )}
       </div>
 
@@ -852,7 +934,7 @@ export function Layout() {
               onClick={openAccountMenu}
               aria-label="User account menu"
             >
-              {userAvatar(38, "#0f332b")}
+              {userAvatar(36, "#0f332b")}
             </button>
           </Tooltip>
         ) : (
@@ -862,7 +944,7 @@ export function Layout() {
             onClick={openAccountMenu}
             aria-label="User account menu"
           >
-            {userAvatar(38, "#0f332b")}
+            {userAvatar(36, "#0f332b")}
             <div className="gh-sidebar-user-info">
               <div className="gh-sidebar-user-name">{displayName}</div>
               <div className="gh-sidebar-user-role">Campaign Lead</div>
@@ -885,10 +967,90 @@ export function Layout() {
         Skip to content
       </a>
 
+      {/* 1. TOP NAV COVERS FULL WIDTH */}
+      <header className="gh-topbar" aria-label="Top navigation">
+        <div className="gh-topbar-left">
+          {/* Mobile hamburger menu */}
+          <IconButton
+            className="gh-mobile-menu"
+            aria-label="Open navigation"
+            onClick={() => setOpen(true)}
+            size="small"
+          >
+            <MenuOutlined />
+          </IconButton>
+
+          {/* Desktop Sidebar Toggle Button (expand/collapse) */}
+          <Tooltip
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            arrow
+          >
+            <IconButton
+              className="gh-topbar-toggle-btn"
+              onClick={toggleSidebar}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              size="small"
+            >
+              {collapsed ? (
+                <EastOutlined sx={{ fontSize: 18 }} />
+              ) : (
+                <WestOutlined sx={{ fontSize: 18 }} />
+              )}
+            </IconButton>
+          </Tooltip>
+
+          {/* LOGO ON THE TOP BAR INSTEAD */}
+          <Link
+            to="/dashboard"
+            className="gh-topbar-brand"
+            aria-label="GreenHaul Mailer dashboard"
+          >
+            <Brand />
+          </Link>
+
+          <span className="gh-topbar-divider" aria-hidden="true" />
+
+          {/* Breadcrumb current location */}
+          <nav className="gh-breadcrumb" aria-label="Current page breadcrumb">
+            <span className="gh-breadcrumb-workspace">Workspace</span>
+            <span className="gh-breadcrumb-separator">/</span>
+            <span className="gh-breadcrumb-current">{current}</span>
+          </nav>
+        </div>
+
+        <div className="gh-topbar-right">
+          <Button
+            component={Link}
+            to="/campaigns/create"
+            variant="contained"
+            startIcon={<AddOutlined />}
+            className="gh-create-button"
+            disableElevation
+          >
+            <span className="gh-create-button-label">New campaign</span>
+          </Button>
+
+          <Tooltip title={`${displayName} · Account`}>
+            <IconButton
+              className="gh-top-avatar-button"
+              aria-label="User account menu"
+              aria-controls={anchor ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={Boolean(anchor)}
+              onClick={openAccountMenu}
+            >
+              {userAvatar(36, "#ffffff")}
+            </IconButton>
+          </Tooltip>
+        </div>
+      </header>
+
+      {/* 2. SIDE NAV STARTING UNDER TOPBAR */}
       <aside className="gh-desktop-sidebar" aria-label="Sidebar">
         {sidebar()}
       </aside>
 
+      {/* Mobile Drawer */}
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
@@ -907,65 +1069,14 @@ export function Layout() {
         {sidebar(true)}
       </Drawer>
 
+      {/* 3. WORKSPACE VIEWPORT STARTING UNDER TOPBAR */}
       <div className="gh-workspace">
-        <header className="gh-topbar">
-          <div className="gh-topbar-left">
-            <IconButton
-              className="gh-mobile-menu"
-              aria-label="Open navigation"
-              onClick={() => setOpen(true)}
-              size="small"
-            >
-              <MenuOutlined />
-            </IconButton>
-
-            <Link
-              className="gh-mobile-brand"
-              to="/dashboard"
-              aria-label="GreenHaul dashboard"
-            >
-              <Brand compact />
-            </Link>
-
-            <div className="gh-breadcrumb" aria-label="Current page">
-              <span className="gh-breadcrumb-workspace">Workspace</span>
-              <span className="gh-breadcrumb-separator">/</span>
-              <span className="gh-breadcrumb-current">{current}</span>
-            </div>
-          </div>
-
-          <div className="gh-topbar-right">
-            <Button
-              component={Link}
-              to="/campaigns/create"
-              variant="contained"
-              startIcon={<AddOutlined />}
-              className="gh-create-button"
-              disableElevation
-            >
-              <span className="gh-create-button-label">New campaign</span>
-            </Button>
-
-            <Tooltip title={`${displayName} · Account`}>
-              <IconButton
-                className="gh-top-avatar-button"
-                aria-label="User account menu"
-                aria-controls={anchor ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={Boolean(anchor)}
-                onClick={openAccountMenu}
-              >
-                {userAvatar(38, "#ffffff")}
-              </IconButton>
-            </Tooltip>
-          </div>
-        </header>
-
         <main id="main" className="gh-page" tabIndex={-1}>
           <Outlet />
         </main>
       </div>
 
+      {/* User Account Popover Menu */}
       <Menu
         id="account-menu"
         anchorEl={anchor}
@@ -1039,6 +1150,7 @@ export function Layout() {
         </MenuItem>
       </Menu>
 
+      {/* Mobile Bottom Navigation */}
       <nav className="gh-mobile-bottom-nav" aria-label="Mobile navigation">
         {[
           { name: "Dashboard", path: "/dashboard", Icon: DashboardOutlined },

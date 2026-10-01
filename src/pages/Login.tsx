@@ -101,10 +101,11 @@ export function Login() {
         }
 
         .login-premium-shell {
-          min-height: 100dvh;
+          height: 100dvh;
+          max-height: 100dvh;
           width: 100%;
           display: grid;
-          grid-template-columns: minmax(0, 1.34fr) minmax(420px, 0.78fr);
+          grid-template-columns: minmax(0, 1.25fr) minmax(370px, 0.82fr);
           background: #ffffff;
           color: var(--gh-login-text);
           overflow: hidden;
@@ -113,8 +114,10 @@ export function Login() {
         .login-premium-story {
           position: relative;
           isolation: isolate;
+          height: 100%;
+          max-height: 100dvh;
           overflow: hidden;
-          padding: 30px 34px 28px;
+          padding: clamp(16px, 2.2vh, 24px) clamp(20px, 2.5vw, 32px);
           display: flex;
           flex-direction: column;
           color: #ffffff;
@@ -143,7 +146,7 @@ export function Login() {
               rgba(255, 255, 255, 0.033) 1px,
               transparent 1px
             );
-          background-size: 44px 44px;
+          background-size: 38px 38px;
           -webkit-mask-image: linear-gradient(
             to bottom,
             rgba(0, 0, 0, 0.95),
@@ -160,11 +163,11 @@ export function Login() {
           content: "";
           position: absolute;
           z-index: -1;
-          width: 420px;
-          height: 420px;
+          width: 360px;
+          height: 360px;
           border-radius: 50%;
-          right: -205px;
-          bottom: -135px;
+          right: -160px;
+          bottom: -110px;
           background: radial-gradient(
             circle,
             rgba(67, 205, 150, 0.12),
@@ -179,7 +182,7 @@ export function Login() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 16px;
+          gap: 14px;
         }
 
         .login-premium-topline .brand {
@@ -188,138 +191,140 @@ export function Login() {
 
         .login-premium-topline .brand strong {
           color: #ffffff;
+          font-size: 16px;
         }
 
         .login-premium-topline .brand small {
           color: #a9cabc;
+          font-size: 9.5px;
         }
 
         .login-workspace-status {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          min-height: 34px;
-          padding: 0 12px;
+          gap: 7px;
+          min-height: 28px;
+          padding: 0 10px;
           border-radius: 999px;
           border: 1px solid rgba(255, 255, 255, 0.12);
           background: rgba(255, 255, 255, 0.045);
           color: #c3dbd1;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 600;
           letter-spacing: 0.01em;
           backdrop-filter: blur(12px);
         }
 
         .login-workspace-status-dot {
-          width: 7px;
-          height: 7px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           background: #4fd199;
-          box-shadow: 0 0 0 4px rgba(79, 209, 153, 0.1);
+          box-shadow: 0 0 0 3px rgba(79, 209, 153, 0.12);
         }
 
         .login-premium-copy {
           position: relative;
           z-index: 2;
-          width: min(100%, 700px);
-          margin-top: clamp(54px, 8vh, 96px);
+          width: min(100%, 650px);
+          margin-top: clamp(12px, 2.2vh, 22px);
         }
 
         .login-premium-kicker {
           display: inline-block;
-          margin-bottom: 18px;
+          margin-bottom: 6px;
           color: #7fc8ab;
-          font-size: 11px;
+          font-size: 9.5px;
           font-weight: 800;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
 
         .login-premium-copy h1 {
-          max-width: 650px;
+          max-width: 620px;
           margin: 0;
-          font-size: clamp(42px, 5vw, 66px);
-          line-height: 0.98;
-          letter-spacing: -0.055em;
+          font-size: clamp(24px, 2.6vw, 36px);
+          line-height: 1.05;
+          letter-spacing: -0.04em;
           font-weight: 790;
           text-wrap: balance;
         }
 
         .login-premium-copy > p {
-          max-width: 540px;
-          margin: 20px 0 0;
+          max-width: 520px;
+          margin: 8px 0 0;
           color: #bfd4cb;
-          font-size: 14px;
-          line-height: 1.7;
+          font-size: 12px;
+          line-height: 1.5;
         }
 
         .login-product-preview {
           position: relative;
           z-index: 2;
-          margin-top: 40px;
+          margin-top: clamp(10px, 1.8vh, 18px);
           display: grid;
-          grid-template-columns: 154px minmax(0, 1fr);
-          gap: 13px;
-          width: min(100%, 690px);
+          grid-template-columns: 128px minmax(0, 1fr);
+          gap: 10px;
+          width: min(100%, 640px);
         }
 
         .login-preview-nav {
-          padding: 13px 10px 11px;
-          border-radius: 17px;
+          padding: 10px 8px 8px;
+          border-radius: 14px;
           border: 1px solid rgba(255, 255, 255, 0.09);
           background: rgba(3, 24, 20, 0.32);
           backdrop-filter: blur(12px);
         }
 
         .login-preview-nav-label {
-          padding: 4px 8px 8px;
+          padding: 2px 6px 5px;
           color: #76a492;
-          font-size: 8px;
+          font-size: 7.5px;
           font-weight: 800;
           letter-spacing: 0.14em;
           text-transform: uppercase;
         }
 
         .login-preview-nav-label.audience {
-          margin-top: 8px;
+          margin-top: 5px;
         }
 
         .login-preview-nav-item {
           display: flex;
           align-items: center;
-          gap: 8px;
-          min-height: 34px;
-          padding: 0 8px;
-          margin: 2px 0;
-          border-radius: 9px;
+          gap: 6px;
+          min-height: 27px;
+          padding: 0 7px;
+          margin: 1px 0;
+          border-radius: 7px;
           color: #9bbcaf;
-          font-size: 9px;
+          font-size: 8.5px;
           font-weight: 650;
         }
 
         .login-preview-nav-item.active {
-          background: rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.09);
           color: #ffffff;
         }
 
         .login-preview-nav-item svg {
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .login-preview-profile {
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-top: 24px;
-          padding: 11px 7px 2px;
+          gap: 7px;
+          margin-top: 14px;
+          padding: 8px 5px 2px;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
           color: #a7c0b6;
-          font-size: 8px;
+          font-size: 7.5px;
         }
 
         .login-preview-avatar {
-          width: 25px;
-          height: 25px;
+          width: 21px;
+          height: 21px;
           border-radius: 50%;
           background:
             radial-gradient(
@@ -334,11 +339,11 @@ export function Login() {
 
         .login-preview-main {
           min-width: 0;
-          padding: 17px;
-          border-radius: 18px;
+          padding: 12px 14px;
+          border-radius: 14px;
           border: 1px solid rgba(255, 255, 255, 0.11);
           background: rgba(255, 255, 255, 0.075);
-          box-shadow: 0 18px 44px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
           backdrop-filter: blur(15px);
         }
 
@@ -346,13 +351,13 @@ export function Login() {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          gap: 12px;
+          gap: 10px;
         }
 
         .login-preview-main-head small {
           display: block;
           color: #91b5a7;
-          font-size: 8px;
+          font-size: 7.5px;
           font-weight: 750;
           letter-spacing: 0.13em;
           text-transform: uppercase;
@@ -360,33 +365,33 @@ export function Login() {
 
         .login-preview-main-head strong {
           display: block;
-          margin-top: 4px;
-          font-size: 13px;
+          margin-top: 2px;
+          font-size: 12px;
           line-height: 1.25;
         }
 
         .login-preview-live {
           flex: 0 0 auto;
-          padding: 5px 8px;
+          padding: 3px 7px;
           border-radius: 999px;
           border: 1px solid rgba(68, 211, 155, 0.18);
           background: rgba(48, 186, 133, 0.12);
           color: #a9dbc8;
-          font-size: 8px;
+          font-size: 7.5px;
           font-weight: 700;
         }
 
         .login-preview-metrics {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 8px;
-          margin-top: 15px;
+          gap: 6px;
+          margin-top: 10px;
         }
 
         .login-preview-metric {
           min-width: 0;
-          padding: 10px;
-          border-radius: 10px;
+          padding: 7px 8px;
+          border-radius: 8px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: rgba(5, 34, 28, 0.27);
         }
@@ -399,23 +404,23 @@ export function Login() {
 
         .login-preview-metric strong {
           display: block;
-          margin-top: 5px;
-          font-size: 15px;
+          margin-top: 3px;
+          font-size: 13px;
           letter-spacing: -0.03em;
         }
 
         .login-preview-metric em {
           display: block;
-          margin-top: 3px;
+          margin-top: 2px;
           color: #62d4a7;
           font-size: 7px;
           font-style: normal;
         }
 
         .login-preview-chart-card {
-          margin-top: 13px;
-          padding: 12px;
-          border-radius: 11px;
+          margin-top: 8px;
+          padding: 8px 10px;
+          border-radius: 9px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: rgba(6, 31, 26, 0.25);
         }
@@ -424,29 +429,29 @@ export function Login() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 10px;
+          gap: 8px;
           color: #9ebcaf;
-          font-size: 8px;
+          font-size: 7.5px;
         }
 
         .login-preview-chart-head strong {
           color: #68d6ab;
-          font-size: 8px;
+          font-size: 7.5px;
           font-weight: 650;
         }
 
         .login-preview-bars {
-          height: 76px;
-          margin-top: 9px;
+          height: 46px;
+          margin-top: 6px;
           display: flex;
           align-items: flex-end;
-          gap: 6px;
+          gap: 5px;
         }
 
         .login-preview-bar {
           flex: 1;
-          min-width: 6px;
-          border-radius: 4px 4px 1px 1px;
+          min-width: 5px;
+          border-radius: 3px 3px 1px 1px;
           background: rgba(255, 255, 255, 0.13);
         }
 
@@ -457,21 +462,21 @@ export function Login() {
         .login-preview-message {
           display: flex;
           align-items: center;
-          gap: 10px;
-          margin-top: 12px;
-          padding: 10px;
-          border-radius: 10px;
+          gap: 8px;
+          margin-top: 8px;
+          padding: 7px 9px;
+          border-radius: 8px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: rgba(255, 255, 255, 0.055);
         }
 
         .login-preview-message-icon {
-          width: 31px;
-          height: 31px;
+          width: 25px;
+          height: 25px;
           flex: 0 0 auto;
           display: grid;
           place-items: center;
-          border-radius: 9px;
+          border-radius: 7px;
           background: rgba(67, 205, 150, 0.12);
           color: #69d4aa;
         }
@@ -483,12 +488,12 @@ export function Login() {
 
         .login-preview-message-copy strong {
           display: block;
-          font-size: 9px;
+          font-size: 8.5px;
         }
 
         .login-preview-message-copy span {
           display: block;
-          margin-top: 3px;
+          margin-top: 1px;
           color: #91b2a5;
           font-size: 7px;
           white-space: nowrap;
@@ -507,34 +512,37 @@ export function Login() {
           z-index: 2;
           display: flex;
           flex-wrap: wrap;
-          gap: 20px;
-          margin-top: 22px;
+          gap: 16px;
+          margin-top: 12px;
           color: #91b4a6;
-          font-size: 9px;
+          font-size: 8.5px;
         }
 
         .login-premium-proof strong {
           color: #d7e8e1;
-          font-size: 10px;
+          font-size: 9px;
         }
 
         .login-premium-story-foot {
           position: relative;
           z-index: 2;
           margin-top: auto;
-          padding-top: 26px;
+          padding-top: 10px;
           color: #83a99b;
-          font-size: 9px;
-          letter-spacing: 0.045em;
+          font-size: 8.5px;
+          letter-spacing: 0.04em;
         }
 
         .login-premium-form-area {
           position: relative;
+          height: 100%;
+          max-height: 100dvh;
+          overflow-y: auto;
           display: flex;
           align-items: center;
           justify-content: center;
           min-width: 0;
-          padding: 48px 48px;
+          padding: clamp(16px, 2.5vh, 28px) clamp(20px, 3vw, 38px);
           background:
             radial-gradient(
               circle at 85% 8%,
@@ -545,32 +553,32 @@ export function Login() {
         }
 
         .login-premium-form-inner {
-          width: min(100%, 395px);
+          width: min(100%, 370px);
         }
 
         .login-premium-mobile-brand {
           display: none;
-          margin-bottom: 34px;
+          margin-bottom: 24px;
         }
 
         .login-premium-form-kicker {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 10px;
+          margin-bottom: 12px;
         }
 
         .login-premium-form-kicker span:first-child {
           color: #85938c;
-          font-size: 9px;
+          font-size: 8.5px;
           font-weight: 800;
           letter-spacing: 0.13em;
           text-transform: uppercase;
         }
 
         .login-premium-form-kicker-line {
-          width: 34px;
+          width: 30px;
           height: 1px;
           background: #dce4e0;
         }
@@ -578,44 +586,44 @@ export function Login() {
         .login-premium-title.MuiTypography-root {
           margin: 0;
           color: #17241e;
-          font-size: clamp(31px, 3vw, 38px);
+          font-size: clamp(24px, 2.4vw, 30px);
           font-weight: 780;
-          letter-spacing: -0.047em;
-          line-height: 1.02;
+          letter-spacing: -0.04em;
+          line-height: 1.05;
         }
 
         .login-premium-subtitle {
-          max-width: 355px;
-          margin: 11px 0 26px;
+          max-width: 340px;
+          margin: 6px 0 16px;
           color: #78867f;
-          font-size: 12px;
-          line-height: 1.65;
+          font-size: 11.5px;
+          line-height: 1.45;
         }
 
         .login-premium-field-label {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 10px;
-          margin: 0 0 7px 1px;
+          gap: 8px;
+          margin: 0 0 5px 1px;
           color: #405048;
-          font-size: 10px;
+          font-size: 9.5px;
           font-weight: 760;
         }
 
         .login-premium-field-label span {
           color: #9aa59f;
-          font-size: 9px;
+          font-size: 8.5px;
           font-weight: 550;
         }
 
         .login-premium-field {
-          margin-bottom: 5px;
+          margin-bottom: 3px;
         }
 
         .login-premium-field .MuiOutlinedInput-root {
-          min-height: 50px;
-          border-radius: 11px;
+          min-height: 44px;
+          border-radius: 9px;
           background: #ffffff;
           transition:
             border-color 160ms ease,
@@ -643,27 +651,27 @@ export function Login() {
         }
 
         .login-premium-field .MuiInputBase-input {
-          padding-top: 13px;
-          padding-bottom: 13px;
-          font-size: 13px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          font-size: 12.5px;
         }
 
         .login-premium-field .MuiFormHelperText-root {
-          min-height: 18px;
-          margin: 4px 2px 0;
-          font-size: 9px;
+          min-height: 14px;
+          margin: 2px 2px 0;
+          font-size: 8.5px;
         }
 
         .login-premium-submit.MuiButton-root {
-          min-height: 50px;
-          margin-top: 8px;
-          border-radius: 11px;
+          min-height: 44px;
+          margin-top: 6px;
+          border-radius: 9px;
           background: var(--gh-login-green);
           color: #ffffff;
           text-transform: none;
-          font-size: 13px;
+          font-size: 12.5px;
           font-weight: 760;
-          box-shadow: 0 9px 24px rgba(24, 118, 90, 0.2);
+          box-shadow: 0 6px 18px rgba(24, 118, 90, 0.18);
           transition:
             transform 150ms ease,
             box-shadow 150ms ease,
@@ -672,7 +680,7 @@ export function Login() {
 
         .login-premium-submit.MuiButton-root:hover {
           background: var(--gh-login-green-strong);
-          box-shadow: 0 11px 28px rgba(24, 118, 90, 0.23);
+          box-shadow: 0 8px 22px rgba(24, 118, 90, 0.22);
         }
 
         .login-premium-submit.MuiButton-root:active {
@@ -689,16 +697,16 @@ export function Login() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 9px;
+          gap: 8px;
         }
 
         .login-premium-security-divider {
           display: flex;
           align-items: center;
-          gap: 10px;
-          margin: 22px 0 14px;
+          gap: 8px;
+          margin: 14px 0 10px;
           color: #a2ada7;
-          font-size: 8px;
+          font-size: 7.5px;
           font-weight: 650;
         }
 
@@ -713,13 +721,13 @@ export function Login() {
         .login-premium-trust-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px;
+          gap: 6px;
         }
 
         .login-premium-trust-card {
           min-width: 0;
-          padding: 11px;
-          border-radius: 10px;
+          padding: 8px 10px;
+          border-radius: 9px;
           border: 1px solid #e4eae7;
           background: #ffffff;
         }
@@ -727,55 +735,57 @@ export function Login() {
         .login-premium-trust-card strong {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 5px;
           color: #34453d;
-          font-size: 9px;
+          font-size: 8.5px;
         }
 
         .login-premium-trust-card svg {
           color: #198060;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .login-premium-trust-card span {
           display: block;
-          margin-top: 5px;
+          margin-top: 3px;
           color: #929d97;
-          font-size: 8px;
-          line-height: 1.45;
+          font-size: 7.5px;
+          line-height: 1.35;
         }
 
         .login-premium-footnote {
-          margin: 20px 0 0;
+          margin: 10px 0 0;
           color: #98a39d;
-          font-size: 9px;
-          line-height: 1.55;
+          font-size: 8.5px;
+          line-height: 1.45;
           text-align: center;
         }
 
         @media (max-width: 1050px) {
           .login-premium-shell {
-            grid-template-columns: minmax(0, 1fr) minmax(400px, 0.9fr);
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr);
           }
 
           .login-premium-story {
-            padding-left: 26px;
-            padding-right: 26px;
+            padding-left: 20px;
+            padding-right: 20px;
           }
 
           .login-premium-copy h1 {
-            font-size: clamp(38px, 4.6vw, 52px);
+            font-size: clamp(22px, 3.2vw, 30px);
           }
 
           .login-product-preview {
-            grid-template-columns: 135px minmax(0, 1fr);
+            grid-template-columns: 120px minmax(0, 1fr);
           }
         }
 
         @media (max-width: 860px) {
           .login-premium-shell {
             grid-template-columns: 1fr;
+            height: auto;
             min-height: 100dvh;
+            overflow-y: auto;
           }
 
           .login-premium-story {
@@ -783,8 +793,9 @@ export function Login() {
           }
 
           .login-premium-form-area {
+            height: auto;
             min-height: 100dvh;
-            padding: 34px 20px;
+            padding: 28px 20px;
           }
 
           .login-premium-mobile-brand {
@@ -803,11 +814,11 @@ export function Login() {
         @media (max-width: 430px) {
           .login-premium-form-area {
             align-items: flex-start;
-            padding: 24px 16px 28px;
+            padding: 20px 16px 24px;
           }
 
           .login-premium-mobile-brand {
-            margin-bottom: 42px;
+            margin-bottom: 24px;
           }
 
           .login-premium-trust-grid {
@@ -815,7 +826,7 @@ export function Login() {
           }
 
           .login-premium-subtitle {
-            margin-bottom: 22px;
+            margin-bottom: 16px;
           }
         }
 
@@ -1046,13 +1057,10 @@ export function Login() {
               )}
 
               <div className="login-premium-field">
-                <label
-                  className="login-premium-field-label"
-                  htmlFor="login-username"
-                >
-                  <strong>Username</strong>
+                <div className="login-premium-field-label">
+                  <label htmlFor="login-username">Username</label>
                   <span>Workspace ID</span>
-                </label>
+                </div>
 
                 <TextField
                   id="login-username"
@@ -1081,13 +1089,10 @@ export function Login() {
               </div>
 
               <div className="login-premium-field">
-                <label
-                  className="login-premium-field-label"
-                  htmlFor="login-password"
-                >
-                  <strong>Password</strong>
+                <div className="login-premium-field-label">
+                  <label htmlFor="login-password">Password</label>
                   <span>Protected</span>
-                </label>
+                </div>
 
                 <TextField
                   id="login-password"

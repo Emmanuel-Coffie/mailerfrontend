@@ -108,7 +108,8 @@ export function Contacts() {
     <>
       <PageHeading
         title="Contacts"
-        description="Build meaningful connections with the right people."
+        kicker="Audience Directory"
+        description="Manage verified customer and partner records, inspect deliverability health, and segment audiences for tailored communication."
         actions={
           <>
             <MuiButton

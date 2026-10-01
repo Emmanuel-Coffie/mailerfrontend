@@ -194,7 +194,8 @@ export function CampaignWizard() {
     <>
       <PageHeading
         title={draft ? "Build your campaign" : "Create campaign"}
-        description="A clear path from your idea to their inbox."
+        kicker="Campaign Creation"
+        description="Configure outreach details, target audience cohorts, select your message template, and schedule dispatch."
         actions={
           <MuiButton variant="outlined" component={Link} to="/campaigns">
             All campaigns

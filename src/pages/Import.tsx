@@ -37,7 +37,8 @@ export function ImportContacts() {
     <>
       <PageHeading
         title="Import contacts"
-        description="Bring your audience together, one file at a time."
+        kicker="Audience Ingestion"
+        description="Upload CSV spreadsheets to bulk-create contacts, map custom column attributes, and assign immediate cohort memberships."
         actions={
           <MuiButton component={Link} to="/contacts" variant="outlined">
             Back to contacts

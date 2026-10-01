@@ -53,7 +53,8 @@ export function Templates() {
     <>
       <PageHeading
         title="Templates"
-        description="A thoughtful starting point for every message."
+        kicker="Design Studio"
+        description="Craft modular, responsive email designs and reusable layouts that maintain pristine brand fidelity across every email client."
         actions={
           <MuiButton
             component={Link}
@@ -67,8 +68,16 @@ export function Templates() {
       <ErrorNotice error={error || state.error} retry={state.reload} />
       <div className="template-intro">
         <div>
+          <div className="template-intro-eyebrow">
+            <span>Curated Starters</span>
+            <span style={{ opacity: 0.5 }}>·</span>
+            <span>Pre-Engineered Layouts</span>
+          </div>
           <h2>Your next message, beautifully started.</h2>
-          <p>Pick a starting point. Every detail is yours to edit.</p>
+          <p>
+            Select a tailored layout baseline below. Customize headings, typography,
+            buttons, and content blocks with the visual designer.
+          </p>
         </div>
       </div>
       <StarterGallery
@@ -76,8 +85,16 @@ export function Templates() {
       />
       <div className="template-intro">
         <div>
+          <div className="template-intro-eyebrow">
+            <span>Workspace Library</span>
+            <span style={{ opacity: 0.5 }}>·</span>
+            <span>Saved Assets</span>
+          </div>
           <h2>Saved templates</h2>
-          <p>Your reusable designs, ready for the next conversation.</p>
+          <p>
+            Your reusable master designs and verified layouts, ready for campaign
+            dispatch.
+          </p>
         </div>
       </div>
       <section className="panel" style={{ padding: 0 }}>

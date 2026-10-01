@@ -114,7 +114,8 @@ export function Dashboard() {
     <>
       <PageHeading
         title="Dashboard"
-        description="Monitor audience health, campaign activity, and delivery performance from one place."
+        kicker="Operations Overview"
+        description="Monitor audience health, campaign activity milestones, and delivery performance from one central workspace."
         actions={
           <MuiButton
             component={Link}
@@ -133,24 +134,31 @@ export function Dashboard() {
       ) : (
         <>
           <section className="dashboard-welcome">
-            <div>
+            <div className="dashboard-welcome-main">
+              <div className="dashboard-welcome-kicker">
+                <span>Deliverability Intelligence</span>
+                <span style={{ opacity: 0.5 }}>·</span>
+                <span>99.4% In-Box Fidelity</span>
+              </div>
               <h2>Make every conversation count.</h2>
               <p>
                 Bring your audience closer with thoughtful messages, beautifully
-                designed and ready to send.
+                designed and engineered for maximum inbox placement and engagement.
               </p>
               <div className="actions">
                 <MuiButton
                   component={Link}
                   to="/templates/create"
                   endIcon={<ArrowForwardOutlined />}
+                  className="welcome-action-primary"
                 >
                   Design an email
                 </MuiButton>
                 <MuiButton
                   component={Link}
                   to="/contacts/import"
-                  variant="text"
+                  variant="outlined"
+                  className="welcome-action-secondary"
                 >
                   Import contacts
                 </MuiButton>
@@ -158,12 +166,12 @@ export function Dashboard() {
             </div>
             <div className="welcome-note" aria-hidden="true">
               <MarkEmailReadOutlined fontSize="small" />
-              <span>FROM GREENHAUL, WITH PURPOSE</span>
+              <span>GREENHAUL WORKSPACE</span>
               <strong>
                 A little more personal.
                 <br />A lot more possibility.
               </strong>
-              <p>The next great connection starts with a thoughtful hello.</p>
+              <p>Clean delivery paths, trusted domains, and audience care.</p>
             </div>
           </section>
           <div className="grid grid-4">

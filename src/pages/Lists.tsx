@@ -68,7 +68,8 @@ export function Lists() {
     <>
       <PageHeading
         title="Contact lists"
-        description="Organize your audience around the conversations that matter."
+        kicker="Audience Segmentation"
+        description="Organize your audience into targeted dynamic and static cohorts for tailored campaign delivery and automated routing."
         actions={
           <MuiButton
             startIcon={<AddOutlined />}

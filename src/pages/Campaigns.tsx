@@ -37,7 +37,8 @@ export function Campaigns() {
     <>
       <PageHeading
         title="Campaigns"
-        description="From first draft to the next conversation."
+        kicker="Outreach Operations"
+        description="Plan, schedule, and orchestrate outbound communications. Track delivery milestones, open rates, and recipient engagement from first draft to final dispatch."
         actions={
           <MuiButton
             component={Link}
