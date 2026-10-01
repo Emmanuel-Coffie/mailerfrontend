@@ -1008,7 +1008,7 @@ export function Login() {
             </div>
 
             <Typography variant="h1" className="login-premium-title">
-              Welcome back.
+              Welcome back
             </Typography>
 
             <p className="login-premium-subtitle">
@@ -1137,7 +1137,7 @@ export function Login() {
                 type="submit"
                 fullWidth
                 disabled={loading}
-                aria-label="Sign in to workspace"
+                aria-label="Sign in"
                 className="login-premium-submit"
               >
                 <span className="login-premium-submit-content">
@@ -1152,7 +1152,7 @@ export function Login() {
                     </>
                   ) : (
                     <>
-                      <span>Sign in to workspace</span>
+                      <span>Sign in</span>
                       <ArrowForwardOutlined sx={{ fontSize: 17 }} />
                     </>
                   )}
