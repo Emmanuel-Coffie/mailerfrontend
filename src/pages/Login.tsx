@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Alert,
   Button as MuiButton,
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -31,6 +32,7 @@ export function Login() {
   const location = useLocation();
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // If already authenticated, redirect immediately to dashboard
   useEffect(() => {
@@ -107,11 +109,13 @@ export function Login() {
           <form
             noValidate
             onSubmit={handleSubmit(async (values) => {
+              setSubmitting(true);
               setError("");
               try {
                 await login(values.username, values.password);
                 handleSuccessfulAuth();
               } catch (e) {
+                setSubmitting(false);
                 setError(normalizeError(e).message);
               }
             })}
@@ -185,11 +189,11 @@ export function Login() {
             <MuiButton
               type="submit"
               fullWidth
-              loading={isSubmitting}
-              endIcon={<ArrowForwardOutlined sx={{ fontSize: 17 }} />}
-              className="login-submit-btn"
+              disabled={isSubmitting || submitting}
+              aria-label="Sign in"
+              className={`login-submit-btn${isSubmitting || submitting ? " is-loading" : ""}`}
               sx={{
-                mt: 1,
+                mt: 1.2,
                 minHeight: 48,
                 fontSize: 14.5,
                 fontWeight: 700,
@@ -197,7 +201,21 @@ export function Login() {
                 boxShadow: "0 8px 24px rgba(20, 128, 94, 0.28)",
               }}
             >
-              Sign in
+              {isSubmitting || submitting ? (
+                <span className="login-btn-loading-content">
+                  <CircularProgress
+                    size={18}
+                    thickness={5}
+                    sx={{ color: "#ffffff" }}
+                  />
+                  <span>Signing in…</span>
+                </span>
+              ) : (
+                <span className="login-btn-idle-content">
+                  <span>Sign in</span>
+                  <ArrowForwardOutlined sx={{ fontSize: 17 }} />
+                </span>
+              )}
             </MuiButton>
           </form>
           <div className="login-form-foot">

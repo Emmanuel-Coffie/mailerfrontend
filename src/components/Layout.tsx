@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent, type ElementType } from "react";
 import { NavLink, Outlet, Link, useLocation } from "react-router-dom";
 import {
   Avatar,
@@ -27,7 +27,7 @@ import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
 import MoreVertOutlined from "@mui/icons-material/MoreVertOutlined";
 import { useAuth } from "../auth";
 import { GreenHaulLogo } from "./Logo";
-import avatarImg from "../assets/images/avatar_executive_user_1790806357489.jpg";
+import avatarImg from "../assets/images/brother_kojo_avatar_1790812971674.jpg";
 
 export function Brand() {
   return (
@@ -41,14 +41,40 @@ export function Brand() {
   );
 }
 
-const navigation = [
-  ["Workspace", "Dashboard", "/dashboard", DashboardOutlined],
-  ["", "Campaigns", "/campaigns", SendOutlined],
-  ["", "Templates", "/templates", ArticleOutlined],
-  ["Audience", "Contacts", "/contacts", PeopleOutline],
-  ["", "Contact Lists", "/contact-lists", FolderOutlined],
-  ["Manage", "Settings", "/settings", SettingsOutlined],
-] as const;
+interface NavItem {
+  name: string;
+  path: string;
+  Icon: ElementType;
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const navigationSections: NavSection[] = [
+  {
+    title: "Campaigns",
+    items: [
+      { name: "Dashboard", path: "/dashboard", Icon: DashboardOutlined },
+      { name: "Campaigns", path: "/campaigns", Icon: SendOutlined },
+      { name: "Templates", path: "/templates", Icon: ArticleOutlined },
+    ],
+  },
+  {
+    title: "Audience",
+    items: [
+      { name: "Contacts", path: "/contacts", Icon: PeopleOutline },
+      { name: "Contact Lists", path: "/contact-lists", Icon: FolderOutlined },
+    ],
+  },
+  {
+    title: "System",
+    items: [
+      { name: "Settings", path: "/settings", Icon: SettingsOutlined },
+    ],
+  },
+];
 
 export function Layout() {
   const [open, setOpen] = useState(false);
@@ -63,8 +89,9 @@ export function Layout() {
   const { username, logout } = useAuth();
   const location = useLocation();
 
+  const allItems = navigationSections.flatMap((s) => s.items);
   const current =
-    navigation.find(([, , path]) => location.pathname.startsWith(path))?.[1] ||
+    allItems.find((item) => location.pathname.startsWith(item.path))?.name ||
     "Workspace";
 
   const toggle = () => {
@@ -77,52 +104,53 @@ export function Layout() {
     }
   };
 
-  const displayName = username || "Stan Elorm";
+  const displayName = username || "Brother Kojo";
   const displayEmail = username ? `${username}@greenhaul.io` : "stanelorm@gmail.com";
-  const initials = (username || "SE").slice(0, 2).toUpperCase();
+  const initials = (username || "BK").slice(0, 2).toUpperCase();
 
   const renderNavLinks = (mobile = false) => (
-    <nav aria-label="Main navigation">
-      {navigation.map(([section, name, path, Icon]) => (
-        <div key={path}>
-          {section && (
-            <div className="sidebar-label">
-              {!mobile && collapsed ? (
-                <span className="sidebar-divider" />
-              ) : (
-                section
-              )}
-            </div>
+    <nav aria-label="Main navigation" className="sidebar-nav">
+      {navigationSections.map((section, idx) => (
+        <div key={section.title} className="sidebar-section-group">
+          {!mobile && collapsed ? (
+            idx > 0 ? <div className="sidebar-divider" /> : null
+          ) : (
+            <div className="sidebar-label">{section.title}</div>
           )}
-          <Tooltip
-            title={!mobile && collapsed ? name : ""}
-            placement="right"
-            arrow
-          >
-            <NavLink
-              aria-label={name}
-              className={({ isActive }) =>
-                `nav-link${isActive ? " active" : ""}`
-              }
-              to={path}
-              onClick={() => setOpen(false)}
-            >
-              <span className="active-indicator-bar" />
-              <div className="nav-icon-wrap">
-                <Icon fontSize="small" />
-                <span className="active-dot" />
-              </div>
-              {(mobile || !collapsed) && (
-                <>
-                  <span>{name}</span>
-                  <EastOutlined
-                    className="nav-arrow"
-                    sx={{ fontSize: 14 }}
-                  />
-                </>
-              )}
-            </NavLink>
-          </Tooltip>
+          <div className="sidebar-items-list">
+            {section.items.map(({ name, path, Icon }) => (
+              <Tooltip
+                key={path}
+                title={!mobile && collapsed ? name : ""}
+                placement="right"
+                arrow
+              >
+                <NavLink
+                  aria-label={name}
+                  className={({ isActive }) =>
+                    `nav-link${isActive ? " active" : ""}`
+                  }
+                  to={path}
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="active-indicator-bar" />
+                  <div className="nav-icon-wrap">
+                    <Icon fontSize="small" />
+                    <span className="active-dot" />
+                  </div>
+                  {(mobile || !collapsed) && (
+                    <>
+                      <span className="nav-label-text">{name}</span>
+                      <EastOutlined
+                        className="nav-arrow"
+                        sx={{ fontSize: 13 }}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              </Tooltip>
+            ))}
+          </div>
         </div>
       ))}
     </nav>
