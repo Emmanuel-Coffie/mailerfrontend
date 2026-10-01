@@ -167,15 +167,53 @@ export function Loading({ rows = 4 }: { rows?: number }) {
       aria-label="Loading content"
       aria-busy="true"
       sx={{
-        p: 2.5,
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 4,
-        bgcolor: "background.paper",
+        p: 3,
+        border: "1px solid var(--border)",
+        borderRadius: 3.5,
+        bgcolor: "var(--surface)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
       }}
     >
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 0.5 }}>
+        <Skeleton
+          variant="circular"
+          width={30}
+          height={30}
+          sx={{ bgcolor: "rgba(18, 61, 51, 0.08)" }}
+        />
+        <Skeleton
+          variant="text"
+          width="32%"
+          height={24}
+          sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1 }}
+        />
+      </Box>
       {Array.from({ length: rows }, (_, i) => (
-        <Skeleton key={i} height={48} sx={{ mb: i === rows - 1 ? 0 : 1 }} />
+        <Box
+          key={i}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 0.8,
+            py: 1,
+            borderBottom: i === rows - 1 ? "none" : "1px solid #edf4f0",
+          }}
+        >
+          <Skeleton
+            variant="text"
+            width={`${Math.max(50, 92 - i * 12)}%`}
+            height={20}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.07)", borderRadius: 1 }}
+          />
+          <Skeleton
+            variant="text"
+            width={`${Math.max(28, 55 - i * 10)}%`}
+            height={15}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.04)", borderRadius: 1 }}
+          />
+        </Box>
       ))}
     </Box>
   );
@@ -189,180 +227,466 @@ export function TableSkeleton({
   cols?: number;
 }) {
   return (
-    <Box
+    <div
+      className="table-container"
       aria-label="Loading table"
       aria-busy="true"
-      sx={{
-        border: "1px solid #dce8e1",
-        borderRadius: 3.5,
-        overflow: "hidden",
-        bgcolor: "#ffffff",
-      }}
+      style={{ margin: 0, border: "none" }}
     >
-      {/* Header row */}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          px: 2.5,
-          py: 2,
-          bgcolor: "#f6faf7",
-          borderBottom: "1px solid #e2ede7",
-        }}
-      >
-        {Array.from({ length: cols }, (_, i) => (
-          <Skeleton
-            key={i}
-            variant="text"
-            width={i === 0 ? "28%" : `${68 / (cols - 1)}%`}
-            height={22}
-          />
-        ))}
-      </Box>
-      {/* Body rows */}
-      <Box sx={{ p: 1 }}>
-        {Array.from({ length: rows }, (_, r) => (
-          <Box
-            key={r}
-            sx={{
-              display: "flex",
-              gap: 2,
-              px: 2,
-              py: 1.8,
-              borderBottom: r === rows - 1 ? "none" : "1px solid #edf4f0",
-              alignItems: "center",
-            }}
-          >
-            {Array.from({ length: cols }, (_, c) => (
-              <Skeleton
-                key={c}
-                variant={c === 0 ? "rectangular" : "text"}
-                width={c === 0 ? "28%" : `${68 / (cols - 1)}%`}
-                height={c === 0 ? 20 : 22}
-                sx={{ borderRadius: 1 }}
-              />
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            {Array.from({ length: cols }, (_, i) => (
+              <th key={i} style={{ padding: "14px 20px" }}>
+                <Skeleton
+                  variant="text"
+                  width={i === 0 ? 110 : i === cols - 1 ? 55 : 85}
+                  height={18}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1 }}
+                />
+              </th>
             ))}
-          </Box>
-        ))}
-      </Box>
-    </Box>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: rows }, (_, r) => (
+            <tr key={r}>
+              {Array.from({ length: cols }, (_, c) => (
+                <td key={c} style={{ padding: "16px 20px" }}>
+                  {c === 0 ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                      }}
+                    >
+                      <Skeleton
+                        variant="circular"
+                        width={28}
+                        height={28}
+                        sx={{
+                          bgcolor: "rgba(18, 61, 51, 0.07)",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <Box sx={{ minWidth: 0, flex: 1 }}>
+                        <Skeleton
+                          variant="text"
+                          width="72%"
+                          height={19}
+                          sx={{
+                            bgcolor: "rgba(18, 61, 51, 0.08)",
+                            borderRadius: 1,
+                          }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          width="42%"
+                          height={14}
+                          sx={{
+                            bgcolor: "rgba(18, 61, 51, 0.05)",
+                            borderRadius: 1,
+                            mt: 0.3,
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  ) : c === cols - 1 ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        gap: 1,
+                      }}
+                    >
+                      <Skeleton
+                        variant="rounded"
+                        width={28}
+                        height={28}
+                        sx={{
+                          bgcolor: "rgba(18, 61, 51, 0.06)",
+                          borderRadius: 1.5,
+                        }}
+                      />
+                    </Box>
+                  ) : c === 1 ? (
+                    <Skeleton
+                      variant="rounded"
+                      width={78}
+                      height={24}
+                      sx={{
+                        bgcolor: "rgba(18, 61, 51, 0.06)",
+                        borderRadius: 999,
+                      }}
+                    />
+                  ) : (
+                    <Skeleton
+                      variant="text"
+                      width="58%"
+                      height={18}
+                      sx={{
+                        bgcolor: "rgba(18, 61, 51, 0.07)",
+                        borderRadius: 1,
+                      }}
+                    />
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 export function MetricSkeleton() {
   return (
-    <Box
+    <section
       className="panel metric-card"
-      sx={{
-        p: 2.5,
-        display: "flex",
-        flexDirection: "column",
-        gap: 1.5,
-      }}
+      aria-label="Loading metric"
+      aria-busy="true"
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Skeleton variant="text" width="45%" height={22} />
-        <Skeleton variant="circular" width={28} height={28} />
-      </Box>
+      <div>
+        <div
+          className="metric-label"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Skeleton
+            variant="text"
+            width={95}
+            height={20}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.08)", borderRadius: 1 }}
+          />
+          <Skeleton
+            variant="rounded"
+            width={34}
+            height={34}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.07)", borderRadius: 2.5 }}
+          />
+        </div>
+        <div style={{ margin: "14px 0 6px" }}>
+          <Skeleton
+            variant="rounded"
+            width={72}
+            height={36}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.1)", borderRadius: 1.5 }}
+          />
+        </div>
+      </div>
       <Skeleton
-        variant="rectangular"
-        width="40%"
-        height={38}
-        sx={{ borderRadius: 1.5 }}
+        variant="text"
+        width={130}
+        height={16}
+        sx={{ bgcolor: "rgba(18, 61, 51, 0.06)", borderRadius: 1 }}
       />
-      <Skeleton variant="text" width="65%" height={18} />
-    </Box>
+    </section>
   );
 }
 
 export function DashboardSkeleton() {
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", gap: 3.2 }}
+      sx={{ display: "flex", flexDirection: "column", gap: 3.5 }}
       aria-label="Loading dashboard"
       aria-busy="true"
     >
-      {/* Executive Banner */}
-      <Skeleton
-        variant="rectangular"
-        height={68}
-        sx={{ borderRadius: 3.5, bgcolor: "rgba(7, 30, 19, 0.08)" }}
-      />
-      {/* 4 Metric Cards */}
+      {/* 1. Four Metric Cards */}
       <div className="grid grid-4">
         <MetricSkeleton />
         <MetricSkeleton />
         <MetricSkeleton />
         <MetricSkeleton />
       </div>
-      {/* Main Grid: Chart and Status Panel */}
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
-          gap: 3,
-        }}
-      >
-        <Box
+
+      {/* 2. Main Grid: Recent Delivery Chart & Audience Health */}
+      <div className="dashboard-main-grid">
+        {/* Left: Bar Chart Card */}
+        <section className="panel dashboard-chart-card">
+          <div
+            className="dashboard-chart-header"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              marginBottom: 20,
+            }}
+          >
+            <div>
+              <Skeleton
+                variant="text"
+                width={200}
+                height={28}
+                sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1 }}
+              />
+              <Skeleton
+                variant="text"
+                width={280}
+                height={18}
+                sx={{
+                  bgcolor: "rgba(18, 61, 51, 0.05)",
+                  borderRadius: 1,
+                  mt: 0.8,
+                }}
+              />
+            </div>
+            <Skeleton
+              variant="rounded"
+              width={92}
+              height={32}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.07)", borderRadius: 2 }}
+            />
+          </div>
+
+          {/* Bar Chart Simulation */}
+          <div
+            style={{
+              height: 240,
+              display: "flex",
+              alignItems: "flex-end",
+              gap: 20,
+              padding: "20px 10px 10px",
+              borderBottom: "1px solid #edf3ef",
+            }}
+          >
+            {[65, 85, 45, 95, 70, 80].map((h, i) => (
+              <div
+                key={i}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  gap: 4,
+                  alignItems: "flex-end",
+                  height: "100%",
+                }}
+              >
+                <Skeleton
+                  variant="rounded"
+                  width="48%"
+                  height={`${h * 0.9}%`}
+                  sx={{
+                    bgcolor: "rgba(18, 61, 51, 0.06)",
+                    borderRadius: "4px 4px 0 0",
+                  }}
+                />
+                <Skeleton
+                  variant="rounded"
+                  width="48%"
+                  height={`${h}%`}
+                  sx={{
+                    bgcolor: "rgba(56, 123, 111, 0.18)",
+                    borderRadius: "4px 4px 0 0",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="dashboard-chart-meta"
+            style={{ display: "flex", gap: 24, marginTop: 18 }}
+          >
+            <Skeleton
+              variant="text"
+              width={110}
+              height={18}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.07)" }}
+            />
+            <Skeleton
+              variant="text"
+              width={110}
+              height={18}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.07)" }}
+            />
+            <Skeleton
+              variant="text"
+              width={100}
+              height={18}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.07)" }}
+            />
+          </div>
+        </section>
+
+        {/* Right: Audience Health Donut Card */}
+        <section
           className="panel"
-          sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
+          style={{ display: "flex", flexDirection: "column" }}
         >
+          <div>
+            <Skeleton
+              variant="text"
+              width={160}
+              height={28}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1 }}
+            />
+            <Skeleton
+              variant="text"
+              width={220}
+              height={18}
+              sx={{
+                bgcolor: "rgba(18, 61, 51, 0.05)",
+                borderRadius: 1,
+                mt: 0.8,
+              }}
+            />
+          </div>
+
+          {/* Donut Simulation */}
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
               alignItems: "center",
+              my: 3,
+              height: 180,
             }}
           >
-            <Skeleton variant="text" width="40%" height={28} />
-            <Skeleton
-              variant="rectangular"
-              width={90}
-              height={32}
-              sx={{ borderRadius: 2 }}
+            <Box
+              sx={{
+                width: 140,
+                height: 140,
+                borderRadius: "50%",
+                border: "18px solid rgba(56, 123, 111, 0.14)",
+                borderTopColor: "rgba(56, 123, 111, 0.32)",
+                borderRightColor: "rgba(179, 147, 99, 0.28)",
+              }}
             />
           </Box>
+
+          {/* Status Breakdown Items */}
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 1.5,
+              mt: "auto",
+              pt: 1.5,
+              borderTop: "1px solid #edf3ef",
+            }}
+          >
+            {[1, 2, 3, 4].map((i) => (
+              <Box
+                key={i}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <Skeleton
+                  variant="circular"
+                  width={8}
+                  height={8}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.15)" }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="60%"
+                  height={16}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.07)" }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </section>
+      </div>
+
+      {/* 3. Secondary Grid: Delivery Breakdown & Recent Activity */}
+      <div className="dashboard-secondary">
+        <section className="panel">
           <Skeleton
-            variant="rectangular"
-            height={250}
-            sx={{ borderRadius: 2 }}
+            variant="text"
+            width={150}
+            height={26}
+            sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1, mb: 2 }}
           />
-        </Box>
-        <Box
-          className="panel"
-          sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
-        >
-          <Skeleton variant="text" width="55%" height={28} />
-          <Skeleton
-            variant="rectangular"
-            height={48}
-            sx={{ borderRadius: 2 }}
-          />
-          <Skeleton
-            variant="rectangular"
-            height={48}
-            sx={{ borderRadius: 2 }}
-          />
-          <Skeleton
-            variant="rectangular"
-            height={48}
-            sx={{ borderRadius: 2 }}
-          />
-          <Skeleton
-            variant="rectangular"
-            height={48}
-            sx={{ borderRadius: 2 }}
-          />
-        </Box>
-      </Box>
-      {/* Table Skeleton */}
-      <TableSkeleton rows={5} cols={5} />
+          <div className="delivery-summary">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="delivery-tile">
+                <Skeleton
+                  variant="text"
+                  width="50%"
+                  height={16}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.06)" }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="40%"
+                  height={32}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.1)", my: 0.5 }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="70%"
+                  height={14}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.05)" }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 16,
+            }}
+          >
+            <Skeleton
+              variant="text"
+              width={160}
+              height={26}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.09)", borderRadius: 1 }}
+            />
+            <Skeleton
+              variant="text"
+              width={60}
+              height={18}
+              sx={{ bgcolor: "rgba(18, 61, 51, 0.06)", borderRadius: 1 }}
+            />
+          </div>
+          {[1, 2, 3].map((i) => (
+            <Box
+              key={i}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                py: 1.5,
+                borderBottom: i === 3 ? "none" : "1px solid #edf3ef",
+              }}
+            >
+              <Box sx={{ minWidth: 0, flex: 1 }}>
+                <Skeleton
+                  variant="text"
+                  width="55%"
+                  height={19}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.08)" }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="35%"
+                  height={14}
+                  sx={{ bgcolor: "rgba(18, 61, 51, 0.05)", mt: 0.3 }}
+                />
+              </Box>
+              <Skeleton
+                variant="rounded"
+                width={68}
+                height={22}
+                sx={{
+                  bgcolor: "rgba(18, 61, 51, 0.07)",
+                  borderRadius: 999,
+                }}
+              />
+            </Box>
+          ))}
+        </section>
+      </div>
     </Box>
   );
 }

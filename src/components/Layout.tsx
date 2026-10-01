@@ -136,24 +136,6 @@ const layoutStyles = String.raw`
     gap: 12px;
   }
 
-  .gh-topbar-toggle-btn {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 9px !important;
-    border: 1px solid #d8e2de !important;
-    color: #173d33 !important;
-    background: #f7faf8 !important;
-    transition: all 160ms ease !important;
-    flex-shrink: 0;
-  }
-
-  .gh-topbar-toggle-btn:hover {
-    background: #eef6f2 !important;
-    border-color: #178a64 !important;
-    color: #178a64 !important;
-    transform: translateY(-1px);
-  }
-
   .gh-topbar-brand {
     display: inline-flex;
     align-items: center;
@@ -620,10 +602,6 @@ const layoutStyles = String.raw`
       display: none;
     }
 
-    .gh-topbar-toggle-btn {
-      display: none !important;
-    }
-
     .gh-workspace,
     .gh-app-shell.gh-is-collapsed .gh-workspace {
       margin-left: 0 !important;
@@ -980,26 +958,7 @@ export function Layout() {
             <MenuOutlined />
           </IconButton>
 
-          {/* Desktop Sidebar Toggle Button (expand/collapse) */}
-          <Tooltip
-            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            arrow
-          >
-            <IconButton
-              className="gh-topbar-toggle-btn"
-              onClick={toggleSidebar}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              size="small"
-            >
-              {collapsed ? (
-                <EastOutlined sx={{ fontSize: 18 }} />
-              ) : (
-                <WestOutlined sx={{ fontSize: 18 }} />
-              )}
-            </IconButton>
-          </Tooltip>
-
-          {/* LOGO ON THE TOP BAR INSTEAD */}
+          {/* LOGO ON THE TOP BAR */}
           <Link
             to="/dashboard"
             className="gh-topbar-brand"

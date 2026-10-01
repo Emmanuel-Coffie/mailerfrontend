@@ -672,24 +672,31 @@ export function Login() {
           font-size: 12.5px;
           font-weight: 760;
           box-shadow: 0 6px 18px rgba(24, 118, 90, 0.18);
+          position: relative;
           transition:
+            opacity 240ms ease,
             transform 150ms ease,
             box-shadow 150ms ease,
             background 150ms ease;
         }
 
-        .login-premium-submit.MuiButton-root:hover {
+        .login-premium-submit.MuiButton-root:hover:not(:disabled) {
           background: var(--gh-login-green-strong);
           box-shadow: 0 8px 22px rgba(24, 118, 90, 0.22);
         }
 
-        .login-premium-submit.MuiButton-root:active {
+        .login-premium-submit.MuiButton-root:active:not(:disabled) {
           transform: translateY(1px);
         }
 
-        .login-premium-submit.MuiButton-root.Mui-disabled {
-          background: #76a894;
-          color: #ffffff;
+        .login-premium-submit.MuiButton-root.Mui-disabled,
+        .login-premium-submit.is-authenticating {
+          background: var(--gh-login-green) !important;
+          color: #ffffff !important;
+          opacity: 0.62 !important;
+          cursor: wait !important;
+          box-shadow: 0 3px 10px rgba(24, 118, 90, 0.12) !important;
+          transform: none !important;
         }
 
         .login-premium-submit-content {
@@ -697,7 +704,26 @@ export function Login() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 9px;
+          transition: opacity 200ms ease;
+        }
+
+        .login-submit-spinner {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          animation: spinFadeIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes spinFadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.75);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
         }
 
         .login-premium-security-divider {
@@ -1143,16 +1169,18 @@ export function Login() {
                 fullWidth
                 disabled={loading}
                 aria-label="Sign in"
-                className="login-premium-submit"
+                className={`login-premium-submit${loading ? " is-authenticating" : ""}`}
               >
                 <span className="login-premium-submit-content">
                   {loading ? (
                     <>
-                      <CircularProgress
-                        size={17}
-                        thickness={5}
-                        sx={{ color: "#ffffff" }}
-                      />
+                      <span className="login-submit-spinner" aria-hidden="true">
+                        <CircularProgress
+                          size={16}
+                          thickness={4.5}
+                          sx={{ color: "#ffffff" }}
+                        />
+                      </span>
                       <span>Signing in…</span>
                     </>
                   ) : (

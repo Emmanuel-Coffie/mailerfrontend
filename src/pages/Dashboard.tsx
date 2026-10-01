@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button as MuiButton, Typography, Box } from "@mui/material";
-import AddOutlined from "@mui/icons-material/AddOutlined";
 import ArrowForwardOutlined from "@mui/icons-material/ArrowForwardOutlined";
+import UploadFileOutlined from "@mui/icons-material/UploadFileOutlined";
 import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
 import CampaignOutlined from "@mui/icons-material/CampaignOutlined";
 import MarkEmailReadOutlined from "@mui/icons-material/MarkEmailReadOutlined";
@@ -117,13 +117,23 @@ export function Dashboard() {
         kicker="Operations Overview"
         description="Monitor audience health, campaign activity milestones, and delivery performance from one central workspace."
         actions={
-          <MuiButton
-            component={Link}
-            to="/campaigns/create"
-            startIcon={<AddOutlined />}
-          >
-            Create campaign
-          </MuiButton>
+          <>
+            <MuiButton
+              component={Link}
+              to="/contacts/import"
+              variant="outlined"
+              startIcon={<UploadFileOutlined />}
+            >
+              Import contacts
+            </MuiButton>
+            <MuiButton
+              component={Link}
+              to="/templates/create"
+              endIcon={<ArrowForwardOutlined />}
+            >
+              Design an email
+            </MuiButton>
+          </>
         }
       />
       <ErrorNotice error={state.error} retry={state.reload} />
@@ -133,47 +143,6 @@ export function Dashboard() {
         ) : null
       ) : (
         <>
-          <section className="dashboard-welcome">
-            <div className="dashboard-welcome-main">
-              <div className="dashboard-welcome-kicker">
-                <span>Deliverability Intelligence</span>
-                <span style={{ opacity: 0.5 }}>·</span>
-                <span>99.4% In-Box Fidelity</span>
-              </div>
-              <h2>Make every conversation count.</h2>
-              <p>
-                Bring your audience closer with thoughtful messages, beautifully
-                designed and engineered for maximum inbox placement and engagement.
-              </p>
-              <div className="actions">
-                <MuiButton
-                  component={Link}
-                  to="/templates/create"
-                  endIcon={<ArrowForwardOutlined />}
-                  className="welcome-action-primary"
-                >
-                  Design an email
-                </MuiButton>
-                <MuiButton
-                  component={Link}
-                  to="/contacts/import"
-                  variant="outlined"
-                  className="welcome-action-secondary"
-                >
-                  Import contacts
-                </MuiButton>
-              </div>
-            </div>
-            <div className="welcome-note" aria-hidden="true">
-              <MarkEmailReadOutlined fontSize="small" />
-              <span>GREENHAUL WORKSPACE</span>
-              <strong>
-                A little more personal.
-                <br />A lot more possibility.
-              </strong>
-              <p>Clean delivery paths, trusted domains, and audience care.</p>
-            </div>
-          </section>
           <div className="grid grid-4">
             <DashboardMetric
               title="Total contacts"
