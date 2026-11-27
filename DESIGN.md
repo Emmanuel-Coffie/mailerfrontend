@@ -25,7 +25,7 @@ colors:
 typography:
   display:
     fontFamily: "Manrope, Inter, sans-serif"
-    fontSize: "clamp(26px, 2.7vw, 36px)"
+    fontSize: "36px"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.035em"
@@ -193,4 +193,4 @@ Reduced-motion preferences suppress animation, transitions and smooth scrolling.
 
 ## November 2026 workflow refinement
 
-The template collection uses real sandboxed email previews, three columns on desktop, two below 1100px and one below 600px. Starter layouts include a 144px brand logo, editable content, and a recipient-specific unsubscribe footer. The import workspace uses a file/review/success sequence with automatic column detection and explicit review before persistence. Runtime palette drift was reconciled to the documented ink-teal tokens; body text is now 16px.
+The template collection uses real sandboxed email previews, three columns on desktop, two below 1100px and one below 600px. Starter layouts include a 48px brand logo, editable content, and a recipient-specific unsubscribe footer. The import workspace uses a file/review/success sequence with automatic column detection and explicit review before persistence. Runtime palette drift was reconciled to the documented ink-teal tokens; body text is now 16px.

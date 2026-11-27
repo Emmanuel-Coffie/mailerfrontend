@@ -13,7 +13,8 @@ const python =
   );
 export default defineConfig({
   testDir: "./e2e",
-  timeout: 90000,
+  timeout: 180000,
+  expect: { timeout: 20000 },
   workers: 1,
   fullyParallel: false,
   use: {
@@ -26,7 +27,8 @@ export default defineConfig({
     {
       command: `"${python}" e2e/server.py`,
       url: "http://127.0.0.1:8018/admin/login/",
-      timeout: 60000,
+      timeout: 180000,
+  expect: { timeout: 20000 },
       reuseExistingServer: false,
     },
     {

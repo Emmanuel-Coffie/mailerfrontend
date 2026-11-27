@@ -76,9 +76,9 @@ test("visual template saves, reopens and supplies campaign content without new A
     .getByRole("button", { name: "Replace design", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Edit text section 2" }),
+    page.getByRole("button", { name: "Edit heading section 3" }),
   ).toContainText("Moving forward.");
-  await page.getByRole("button", { name: "Edit text section 2" }).click();
+  await page.getByRole("button", { name: "Edit heading section 3" }).click();
   await page.getByLabel("Section text").fill("Just for our partners.");
   await page.getByRole("button", { name: "Save & continue" }).click();
   await expect(

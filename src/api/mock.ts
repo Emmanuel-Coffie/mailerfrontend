@@ -468,15 +468,26 @@ export async function mockAdapter(
     return createSuccessResponse(config, metrics);
   }
 
+  if (/^\/api\/email\/campaigns\/\d+\/attachments\//.test(url)) {
+    if (method === "get") return createSuccessResponse(config, []);
+    throw createErrorResponse(config, 400, {
+      detail: "Attachments require the connected backend. This is demo mode.",
+    });
+  }
   // 4. Contacts
   if (url === "/api/email/contacts/import/" && method === "post") {
-    const preview = config.data instanceof FormData && config.data.get("preview") === "true";
+    const preview =
+      config.data instanceof FormData && config.data.get("preview") === "true";
     let fileText = "";
     let listId: number | undefined;
 
     if (config.data instanceof FormData) {
       const file = config.data.get("file");
-      if (file instanceof File && /\.xlsx$/i.test(file.name)) throw createErrorResponse(config, 400, { detail: "Excel imports require the connected backend. This is demo mode." });
+      if (file instanceof File && /\.xlsx$/i.test(file.name))
+        throw createErrorResponse(config, 400, {
+          detail:
+            "Excel imports require the connected backend. This is demo mode.",
+        });
       const listVal = config.data.get("contact_list_id");
       if (listVal) listId = Number(listVal);
       if (file && typeof (file as File).text === "function") {

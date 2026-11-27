@@ -34,7 +34,12 @@ import {
   EmailDesignerField,
   StarterGallery,
 } from "../components/EmailDesigner";
-import { starterDesign, starterInfo, renderEmail, designText } from "../email/design";
+import {
+  starterDesign,
+  starterInfo,
+  renderEmail,
+  designText,
+} from "../email/design";
 export const templateFields: FieldSpec[] = [
   { name: "name", label: "Template name", required: true, maxLength: 255 },
   { name: "subject", label: "Subject", required: true, maxLength: 998 },
@@ -125,7 +130,13 @@ export function Templates() {
                 name: "Actions",
                 render: (t) => (
                   <div className="actions">
-                    <MuiButton component={Link} to={`/campaigns/create?template=${t.id}`} variant="text">Use in campaign</MuiButton>
+                    <MuiButton
+                      component={Link}
+                      to={`/campaigns/create?template=${t.id}`}
+                      variant="text"
+                    >
+                      Use in campaign
+                    </MuiButton>
                     <MuiButton
                       component={Link}
                       to={`/templates/${t.id}`}
@@ -286,8 +297,14 @@ export function TemplateEditor() {
           <EditorForm
             key={id || "new"}
             initial={{
-              name: state.data?.name || starterInfo.find((item) => item.id === starter)?.name || "",
-              subject: state.data?.subject || starterInfo.find((item) => item.id === starter)?.name || "",
+              name:
+                state.data?.name ||
+                starterInfo.find((item) => item.id === starter)?.name ||
+                "",
+              subject:
+                state.data?.subject ||
+                starterInfo.find((item) => item.id === starter)?.name ||
+                "",
               html_content:
                 state.data?.html_content ||
                 (startingDesign ? renderEmail(startingDesign) : ""),

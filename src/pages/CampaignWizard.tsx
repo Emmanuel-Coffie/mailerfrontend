@@ -35,6 +35,7 @@ import {
   useNotice,
 } from "../components/ui";
 import { Field, UnsavedGuard, type FormValues } from "../components/forms";
+import { CampaignAttachments } from "../components/CampaignAttachments";
 import { EmailDesignerField } from "../components/EmailDesigner";
 const steps = [
   "Campaign",
@@ -96,11 +97,18 @@ export function CampaignWizard() {
   const startingTemplate = params.get("template");
   useEffect(() => {
     if (draft || !startingTemplate || form.formState.isDirty) return;
-    const preset = templates.data?.find((item) => String(item.id) === startingTemplate);
+    const preset = templates.data?.find(
+      (item) => String(item.id) === startingTemplate,
+    );
     if (!preset) return;
     setTemplate(preset.id);
-    form.reset({ ...defaults, name: preset.name, subject: preset.subject,
-      html_content: preset.html_content, text_content: preset.text_content });
+    form.reset({
+      ...defaults,
+      name: preset.name,
+      subject: preset.subject,
+      html_content: preset.html_content,
+      text_content: preset.text_content,
+    });
   }, [draft, startingTemplate, templates.data, form]);
   const scheduledLabel =
     when && !Number.isNaN(new Date(when).getTime())
@@ -408,6 +416,7 @@ export function CampaignWizard() {
                         "{{first_name}}, {{last_name}}, {{company}}, {{position}}"
                       }
                     </Typography>
+                    {draft && <CampaignAttachments campaignId={draft} />}
                     <Typography variant="h3">Draft content preview</Typography>
                     <EmailPreview html={html} text={text} />
                   </div>
@@ -528,6 +537,9 @@ export function CampaignWizard() {
                 {step === 6 && (
                   <>
                     <Detail name="Campaign">{values.name}</Detail>
+                    {draft && (
+                      <CampaignAttachments campaignId={draft} readOnly />
+                    )}
                     <Detail name="Subject">
                       {values.subject || chosenTemplate?.subject}
                     </Detail>

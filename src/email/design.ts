@@ -15,6 +15,7 @@ export interface EmailBlock {
   secondary?: string;
   url?: string;
   width?: number;
+  website?: string;
   color: string;
   background: string;
   align: "left" | "center" | "right";
@@ -55,7 +56,9 @@ export function newBlock(kind: BlockKind): EmailBlock {
       footer: "GreenHaul Solutions\nThank you for being part of our community.",
     }[kind],
     ...(kind === "button" || kind === "image" ? { url: "" } : {}),
-    ...(kind === "footer" ? { url: "{{unsubscribe_url}}" } : {}),
+    ...(kind === "footer"
+      ? { url: "{{unsubscribe_url}}", website: "https://greenhaulsolution.com" }
+      : {}),
     ...(kind === "columns"
       ? { secondary: "A fresh perspective.\nMake room for something new." }
       : {}),
@@ -183,7 +186,7 @@ export function starterDesign(id: string): EmailDesign {
           add("image", {
             text: "GreenHaul Solutions",
             url: brandLogoUrl(),
-            width: 144,
+            width: 48,
           }),
         ]
       : []),
@@ -295,7 +298,7 @@ export function blockHtml(block: EmailBlock, design: EmailDesign): string {
       content = `<p style="margin:0;font-size:16px;line-height:1.8;">${lines(block.text)}</p>`;
       break;
     case "footer":
-      content = `<p style="margin:0;font-size:12px;line-height:1.8;">${lines(block.text)}</p>${block.url === "{{unsubscribe_url}}" ? '<p style="margin:12px 0 0;font:12px Arial"><a href="{{unsubscribe_url}}" style="color:#627175;text-decoration:underline">Unsubscribe from these emails</a></p>' : ""}`;
+      content = `<p style="margin:0;font-size:12px;line-height:1.8;">${lines(block.text)}</p>${safeUrl(block.website) ? `<p style="margin:12px 0;font:13px Arial"><a href="${escapeHtml(safeUrl(block.website))}" style="color:${safeColor(design.accent)}">Visit our website</a></p>` : ""}${block.url === "{{unsubscribe_url}}" ? '<p style="margin:12px 0 0;font:12px Arial"><a href="{{unsubscribe_url}}" style="color:#627175;text-decoration:underline">Unsubscribe from these emails</a></p>' : ""}`;
       break;
     case "button":
       content = `<table role="presentation" cellpadding="0" cellspacing="0" style="${align === "center" ? "margin:auto;" : align === "right" ? "margin-left:auto;" : ""}"><tr><td bgcolor="${safeColor(design.accent)}" style="border-radius:6px;padding:14px 24px;"><a href="${escapeHtml(safeUrl(block.url))}" style="color:${safeColor(block.color)};text-decoration:none;font-size:15px;font-weight:bold;display:inline-block;">${lines(block.text)}</a></td></tr></table>`;
@@ -337,6 +340,7 @@ export function designText(design: EmailDesign): string {
       [
         b.text,
         b.secondary,
+        b.kind === "footer" ? safeUrl(b.website) : "",
         b.kind === "footer" && b.url === "{{unsubscribe_url}}"
           ? "Unsubscribe: {{unsubscribe_url}}"
           : "",
@@ -387,6 +391,7 @@ export function readDesign(html: string): EmailDesign | null {
           ["left", "center", "right"].includes(b.align) &&
           (b.secondary === undefined || typeof b.secondary === "string") &&
           (b.url === undefined || typeof b.url === "string") &&
+          (b.website === undefined || typeof b.website === "string") &&
           (b.width === undefined ||
             (typeof b.width === "number" &&
               Number.isFinite(b.width) &&

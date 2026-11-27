@@ -58,7 +58,6 @@ export function StarterGallery({
               title={`${item.name} sample`}
               tabIndex={-1}
               sandbox=""
-              loading="lazy"
               className="starter-live-preview"
               srcDoc={renderEmail(starterDesign(item.id), false)
                 .replaceAll(
@@ -136,6 +135,11 @@ function BlockContent({
           <p style={{ ...style, fontSize: 12, lineHeight: 1.7 }}>
             {block.text}
           </p>
+          {block.website && (
+            <p style={{ fontSize: 13, textDecoration: "underline" }}>
+              Visit our website
+            </p>
+          )}
           {block.url === "{{unsubscribe_url}}" && (
             <span style={{ fontSize: 12, textDecoration: "underline" }}>
               Unsubscribe from these emails
@@ -586,6 +590,15 @@ export function EmailDesigner({
                       onChange={(e) => patch({ text: e.target.value })}
                     />
                   )}
+                  {active.kind === "footer" && (
+                    <TextField
+                      label="Company website"
+                      value={active.website || ""}
+                      onChange={(e) => patch({ website: e.target.value })}
+                      error={!!active.website && !safeUrl(active.website)}
+                      helperText="Public website link shown in the email footer."
+                    />
+                  )}
                   {active.kind === "columns" && (
                     <TextField
                       label="Second column"
@@ -613,12 +626,36 @@ export function EmailDesigner({
                       }
                     />
                   )}
-                  {active.kind === "image" && <>
-                    <Button variant="outlined" onClick={() => patch({ url: brandLogoUrl(), text: "GreenHaul Solutions", width: 144 })}>Use company logo</Button>
-                    <TextField label="Image width (pixels)" type="number" value={active.width || 536}
-                      slotProps={{ htmlInput: { min: 40, max: 536 } }}
-                      onChange={(e) => patch({ width: Math.max(40, Math.min(536, Number(e.target.value) || 144)) })} />
-                  </>}
+                  {active.kind === "image" && (
+                    <>
+                      <Button
+                        variant="outlined"
+                        onClick={() =>
+                          patch({
+                            url: brandLogoUrl(),
+                            text: "GreenHaul Solutions",
+                            width: 48,
+                          })
+                        }
+                      >
+                        Use company logo
+                      </Button>
+                      <TextField
+                        label="Image width (pixels)"
+                        type="number"
+                        value={active.width || 536}
+                        slotProps={{ htmlInput: { min: 40, max: 536 } }}
+                        onChange={(e) =>
+                          patch({
+                            width: Math.max(
+                              40,
+                              Math.min(536, Number(e.target.value) || 48),
+                            ),
+                          })
+                        }
+                      />
+                    </>
+                  )}
                   {!["divider", "spacer", "image"].includes(active.kind) && (
                     <>
                       <TextField
