@@ -19,6 +19,7 @@ import DesktopWindowsOutlined from "@mui/icons-material/DesktopWindowsOutlined";
 import SmartphoneOutlined from "@mui/icons-material/SmartphoneOutlined";
 import {
   blockLabels,
+  brandLogoUrl,
   designIssues,
   designText,
   emptyDesign,
@@ -53,51 +54,22 @@ export function StarterGallery({
             style={{ background: item.tone }}
             aria-hidden="true"
           >
-            <div className="mini-mail">
-              <span>GREENHAUL</span>
-              <strong>
-                {item.id === "outreach" ? (
-                  <>
-                    A good conversation
-                    <br />
-                    starts with hello.
-                  </>
-                ) : item.id === "update" ? (
-                  <>
-                    Moving forward.
-                    <br />
-                    Keeping you close.
-                  </>
-                ) : item.id === "newsletter" ? (
-                  <>
-                    Good things,
-                    <br />
-                    worth sharing.
-                  </>
-                ) : item.id === "launch" ? (
-                  <>
-                    Meet your next
-                    <br />
-                    possibility.
-                  </>
-                ) : item.id === "invitation" ? (
-                  <>
-                    Good company.
-                    <br />
-                    Great conversations.
-                  </>
-                ) : (
-                  <>
-                    This is the start
-                    <br />
-                    of something good.
-                  </>
+            <iframe
+              title={`${item.name} sample`}
+              tabIndex={-1}
+              sandbox=""
+              loading="lazy"
+              className="starter-live-preview"
+              srcDoc={renderEmail(starterDesign(item.id), false)
+                .replaceAll(
+                  brandLogoUrl(),
+                  new URL("/brand-logo.jpg", window.location.origin).href,
+                )
+                .replace(
+                  "<head>",
+                  `<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src ${window.location.origin}">`,
                 )}
-              </strong>
-              <i />
-              <i />
-              <b />
-            </div>
+            />
           </div>
           <div className="starter-caption">
             <span>{item.label}</span>
@@ -160,7 +132,16 @@ function BlockContent({
       );
     case "footer":
       return (
-        <p style={{ ...style, fontSize: 12, lineHeight: 1.7 }}>{block.text}</p>
+        <div>
+          <p style={{ ...style, fontSize: 12, lineHeight: 1.7 }}>
+            {block.text}
+          </p>
+          {block.url === "{{unsubscribe_url}}" && (
+            <span style={{ fontSize: 12, textDecoration: "underline" }}>
+              Unsubscribe from these emails
+            </span>
+          )}
+        </div>
       );
     case "button":
       return (
@@ -177,7 +158,13 @@ function BlockContent({
           src={safeUrl(block.url, true)}
           alt={block.text}
           referrerPolicy="no-referrer"
-          style={{ display: "block", maxWidth: "100%", height: "auto" }}
+          style={{
+            display: "block",
+            width: block.width,
+            maxWidth: "100%",
+            height: "auto",
+            marginInline: block.align === "center" ? "auto" : undefined,
+          }}
         />
       ) : (
         <div className="image-placeholder">
@@ -626,6 +613,12 @@ export function EmailDesigner({
                       }
                     />
                   )}
+                  {active.kind === "image" && <>
+                    <Button variant="outlined" onClick={() => patch({ url: brandLogoUrl(), text: "GreenHaul Solutions", width: 144 })}>Use company logo</Button>
+                    <TextField label="Image width (pixels)" type="number" value={active.width || 536}
+                      slotProps={{ htmlInput: { min: 40, max: 536 } }}
+                      onChange={(e) => patch({ width: Math.max(40, Math.min(536, Number(e.target.value) || 144)) })} />
+                  </>}
                   {!["divider", "spacer", "image"].includes(active.kind) && (
                     <>
                       <TextField

@@ -118,7 +118,7 @@ export function Contacts() {
               variant="outlined"
               startIcon={<UploadFileOutlined />}
             >
-              Import CSV
+              Import spreadsheet
             </MuiButton>
             <MuiButton
               startIcon={<AddOutlined />}
@@ -131,7 +131,8 @@ export function Contacts() {
       />
       <ErrorNotice error={error || state.error} retry={state.reload} />
       <section className="panel" style={{ padding: 0 }}>
-        {(Boolean(query.key) || (state.data && state.data.results.length > 0)) && (
+        {(Boolean(query.key) ||
+          (state.data && state.data.results.length > 0)) && (
           <div className="toolbar">
             <SearchField
               value={String(query.query.search || "")}
@@ -247,7 +248,7 @@ export function Contacts() {
                     />
                   }
                   title="No contacts yet"
-                  description="Your audience address book is currently empty. Add individual contacts or import a full CSV list to launch precision campaigns."
+                  description="Your audience address book is currently empty. Add individual contacts or import a spreadsheet to create your first audience."
                   action={
                     <MuiButton
                       variant="contained"
@@ -264,12 +265,12 @@ export function Contacts() {
                       to="/contacts/import"
                       startIcon={<CloudUploadOutlined />}
                     >
-                      Import CSV
+                      Import spreadsheet
                     </MuiButton>
                   }
                   features={[
                     {
-                      title: "Bulk CSV Import",
+                      title: "Excel & CSV import",
                       description:
                         "Upload thousands of contacts at once with automated column mapping and verification.",
                       icon: <CloudUploadOutlined sx={{ fontSize: 16 }} />,

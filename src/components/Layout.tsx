@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   Avatar,
   Badge,
-  Button,
+  Button as MuiButton,
   Divider,
   Drawer,
   IconButton,
@@ -707,7 +707,10 @@ const layoutStyles = String.raw`
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <span className="gh-brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+    <span
+      className="gh-brand"
+      style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
+    >
       <GreenHaulLogo size={compact ? 30 : 34} />
       {!compact && (
         <span className="gh-brand-copy" style={{ minWidth: 0 }}>
@@ -742,7 +745,9 @@ export function Layout() {
     )?.name ?? "Workspace";
 
   const displayName = username || "Brother Kojo";
-  const displayEmail = username ? `${username}@greenhaul.io` : "stanelorm@gmail.com";
+  const displayEmail = username
+    ? `${username}@greenhaul.io`
+    : "stanelorm@gmail.com";
   const initials = (username || "BK").slice(0, 2).toUpperCase();
 
   const isItemActive = (path: string) => {
@@ -805,7 +810,9 @@ export function Layout() {
       {navigationSections.map((section, sectionIndex) => (
         <div className="gh-sidebar-section" key={section.title}>
           {!mobile && collapsed ? (
-            sectionIndex > 0 ? <div className="gh-sidebar-divider" /> : null
+            sectionIndex > 0 ? (
+              <div className="gh-sidebar-divider" />
+            ) : null
           ) : (
             <div className="gh-sidebar-label">{section.title}</div>
           )}
@@ -886,7 +893,9 @@ export function Layout() {
           </Tooltip>
         ) : (
           <div className="gh-sidebar-expanded-header">
-            <span className="gh-sidebar-section-title">Workspace Directory</span>
+            <span className="gh-sidebar-section-title">
+              Workspace Directory
+            </span>
             <Tooltip title="Collapse sidebar" arrow>
               <IconButton
                 className="gh-sidebar-collapse"
@@ -978,7 +987,7 @@ export function Layout() {
         </div>
 
         <div className="gh-topbar-right">
-          <Button
+          <MuiButton
             component={Link}
             to="/campaigns/create"
             variant="contained"
@@ -987,7 +996,7 @@ export function Layout() {
             disableElevation
           >
             <span className="gh-create-button-label">New campaign</span>
-          </Button>
+          </MuiButton>
 
           <Tooltip title={`${displayName} · Account`}>
             <IconButton

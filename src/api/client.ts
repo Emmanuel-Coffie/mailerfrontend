@@ -2,17 +2,15 @@ import axios, { AxiosError } from "axios";
 import type { ApiError } from "./types";
 import { mockAdapter } from "./mock";
 
-export const baseURL = (
-  import.meta.env.VITE_API_BASE_URL || ""
-).replace(/\/$/, "");
+export const baseURL = (import.meta.env.VITE_API_BASE_URL || "").replace(
+  /\/$/,
+  "",
+);
 export const publicClient = axios.create({ baseURL, timeout: 40000 });
 export const client = axios.create({ baseURL, timeout: 40000 });
 
-// Use mockAdapter if explicitly requested via VITE_USE_MOCK=true,
-// or by default when running without a remote backend API configured.
-const useMock =
-  import.meta.env.VITE_USE_MOCK === "true" ||
-  (!baseURL && import.meta.env.VITE_USE_MOCK !== "false");
+// Demo data must be explicitly enabled; missing configuration must never fake delivery.
+const useMock = import.meta.env.VITE_USE_MOCK === "true";
 
 if (useMock) {
   publicClient.defaults.adapter = mockAdapter;

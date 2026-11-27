@@ -15,7 +15,7 @@ export function Settings() {
       <PageHeading
         title="Settings"
         kicker="System Configuration"
-        description="Configure SMTP sending credentials, deliverability verification domains, webhook signing secrets, and workspace parameters."
+        description="Check your email connection, sender setup, and delivery tracking."
       />
       <ErrorNotice error={state.error} retry={state.reload} />
       {!state.data ? (

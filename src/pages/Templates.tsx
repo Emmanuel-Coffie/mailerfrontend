@@ -34,7 +34,7 @@ import {
   EmailDesignerField,
   StarterGallery,
 } from "../components/EmailDesigner";
-import { starterDesign, renderEmail, designText } from "../email/design";
+import { starterDesign, starterInfo, renderEmail, designText } from "../email/design";
 export const templateFields: FieldSpec[] = [
   { name: "name", label: "Template name", required: true, maxLength: 255 },
   { name: "subject", label: "Subject", required: true, maxLength: 998 },
@@ -54,7 +54,7 @@ export function Templates() {
       <PageHeading
         title="Templates"
         kicker="Design Studio"
-        description="Craft modular, responsive email designs and reusable layouts that maintain pristine brand fidelity across every email client."
+        description="Start with a considered design. Make it yours, then use it in your next campaign."
         actions={
           <MuiButton
             component={Link}
@@ -69,14 +69,14 @@ export function Templates() {
       <div className="template-intro">
         <div>
           <div className="template-intro-eyebrow">
-            <span>Curated Starters</span>
+            <span>The collection</span>
             <span style={{ opacity: 0.5 }}>·</span>
-            <span>Pre-Engineered Layouts</span>
+            <span>Six signature layouts</span>
           </div>
           <h2>Your next message, beautifully started.</h2>
           <p>
-            Select a tailored layout baseline below. Customize headings, typography,
-            buttons, and content blocks with the visual designer.
+            Choose a layout for your message. Edit the words, add your links,
+            and preview it on desktop or mobile.
           </p>
         </div>
       </div>
@@ -91,10 +91,7 @@ export function Templates() {
             <span>Saved Assets</span>
           </div>
           <h2>Saved templates</h2>
-          <p>
-            Your reusable master designs and verified layouts, ready for campaign
-            dispatch.
-          </p>
+          <p>Your saved designs, ready for the next conversation.</p>
         </div>
       </div>
       <section className="panel" style={{ padding: 0 }}>
@@ -128,6 +125,7 @@ export function Templates() {
                 name: "Actions",
                 render: (t) => (
                   <div className="actions">
+                    <MuiButton component={Link} to={`/campaigns/create?template=${t.id}`} variant="text">Use in campaign</MuiButton>
                     <MuiButton
                       component={Link}
                       to={`/templates/${t.id}`}
@@ -288,8 +286,8 @@ export function TemplateEditor() {
           <EditorForm
             key={id || "new"}
             initial={{
-              name: state.data?.name || "",
-              subject: state.data?.subject || "",
+              name: state.data?.name || starterInfo.find((item) => item.id === starter)?.name || "",
+              subject: state.data?.subject || starterInfo.find((item) => item.id === starter)?.name || "",
               html_content:
                 state.data?.html_content ||
                 (startingDesign ? renderEmail(startingDesign) : ""),

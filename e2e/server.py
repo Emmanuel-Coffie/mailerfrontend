@@ -6,7 +6,7 @@ import uuid
 from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(os.environ.get("E2E_BACKEND_ROOT", Path(__file__).resolve().parents[2] / "mailerbackend"))
 sys.path.insert(0, str(ROOT))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'bulkmailer.test_settings'
 os.environ['FRONTEND_URL'] = 'http://localhost:5173'
@@ -26,7 +26,7 @@ call_command('migrate', verbosity=0)
 assert Path(settings.DATABASES['default']['NAME']) == ROOT / 'browser-tests.sqlite3'
 call_command('flush', interactive=False, verbosity=0)
 User.objects.create_user('browser-test', password=os.environ['E2E_PASSWORD'], is_staff=True)
-output = ROOT / 'frontend' / 'test-results' / 'sent-emails.json'
+output = Path(__file__).resolve().parents[1] / 'test-results' / 'sent-emails.json'
 output.parent.mkdir(exist_ok=True)
 output.write_text('[]')
 

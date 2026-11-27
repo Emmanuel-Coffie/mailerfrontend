@@ -38,9 +38,9 @@ test("complete browser workflow against Django with mocked provider", async ({
   await expect(
     page.getByRole("cell", { name: "ada@example.com", exact: true }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Import CSV", exact: true }).click();
+  await page.getByRole("link", { name: "Import spreadsheet", exact: true }).click();
   await page
-    .getByLabel("CSV file")
+    .getByLabel("Spreadsheet file")
     .setInputFiles({
       name: "audience.csv",
       mimeType: "text/csv",
@@ -49,9 +49,9 @@ test("complete browser workflow against Django with mocked provider", async ({
       ),
     });
   await page
-    .getByRole("button", { name: "Import contacts", exact: true })
+    .getByRole("button", { name: "Import 1 contacts", exact: true })
     .click();
-  await expect(page.getByText("Import results")).toBeVisible();
+  await expect(page.getByText("Your audience is ready")).toBeVisible();
   await page.getByRole("link", { name: "Contact Lists", exact: true }).click();
   await page
     .getByRole("button", { name: "Create list", exact: true })
@@ -78,6 +78,7 @@ test("complete browser workflow against Django with mocked provider", async ({
     .click();
   await page.getByLabel("Template name").fill("Personal introduction");
   await page.getByLabel(/^Subject/).fill("Hello {{first_name}}");
+  await page.getByRole("button", { name: "HTML", exact: true }).click();
   await page
     .getByLabel("HTML content", { exact: true })
     .fill("<p>Hello {{first_name}}, welcome to {{company}}.</p>");

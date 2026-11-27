@@ -150,13 +150,17 @@ describe("audience and templates", () => {
     mount("/contacts/import");
     const user = userEvent.setup();
     await user.upload(
-      await screen.findByLabelText("CSV file"),
+      await screen.findByLabelText("Spreadsheet file"),
       new File(["email\na@example.com"], "contacts.csv", { type: "text/csv" }),
     );
-    await user.click(screen.getByRole("button", { name: "Import contacts" }));
-    expect(await screen.findByText("Import results")).toBeInTheDocument();
+    await user.click(
+      await screen.findByRole("button", { name: "Import 5 contacts" }),
+    );
+    expect(
+      await screen.findByText("Your audience is ready"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Duplicates")).toBeInTheDocument();
-    expect(screen.getByText("8")).toBeInTheDocument();
+    expect(screen.getByText("4")).toBeInTheDocument();
   });
   it("validates the template form", async () => {
     mount("/templates/create");

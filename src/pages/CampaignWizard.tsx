@@ -93,6 +93,15 @@ export function CampaignWizard() {
       setAudienceDirty(false);
     }
   }, [saved.data, form]);
+  const startingTemplate = params.get("template");
+  useEffect(() => {
+    if (draft || !startingTemplate || form.formState.isDirty) return;
+    const preset = templates.data?.find((item) => String(item.id) === startingTemplate);
+    if (!preset) return;
+    setTemplate(preset.id);
+    form.reset({ ...defaults, name: preset.name, subject: preset.subject,
+      html_content: preset.html_content, text_content: preset.text_content });
+  }, [draft, startingTemplate, templates.data, form]);
   const scheduledLabel =
     when && !Number.isNaN(new Date(when).getTime())
       ? date(new Date(when).toISOString())
