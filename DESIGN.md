@@ -25,7 +25,7 @@ colors:
 typography:
   display:
     fontFamily: "Manrope, Inter, sans-serif"
-    fontSize: "clamp(26px, 2.7vw, 36px)"
+    fontSize: "36px"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.035em"
@@ -42,7 +42,7 @@ typography:
     lineHeight: 1.5
   body:
     fontFamily: "Inter, sans-serif"
-    fontSize: "14px"
+    fontSize: "16px"
     lineHeight: 1.65
   label:
     fontFamily: "Inter, sans-serif"
@@ -119,7 +119,7 @@ Porcelain `background`, white `surface`, and restrained `border`/`subtle` lines 
 **Display Font:** Manrope, falling back to Inter and sans-serif.  
 **Body Font:** Inter, falling back to sans-serif.
 
-Display titles use the responsive frontmatter scale; unmodified MUI h1 uses 34px. Headline and title roles distinguish panel headings from compact labels. Body copy uses the frontmatter scale; secondary copy uses 13px with 1.6 line height. Page descriptions are limited to 65ch. Metrics use tabular numerals.
+Display titles use the responsive frontmatter scale; unmodified MUI h1 uses 34px. Headline and title roles distinguish panel headings from compact labels. Body copy uses the frontmatter scale; secondary copy uses 14px with 1.6 line height. Page descriptions are limited to 65ch. Metrics use tabular numerals.
 
 Email content has its own portable Arial, Georgia or Verdana font choice. Do not impose application web fonts on exported email.
 
@@ -190,3 +190,7 @@ Reduced-motion preferences suppress animation, transitions and smooth scrolling.
 - Don't replace existing HTML silently when opening the visual designer.
 - Don't claim demo previews verify delivery or rendering in every email client.
 
+
+## November 2026 workflow refinement
+
+The template collection uses real sandboxed email previews, three columns on desktop, two below 1100px and one below 600px. Starter layouts include a 48px brand logo, editable content, and a recipient-specific unsubscribe footer. The import workspace uses a file/review/success sequence with automatic column detection and explicit review before persistence. Runtime palette drift was reconciled to the documented ink-teal tokens; body text is now 16px.

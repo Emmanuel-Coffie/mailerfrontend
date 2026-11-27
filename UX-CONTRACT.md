@@ -14,3 +14,7 @@ Existing REST payloads, permissions, lifecycle restrictions, sending safeguards 
 
 Identity asset: `public/brand-logo.jpg` is the exact supplied user logo and remains unchanged.
 
+
+- Import: `src/pages/Import.tsx` owns file selection, stale-safe preview and confirmed import. Backend `mailing/imports.py` owns field detection; `mailing/services.py` owns validation and group membership. Preview never writes. Existing contacts and suppression records remain unchanged. Grouping options use the existing MUI Select.
+- Template reuse: Use in campaign preloads a template into the existing campaign wizard. Sending still requires the existing recipient review and confirmation.
+- Demo mode is opt-in through VITE_USE_MOCK=true. Production never silently falls back to mock data.

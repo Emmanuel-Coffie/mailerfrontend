@@ -29,20 +29,20 @@ describe("email design interactions", () => {
     render(<Harness />);
     const user = userEvent.setup();
     await user.click(
-      screen.getByRole("button", { name: /A thoughtful introduction/ }),
+      screen.getByRole("button", { name: /From our side of the desk/ }),
     );
     await user.click(
-      screen.getByRole("button", { name: "Edit heading section 2" }),
+      screen.getByRole("button", { name: "Edit heading section 3" }),
     );
     await user.clear(screen.getByLabelText("Section text"));
     await user.click(screen.getByLabelText("Section text"));
     await user.paste("A personal hello");
     expect(
-      readDesign(screen.getByTestId("html").textContent!)?.blocks[1].text,
+      readDesign(screen.getByTestId("html").textContent!)?.blocks[2].text,
     ).toBe("A personal hello");
     await user.click(screen.getByRole("button", { name: "Move section up" }));
     expect(
-      readDesign(screen.getByTestId("html").textContent!)?.blocks[0].kind,
+      readDesign(screen.getByTestId("html").textContent!)?.blocks[1].kind,
     ).toBe("heading");
     await user.click(screen.getByRole("button", { name: "Duplicate section" }));
     expect(

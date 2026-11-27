@@ -14,6 +14,8 @@ export interface EmailBlock {
   text: string;
   secondary?: string;
   url?: string;
+  width?: number;
+  website?: string;
   color: string;
   background: string;
   align: "left" | "center" | "right";
@@ -54,6 +56,9 @@ export function newBlock(kind: BlockKind): EmailBlock {
       footer: "GreenHaul Solutions\nThank you for being part of our community.",
     }[kind],
     ...(kind === "button" || kind === "image" ? { url: "" } : {}),
+    ...(kind === "footer"
+      ? { url: "{{unsubscribe_url}}", website: "https://greenhaulsolution.com" }
+      : {}),
     ...(kind === "columns"
       ? { secondary: "A fresh perspective.\nMake room for something new." }
       : {}),
@@ -113,6 +118,13 @@ export const starterInfo = [
     label: "Welcome",
   },
 ] as const;
+export function brandLogoUrl(): string {
+  const configured = import.meta.env.VITE_BRAND_LOGO_URL;
+  if (configured && safeUrl(configured, true)) return configured;
+  if (typeof window !== "undefined" && window.location.protocol === "https:")
+    return new URL("/brand-logo.jpg", window.location.origin).href;
+  return "https://raw.githubusercontent.com/Emmanuel-Coffie/mailerfrontend/85ed9b727ca5a82e924a32459394b8ea30234d40/public/brand-logo.jpg";
+}
 export function starterDesign(id: string): EmailDesign {
   const d = emptyDesign();
   const add = (kind: BlockKind, patch: Partial<EmailBlock> = {}) => ({
@@ -169,6 +181,15 @@ export function starterDesign(id: string): EmailDesign {
   const t = themes[id] || themes.newsletter;
   d.accent = t.accent;
   d.blocks = [
+    ...(brandLogoUrl()
+      ? [
+          add("image", {
+            text: "GreenHaul Solutions",
+            url: brandLogoUrl(),
+            width: 48,
+          }),
+        ]
+      : []),
     add("text", {
       text: "GREENHAUL SOLUTIONS",
       color: t.accent,
@@ -181,9 +202,52 @@ export function starterDesign(id: string): EmailDesign {
     add("divider"),
     add("footer"),
   ];
+  if (id === "outreach") {
+    d.blocks = d.blocks.filter((b) => b.kind !== "heading");
+    d.blocks.splice(
+      d.blocks.length - 2,
+      0,
+      add("text", {
+        text: "Warm regards,\nThe GreenHaul Solutions team",
+        color: t.accent,
+      }),
+    );
+  }
+  if (id === "update")
+    d.blocks.splice(
+      d.blocks.length - 3,
+      0,
+      add("columns", {
+        text: "WHAT’S CHANGING\nA clear look at the improvements that matter to your team.",
+        secondary:
+          "WHAT’S NEXT\nOur next steps, and how we can keep supporting you.",
+        background: t.bg,
+      }),
+    );
+  if (id === "welcome")
+    d.blocks.splice(
+      d.blocks.length - 3,
+      0,
+      add("text", {
+        text: "YOUR FIRST STEPS\n\nTell us what matters to your business.\nExplore the services that fit your needs.\nReply whenever you need a hand.",
+        background: t.bg,
+      }),
+    );
+  if (id === "invitation")
+    d.blocks.splice(
+      d.blocks.length - 3,
+      0,
+      add("text", {
+        text: "THE DETAILS\nDate · Add your event date\nTime · Add your local time and timezone\nVenue · Add the address or meeting link",
+        color: t.accent,
+      }),
+    );
   if (id === "launch") {
     d.blocks = d.blocks.map((b, index) =>
-      index < 2 ? { ...b, background: t.accent, color: "#ffffff" } : b,
+      b.kind === "heading" ||
+      (b.kind === "text" && b.text === "GREENHAUL SOLUTIONS")
+        ? { ...b, background: t.accent, color: "#ffffff" }
+        : b,
     );
   }
   if (id === "invitation") {
@@ -234,12 +298,17 @@ export function blockHtml(block: EmailBlock, design: EmailDesign): string {
       content = `<p style="margin:0;font-size:16px;line-height:1.8;">${lines(block.text)}</p>`;
       break;
     case "footer":
-      content = `<p style="margin:0;font-size:12px;line-height:1.8;">${lines(block.text)}</p>`;
+      content = `<p style="margin:0;font-size:12px;line-height:1.8;">${lines(block.text)}</p>${safeUrl(block.website) ? `<p style="margin:12px 0;font:13px Arial"><a href="${escapeHtml(safeUrl(block.website))}" style="color:${safeColor(design.accent)}">Visit our website</a></p>` : ""}${block.url === "{{unsubscribe_url}}" ? '<p style="margin:12px 0 0;font:12px Arial"><a href="{{unsubscribe_url}}" style="color:#627175;text-decoration:underline">Unsubscribe from these emails</a></p>' : ""}`;
       break;
     case "button":
       content = `<table role="presentation" cellpadding="0" cellspacing="0" style="${align === "center" ? "margin:auto;" : align === "right" ? "margin-left:auto;" : ""}"><tr><td bgcolor="${safeColor(design.accent)}" style="border-radius:6px;padding:14px 24px;"><a href="${escapeHtml(safeUrl(block.url))}" style="color:${safeColor(block.color)};text-decoration:none;font-size:15px;font-weight:bold;display:inline-block;">${lines(block.text)}</a></td></tr></table>`;
       break;
     case "image":
+      if (block.width && safeUrl(block.url, true)) {
+        const width = Math.max(40, Math.min(536, block.width));
+        content = `<img src="${escapeHtml(safeUrl(block.url, true))}" alt="${escapeHtml(block.text)}" width="${width}" style="display:block;width:${width}px;max-width:100%;height:auto;border:0;${align === "center" ? "margin:auto;" : ""}">`;
+        break;
+      }
       content = safeUrl(block.url, true)
         ? `<img src="${escapeHtml(safeUrl(block.url, true))}" alt="${escapeHtml(block.text)}" width="536" style="display:block;width:100%;max-width:536px;height:auto;border:0;">`
         : "";
@@ -271,6 +340,10 @@ export function designText(design: EmailDesign): string {
       [
         b.text,
         b.secondary,
+        b.kind === "footer" ? safeUrl(b.website) : "",
+        b.kind === "footer" && b.url === "{{unsubscribe_url}}"
+          ? "Unsubscribe: {{unsubscribe_url}}"
+          : "",
         b.kind === "button" || b.kind === "image"
           ? safeUrl(b.url, b.kind === "image")
           : "",
@@ -317,7 +390,13 @@ export function readDesign(html: string): EmailDesign | null {
           typeof b.background === "string" &&
           ["left", "center", "right"].includes(b.align) &&
           (b.secondary === undefined || typeof b.secondary === "string") &&
-          (b.url === undefined || typeof b.url === "string"),
+          (b.url === undefined || typeof b.url === "string") &&
+          (b.website === undefined || typeof b.website === "string") &&
+          (b.width === undefined ||
+            (typeof b.width === "number" &&
+              Number.isFinite(b.width) &&
+              b.width >= 40 &&
+              b.width <= 536)),
       )
     )
       return null;

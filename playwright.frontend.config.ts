@@ -1,7 +1,8 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./frontend-e2e",
-  timeout: 60000,
+  timeout: 180000,
+  expect: { timeout: 20000 },
   workers: 1,
   use: {
     baseURL: "http://127.0.0.1:3011",

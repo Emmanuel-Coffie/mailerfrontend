@@ -310,7 +310,11 @@ function saveDatabase(db: MockDatabase) {
   }
 }
 
-function paginate<T>(items: T[], page = 1, pageSize = 50): PaginatedResponse<T> {
+function paginate<T>(
+  items: T[],
+  page = 1,
+  pageSize = 50,
+): PaginatedResponse<T> {
   const total = items.length;
   const start = (page - 1) * pageSize;
   const results = items.slice(start, start + pageSize);
@@ -373,7 +377,10 @@ export async function mockAdapter(
       } catch {
         body = {};
       }
-    } else if (typeof config.data === "object" && !(config.data instanceof FormData)) {
+    } else if (
+      typeof config.data === "object" &&
+      !(config.data instanceof FormData)
+    ) {
       body = config.data;
     }
   }
@@ -401,20 +408,46 @@ export async function mockAdapter(
   // 3. Dashboard metrics
   if (url === "/api/email/dashboard/" && method === "get") {
     const totalContacts = db.contacts.length;
-    const activeContacts = db.contacts.filter((c) => c.status === "active").length;
-    const unsubscribedContacts = db.contacts.filter((c) => c.status === "unsubscribed").length;
-    const bouncedContacts = db.contacts.filter((c) => c.status === "bounced").length;
-    const suppressedContacts = db.contacts.filter((c) => c.status === "suppressed").length;
+    const activeContacts = db.contacts.filter(
+      (c) => c.status === "active",
+    ).length;
+    const unsubscribedContacts = db.contacts.filter(
+      (c) => c.status === "unsubscribed",
+    ).length;
+    const bouncedContacts = db.contacts.filter(
+      (c) => c.status === "bounced",
+    ).length;
+    const suppressedContacts = db.contacts.filter(
+      (c) => c.status === "suppressed",
+    ).length;
 
     const totalCampaigns = db.campaigns.length;
-    const draftCampaigns = db.campaigns.filter((c) => c.status === "draft").length;
-    const scheduledCampaigns = db.campaigns.filter((c) => c.status === "scheduled").length;
-    const completedCampaigns = db.campaigns.filter((c) => c.status === "completed").length;
+    const draftCampaigns = db.campaigns.filter(
+      (c) => c.status === "draft",
+    ).length;
+    const scheduledCampaigns = db.campaigns.filter(
+      (c) => c.status === "scheduled",
+    ).length;
+    const completedCampaigns = db.campaigns.filter(
+      (c) => c.status === "completed",
+    ).length;
 
-    const totalSent = db.campaigns.reduce((acc, c) => acc + (c.sent_count || 0), 0);
-    const totalDelivered = db.campaigns.reduce((acc, c) => acc + (c.delivered_count || 0), 0);
-    const totalBounced = db.campaigns.reduce((acc, c) => acc + (c.bounced_count || 0), 0);
-    const totalFailed = db.campaigns.reduce((acc, c) => acc + (c.failed_count || 0), 0);
+    const totalSent = db.campaigns.reduce(
+      (acc, c) => acc + (c.sent_count || 0),
+      0,
+    );
+    const totalDelivered = db.campaigns.reduce(
+      (acc, c) => acc + (c.delivered_count || 0),
+      0,
+    );
+    const totalBounced = db.campaigns.reduce(
+      (acc, c) => acc + (c.bounced_count || 0),
+      0,
+    );
+    const totalFailed = db.campaigns.reduce(
+      (acc, c) => acc + (c.failed_count || 0),
+      0,
+    );
 
     const metrics: DashboardMetrics = {
       total_contacts: totalContacts,
@@ -435,13 +468,26 @@ export async function mockAdapter(
     return createSuccessResponse(config, metrics);
   }
 
+  if (/^\/api\/email\/campaigns\/\d+\/attachments\//.test(url)) {
+    if (method === "get") return createSuccessResponse(config, []);
+    throw createErrorResponse(config, 400, {
+      detail: "Attachments require the connected backend. This is demo mode.",
+    });
+  }
   // 4. Contacts
   if (url === "/api/email/contacts/import/" && method === "post") {
+    const preview =
+      config.data instanceof FormData && config.data.get("preview") === "true";
     let fileText = "";
     let listId: number | undefined;
 
     if (config.data instanceof FormData) {
       const file = config.data.get("file");
+      if (file instanceof File && /\.xlsx$/i.test(file.name))
+        throw createErrorResponse(config, 400, {
+          detail:
+            "Excel imports require the connected backend. This is demo mode.",
+        });
       const listVal = config.data.get("contact_list_id");
       if (listVal) listId = Number(listVal);
       if (file && typeof (file as File).text === "function") {
@@ -461,12 +507,16 @@ export async function mockAdapter(
     let imported = 0;
 
     const seenInFile = new Set<string>();
-    const existingEmails = new Set(db.contacts.map((c) => c.email.toLowerCase()));
+    const existingEmails = new Set(
+      db.contacts.map((c) => c.email.toLowerCase()),
+    );
     const createdIds: number[] = [];
 
     // Header index determination
     if (lines.length > 0) {
-      const headerParts = lines[0].split(",").map((s) => s.trim().toLowerCase());
+      const headerParts = lines[0]
+        .split(",")
+        .map((s) => s.trim().toLowerCase());
       const emailIdx = headerParts.indexOf("email");
       const fnIdx = headerParts.indexOf("first_name");
       const lnIdx = headerParts.indexOf("last_name");
@@ -489,14 +539,16 @@ export async function mockAdapter(
           continue;
         }
         seenInFile.add(email.toLowerCase());
+        valid++;
         if (existingEmails.has(email.toLowerCase())) {
           existing++;
           continue;
         }
 
-        valid++;
         imported++;
-        const newId = (db.contacts.length ? Math.max(...db.contacts.map((c) => c.id)) : 0) + 1;
+        const newId =
+          (db.contacts.length ? Math.max(...db.contacts.map((c) => c.id)) : 0) +
+          1;
         const newContact: Contact = {
           id: newId,
           first_name: firstName,
@@ -524,12 +576,15 @@ export async function mockAdapter(
     if (listId && createdIds.length > 0) {
       const targetList = db.lists.find((l) => l.id === listId);
       if (targetList) {
-        targetList.contacts = Array.from(new Set([...targetList.contacts, ...createdIds]));
+        targetList.contacts = Array.from(
+          new Set([...targetList.contacts, ...createdIds]),
+        );
       }
     }
 
-    saveDatabase(db);
+    if (!preview) saveDatabase(db);
     const result: ImportResult = {
+      preview,
       total,
       valid,
       invalid,
@@ -547,18 +602,27 @@ export async function mockAdapter(
     const index = db.contacts.findIndex((c) => c.id === id);
 
     if (method === "get") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Contact not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Contact not found.",
+        });
       return createSuccessResponse(config, db.contacts[index]);
     }
     if (method === "patch") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Contact not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Contact not found.",
+        });
       const updated = { ...db.contacts[index], ...body, updated_at: now };
       db.contacts[index] = updated;
       saveDatabase(db);
       return createSuccessResponse(config, updated);
     }
     if (method === "delete") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Contact not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Contact not found.",
+        });
       db.contacts.splice(index, 1);
       // Remove from lists
       db.lists.forEach((l) => {
@@ -569,7 +633,10 @@ export async function mockAdapter(
     }
   }
 
-  if (url === "/api/email/contacts/" || url.startsWith("/api/email/contacts/?")) {
+  if (
+    url === "/api/email/contacts/" ||
+    url.startsWith("/api/email/contacts/?")
+  ) {
     if (method === "get") {
       const params = config.params || {};
       let filtered = [...db.contacts];
@@ -589,10 +656,14 @@ export async function mockAdapter(
       }
       if (params.company) {
         const companyQuery = String(params.company).toLowerCase();
-        filtered = filtered.filter((c) => c.company.toLowerCase().includes(companyQuery));
+        filtered = filtered.filter((c) =>
+          c.company.toLowerCase().includes(companyQuery),
+        );
       }
       if (params.contact_lists) {
-        const targetList = db.lists.find((l) => l.id === Number(params.contact_lists));
+        const targetList = db.lists.find(
+          (l) => l.id === Number(params.contact_lists),
+        );
         if (targetList) {
           filtered = filtered.filter((c) => targetList.contacts.includes(c.id));
         } else {
@@ -606,9 +677,13 @@ export async function mockAdapter(
 
     if (method === "post") {
       if (!body.email) {
-        throw createErrorResponse(config, 400, { email: ["This field is required."] });
+        throw createErrorResponse(config, 400, {
+          email: ["This field is required."],
+        });
       }
-      const newId = (db.contacts.length ? Math.max(...db.contacts.map((c) => c.id)) : 0) + 1;
+      const newId =
+        (db.contacts.length ? Math.max(...db.contacts.map((c) => c.id)) : 0) +
+        1;
       const newContact: Contact = {
         id: newId,
         first_name: body.first_name || "",
@@ -634,26 +709,36 @@ export async function mockAdapter(
   }
 
   // 5. Lists
-  const listMemberAdd = url.match(/^\/api\/email\/lists\/(\d+)\/add-contacts\/$/);
+  const listMemberAdd = url.match(
+    /^\/api\/email\/lists\/(\d+)\/add-contacts\/$/,
+  );
   if (listMemberAdd && method === "post") {
     const id = Number(listMemberAdd[1]);
     const targetList = db.lists.find((l) => l.id === id);
-    if (!targetList) throw createErrorResponse(config, 404, { detail: "List not found." });
+    if (!targetList)
+      throw createErrorResponse(config, 404, { detail: "List not found." });
     const contactIds = Array.isArray(body.contact_ids) ? body.contact_ids : [];
-    targetList.contacts = Array.from(new Set([...targetList.contacts, ...contactIds]));
+    targetList.contacts = Array.from(
+      new Set([...targetList.contacts, ...contactIds]),
+    );
     targetList.updated_at = now;
     saveDatabase(db);
     return createSuccessResponse(config, targetList);
   }
 
-  const listMemberRemove = url.match(/^\/api\/email\/lists\/(\d+)\/remove-contacts\/$/);
+  const listMemberRemove = url.match(
+    /^\/api\/email\/lists\/(\d+)\/remove-contacts\/$/,
+  );
   if (listMemberRemove && method === "post") {
     const id = Number(listMemberRemove[1]);
     const targetList = db.lists.find((l) => l.id === id);
-    if (!targetList) throw createErrorResponse(config, 404, { detail: "List not found." });
+    if (!targetList)
+      throw createErrorResponse(config, 404, { detail: "List not found." });
     const contactIds = Array.isArray(body.contact_ids) ? body.contact_ids : [];
     const removeSet = new Set(contactIds);
-    targetList.contacts = targetList.contacts.filter((cid) => !removeSet.has(cid));
+    targetList.contacts = targetList.contacts.filter(
+      (cid) => !removeSet.has(cid),
+    );
     targetList.updated_at = now;
     saveDatabase(db);
     return createSuccessResponse(config, targetList);
@@ -664,18 +749,21 @@ export async function mockAdapter(
     const id = Number(listDetailMatch[1]);
     const index = db.lists.findIndex((l) => l.id === id);
     if (method === "get") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "List not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, { detail: "List not found." });
       return createSuccessResponse(config, db.lists[index]);
     }
     if (method === "patch") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "List not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, { detail: "List not found." });
       const updated = { ...db.lists[index], ...body, updated_at: now };
       db.lists[index] = updated;
       saveDatabase(db);
       return createSuccessResponse(config, updated);
     }
     if (method === "delete") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "List not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, { detail: "List not found." });
       db.lists.splice(index, 1);
       saveDatabase(db);
       return createSuccessResponse(config, null, 204);
@@ -689,7 +777,9 @@ export async function mockAdapter(
       if (params.search) {
         const query = String(params.search).toLowerCase();
         filtered = filtered.filter(
-          (l) => l.name.toLowerCase().includes(query) || l.description.toLowerCase().includes(query),
+          (l) =>
+            l.name.toLowerCase().includes(query) ||
+            l.description.toLowerCase().includes(query),
         );
       }
       const page = Number(params.page || 1);
@@ -697,9 +787,12 @@ export async function mockAdapter(
     }
     if (method === "post") {
       if (!body.name) {
-        throw createErrorResponse(config, 400, { name: ["This field is required."] });
+        throw createErrorResponse(config, 400, {
+          name: ["This field is required."],
+        });
       }
-      const newId = (db.lists.length ? Math.max(...db.lists.map((l) => l.id)) : 0) + 1;
+      const newId =
+        (db.lists.length ? Math.max(...db.lists.map((l) => l.id)) : 0) + 1;
       const newList: ContactList = {
         id: newId,
         name: body.name,
@@ -715,11 +808,14 @@ export async function mockAdapter(
   }
 
   // 6. Templates
-  const templatePreviewMatch = url.match(/^\/api\/email\/templates\/(\d+)\/preview\/$/);
+  const templatePreviewMatch = url.match(
+    /^\/api\/email\/templates\/(\d+)\/preview\/$/,
+  );
   if (templatePreviewMatch && method === "post") {
     const id = Number(templatePreviewMatch[1]);
     const template = db.templates.find((t) => t.id === id);
-    if (!template) throw createErrorResponse(config, 404, { detail: "Template not found." });
+    if (!template)
+      throw createErrorResponse(config, 404, { detail: "Template not found." });
 
     const tokens: Record<string, string> = {
       first_name: body.first_name || "Ada",
@@ -747,25 +843,37 @@ export async function mockAdapter(
     const id = Number(templateDetailMatch[1]);
     const index = db.templates.findIndex((t) => t.id === id);
     if (method === "get") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Template not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Template not found.",
+        });
       return createSuccessResponse(config, db.templates[index]);
     }
     if (method === "patch") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Template not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Template not found.",
+        });
       const updated = { ...db.templates[index], ...body, updated_at: now };
       db.templates[index] = updated;
       saveDatabase(db);
       return createSuccessResponse(config, updated);
     }
     if (method === "delete") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Template not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Template not found.",
+        });
       db.templates.splice(index, 1);
       saveDatabase(db);
       return createSuccessResponse(config, null, 204);
     }
   }
 
-  if (url === "/api/email/templates/" || url.startsWith("/api/email/templates/?")) {
+  if (
+    url === "/api/email/templates/" ||
+    url.startsWith("/api/email/templates/?")
+  ) {
     if (method === "get") {
       const params = config.params || {};
       let filtered = [...db.templates];
@@ -782,9 +890,13 @@ export async function mockAdapter(
     }
     if (method === "post") {
       if (!body.name) {
-        throw createErrorResponse(config, 400, { name: ["This field is required."] });
+        throw createErrorResponse(config, 400, {
+          name: ["This field is required."],
+        });
       }
-      const newId = (db.templates.length ? Math.max(...db.templates.map((t) => t.id)) : 0) + 1;
+      const newId =
+        (db.templates.length ? Math.max(...db.templates.map((t) => t.id)) : 0) +
+        1;
       const newTemplate: EmailTemplate = {
         id: newId,
         name: body.name,
@@ -801,11 +913,14 @@ export async function mockAdapter(
   }
 
   // 7. Campaigns
-  const campaignPrepareMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/prepare\/$/);
+  const campaignPrepareMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/prepare\/$/,
+  );
   if (campaignPrepareMatch && method === "post") {
     const id = Number(campaignPrepareMatch[1]);
     const campaign = db.campaigns.find((c) => c.id === id);
-    if (!campaign) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+    if (!campaign)
+      throw createErrorResponse(config, 404, { detail: "Campaign not found." });
 
     const contactIdSet = new Set<number>();
     for (const listId of campaign.contact_lists) {
@@ -852,16 +967,21 @@ export async function mockAdapter(
     return createSuccessResponse(config, result);
   }
 
-  const campaignTestMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/test\/$/);
+  const campaignTestMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/test\/$/,
+  );
   if (campaignTestMatch && method === "post") {
     return createSuccessResponse(config, { id: "mock-test-" + Date.now() });
   }
 
-  const campaignSendMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/send\/$/);
+  const campaignSendMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/send\/$/,
+  );
   if (campaignSendMatch && method === "post") {
     const id = Number(campaignSendMatch[1]);
     const campaign = db.campaigns.find((c) => c.id === id);
-    if (!campaign) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+    if (!campaign)
+      throw createErrorResponse(config, 404, { detail: "Campaign not found." });
 
     const contactIdSet = new Set<number>();
     for (const listId of campaign.contact_lists) {
@@ -872,11 +992,17 @@ export async function mockAdapter(
     }
     const eligibleContacts = Array.from(contactIdSet)
       .map((cid) => db.contacts.find((c) => c.id === cid))
-      .filter((c): c is Contact => !!c && c.status === "active" && c.email.includes("@"));
+      .filter(
+        (c): c is Contact =>
+          !!c && c.status === "active" && c.email.includes("@"),
+      );
 
     // Create recipients
     eligibleContacts.forEach((contact) => {
-      const recId = (db.recipients.length ? Math.max(...db.recipients.map((r) => r.id)) : 0) + 1;
+      const recId =
+        (db.recipients.length
+          ? Math.max(...db.recipients.map((r) => r.id))
+          : 0) + 1;
       const recipient: CampaignRecipient = {
         id: recId,
         campaign: id,
@@ -926,11 +1052,14 @@ export async function mockAdapter(
     });
   }
 
-  const campaignScheduleMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/schedule\/$/);
+  const campaignScheduleMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/schedule\/$/,
+  );
   if (campaignScheduleMatch && method === "post") {
     const id = Number(campaignScheduleMatch[1]);
     const campaign = db.campaigns.find((c) => c.id === id);
-    if (!campaign) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+    if (!campaign)
+      throw createErrorResponse(config, 404, { detail: "Campaign not found." });
     campaign.status = "scheduled";
     campaign.scheduled_at = body.scheduled_at || now;
     campaign.updated_at = now;
@@ -938,22 +1067,28 @@ export async function mockAdapter(
     return createSuccessResponse(config, campaign);
   }
 
-  const campaignCancelMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/cancel\/$/);
+  const campaignCancelMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/cancel\/$/,
+  );
   if (campaignCancelMatch && method === "post") {
     const id = Number(campaignCancelMatch[1]);
     const campaign = db.campaigns.find((c) => c.id === id);
-    if (!campaign) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+    if (!campaign)
+      throw createErrorResponse(config, 404, { detail: "Campaign not found." });
     campaign.status = "cancelled";
     campaign.updated_at = now;
     saveDatabase(db);
     return createSuccessResponse(config, campaign);
   }
 
-  const campaignAnalyticsMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/analytics\/$/);
+  const campaignAnalyticsMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/analytics\/$/,
+  );
   if (campaignAnalyticsMatch && method === "get") {
     const id = Number(campaignAnalyticsMatch[1]);
     const campaign = db.campaigns.find((c) => c.id === id);
-    if (!campaign) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+    if (!campaign)
+      throw createErrorResponse(config, 404, { detail: "Campaign not found." });
 
     const total = campaign.total_recipients || 0;
     const sent = campaign.sent_count || 0;
@@ -982,7 +1117,9 @@ export async function mockAdapter(
     return createSuccessResponse(config, analytics);
   }
 
-  const campaignRecipientsMatch = url.match(/^\/api\/email\/campaigns\/(\d+)\/recipients\/$/);
+  const campaignRecipientsMatch = url.match(
+    /^\/api\/email\/campaigns\/(\d+)\/recipients\/$/,
+  );
   if (campaignRecipientsMatch && method === "get") {
     const id = Number(campaignRecipientsMatch[1]);
     const params = config.params || {};
@@ -1011,25 +1148,37 @@ export async function mockAdapter(
     const id = Number(campaignDetailMatch[1]);
     const index = db.campaigns.findIndex((c) => c.id === id);
     if (method === "get") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Campaign not found.",
+        });
       return createSuccessResponse(config, db.campaigns[index]);
     }
     if (method === "patch") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Campaign not found.",
+        });
       const updated = { ...db.campaigns[index], ...body, updated_at: now };
       db.campaigns[index] = updated;
       saveDatabase(db);
       return createSuccessResponse(config, updated);
     }
     if (method === "delete") {
-      if (index === -1) throw createErrorResponse(config, 404, { detail: "Campaign not found." });
+      if (index === -1)
+        throw createErrorResponse(config, 404, {
+          detail: "Campaign not found.",
+        });
       db.campaigns.splice(index, 1);
       saveDatabase(db);
       return createSuccessResponse(config, null, 204);
     }
   }
 
-  if (url === "/api/email/campaigns/" || url.startsWith("/api/email/campaigns/?")) {
+  if (
+    url === "/api/email/campaigns/" ||
+    url.startsWith("/api/email/campaigns/?")
+  ) {
     if (method === "get") {
       const params = config.params || {};
       let filtered = [...db.campaigns];
@@ -1049,9 +1198,13 @@ export async function mockAdapter(
     }
     if (method === "post") {
       if (!body.name) {
-        throw createErrorResponse(config, 400, { name: ["This field is required."] });
+        throw createErrorResponse(config, 400, {
+          name: ["This field is required."],
+        });
       }
-      const newId = (db.campaigns.length ? Math.max(...db.campaigns.map((c) => c.id)) : 0) + 1;
+      const newId =
+        (db.campaigns.length ? Math.max(...db.campaigns.map((c) => c.id)) : 0) +
+        1;
       const newCampaign: Campaign = {
         id: newId,
         name: body.name,
@@ -1094,7 +1247,9 @@ export async function mockAdapter(
   if (unsubMatch && method === "get") {
     const token = decodeURIComponent(unsubMatch[1]);
     if (token === "bad" || token === "invalid") {
-      throw createErrorResponse(config, 404, { detail: "This unsubscribe link is invalid." });
+      throw createErrorResponse(config, 404, {
+        detail: "This unsubscribe link is invalid.",
+      });
     }
     // Mark first contact or matching contact as unsubscribed
     if (db.contacts.length > 0) {
@@ -1108,5 +1263,7 @@ export async function mockAdapter(
   }
 
   // Fallback 404
-  throw createErrorResponse(config, 404, { detail: "Endpoint not found: " + url });
+  throw createErrorResponse(config, 404, {
+    detail: "Endpoint not found: " + url,
+  });
 }

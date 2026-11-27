@@ -16,7 +16,7 @@ test("visual template saves, reopens and supplies campaign content without new A
   await page.getByRole("button", { name: /A thoughtful introduction/ }).click();
   await page.getByLabel("Template name").fill("Partner introduction");
   await page.getByLabel("Subject", { exact: false }).fill("A personal hello");
-  await page.getByRole("button", { name: "Edit heading section 2" }).click();
+  await page.getByRole("button", { name: "Edit text section 2" }).click();
   await page.getByLabel("Section text").fill("A stronger connection.");
   await page.getByRole("button", { name: "Edit button section 4" }).click();
   await page.getByLabel("Button link").fill("https://example.com/contact");
@@ -30,14 +30,14 @@ test("visual template saves, reopens and supplies campaign content without new A
     .getByRole("link", { name: "Partner introduction", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Edit heading section 2" }),
+    page.getByRole("button", { name: "Edit text section 2" }),
   ).toContainText("A stronger connection.");
   await page.getByRole("button", { name: "Preview", exact: true }).click();
   const frame = page
     .frameLocator('iframe[title="Email content preview"]')
     .first();
   await expect(
-    frame.getByRole("heading", { name: "A stronger connection." }),
+    frame.getByText("A stronger connection."),
   ).toBeVisible();
   await expect(
     frame.getByRole("link", { name: "Let’s connect" }),
@@ -68,7 +68,7 @@ test("visual template saves, reopens and supplies campaign content without new A
   await page.getByLabel("Choose template (optional)").click();
   await page.getByRole("option", { name: "Partner introduction" }).click();
   await expect(
-    page.getByRole("button", { name: "Edit heading section 2" }),
+    page.getByRole("button", { name: "Edit text section 2" }),
   ).toContainText("A stronger connection.");
   await page.getByRole("button", { name: "Change starting design" }).click();
   await page.getByRole("button", { name: /From our side of the desk/ }).click();
@@ -76,9 +76,9 @@ test("visual template saves, reopens and supplies campaign content without new A
     .getByRole("button", { name: "Replace design", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Edit heading section 2" }),
+    page.getByRole("button", { name: "Edit heading section 3" }),
   ).toContainText("Moving forward.");
-  await page.getByRole("button", { name: "Edit heading section 2" }).click();
+  await page.getByRole("button", { name: "Edit heading section 3" }).click();
   await page.getByLabel("Section text").fill("Just for our partners.");
   await page.getByRole("button", { name: "Save & continue" }).click();
   await expect(
@@ -171,13 +171,13 @@ test("mobile section editing, keyboard selection and final viewport captures", a
       });
     }
     await page.goto("/templates/create?starter=outreach");
-    await page.getByRole("button", { name: "Edit heading section 2" }).click();
+    await page.getByRole("button", { name: "Edit text section 2" }).click();
     await expect(page.getByLabel("Section text")).toBeInViewport();
     await page.getByLabel("Section text").fill("Hello, partner.");
     await page.getByLabel("Alignment", { exact: true }).click();
     await page.getByRole("option", { name: "Center", exact: true }).click();
     await expect(
-      page.getByRole("button", { name: "Edit heading section 2" }),
+      page.getByRole("button", { name: "Edit text section 2" }),
     ).toHaveCSS("text-align", "center");
     await expect(page.getByRole("listbox")).not.toBeVisible();
     await page.evaluate(() => {

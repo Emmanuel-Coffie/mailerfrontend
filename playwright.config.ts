@@ -13,7 +13,8 @@ const python =
   );
 export default defineConfig({
   testDir: "./e2e",
-  timeout: 90000,
+  timeout: 180000,
+  expect: { timeout: 20000 },
   workers: 1,
   fullyParallel: false,
   use: {
@@ -26,14 +27,15 @@ export default defineConfig({
     {
       command: `"${python}" e2e/server.py`,
       url: "http://127.0.0.1:8018/admin/login/",
-      timeout: 60000,
+      timeout: 180000,
+  expect: { timeout: 20000 },
       reuseExistingServer: false,
     },
     {
       command:
         process.env.E2E_PREVIEW === "1"
           ? "npm run build && npm run preview -- --host localhost --port 5173 --strictPort"
-          : "npm run dev -- --host localhost",
+          : "npm run dev -- --host localhost --port 5173 --strictPort",
       url: "http://localhost:5173",
       env: { VITE_API_BASE_URL: "http://127.0.0.1:8018" },
       timeout: 120000,

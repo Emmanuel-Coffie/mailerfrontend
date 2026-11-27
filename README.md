@@ -14,7 +14,7 @@ Copy-Item .env.example .env.local
 npm.cmd run dev
 ```
 
-Open http://localhost:5173. Backend: http://localhost:8000. Sign in with an actual
+Open http://localhost:3000. Backend: http://localhost:8000. Sign in with an actual
 Django staff account. There are no production demo credentials or fake records.
 Set `VITE_API_BASE_URL` to the backend origin; set backend `FRONTEND_URL` to the
 browser origin. Frontend variables are public build inputs, never secrets.
@@ -77,3 +77,5 @@ requests must reach Django. Rebuild when changing frontend environment values.
 
 `../DESIGN.md` and `../UX-CONTRACT.md` document visual and interaction decisions.
 `BACKEND_INTEGRATION.md` records real endpoint contracts and preserved behavior.
+
+See RELEASE_SETUP.md for the coordinated Excel import, template and unsubscribe release.

@@ -7,27 +7,20 @@ import { Brand } from "../components/Layout";
 import { Loading, PageHeading } from "../components/ui";
 export function Unsubscribe() {
   const { token = "" } = useParams();
-  const state = useResource(() => unsubscribeApi.get(token), token);
+  const preview = token === "preview";
+  const state = useResource(
+    () =>
+      preview
+        ? Promise.resolve({
+            detail: "This is a test email. No subscription has been changed.",
+          })
+        : unsubscribeApi.get(token),
+    token,
+  );
   return (
-    <Box
-      sx={{ minHeight: "100dvh", display: "grid", placeItems: "center", p: 3 }}
-    >
-      <section
-        className="panel"
-        style={{
-          maxWidth: 520,
-          width: "100%",
-          textAlign: "center",
-          padding: 36,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: 32,
-          }}
-        >
+    <Box className="unsubscribe-shell">
+      <section className="unsubscribe-card">
+        <div className="unsubscribe-brand">
           <Brand />
         </div>
         {state.loading ? (
@@ -57,13 +50,18 @@ export function Unsubscribe() {
             <CheckCircleOutline
               sx={{ fontSize: 44, color: "primary.main", mb: 2 }}
             />
-            <Typography variant="h1">You’re unsubscribed</Typography>
+            <Typography variant="h1">
+              {preview
+                ? "A preview of your preference page"
+                : "You’re unsubscribed"}
+            </Typography>
             <Typography color="text.secondary" sx={{ mt: 2 }}>
               {state.data?.detail}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
-              If you already unsubscribed, your preference remains saved. You
-              can close this page.
+              {preview
+                ? "In a delivered campaign, this link saves the recipient’s email preference."
+                : "Your preference is saved. You will not receive further marketing emails from us. You can close this page."}
             </Typography>
           </>
         )}

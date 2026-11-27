@@ -137,6 +137,10 @@ export interface ApiError {
   statusCode?: number;
 }
 export interface ImportResult {
+  preview?: boolean;
+  detected_columns?: { sheet: string; fields: string[] }[];
+  groups?: { name: string; contacts: number }[];
+  errors?: { row: number; sheet: string; message: string }[];
   total: number;
   valid: number;
   invalid: number;
