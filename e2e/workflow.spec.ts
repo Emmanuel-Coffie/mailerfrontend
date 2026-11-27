@@ -80,7 +80,7 @@ test("complete browser workflow against Django with mocked provider", async ({
   await page.getByLabel(/^Subject/).fill("Hello {{first_name}}");
   await page.getByRole("button", { name: "HTML", exact: true }).click();
   await page
-    .getByLabel("HTML content", { exact: true })
+    .getByLabel("Formatted message content", { exact: true })
     .fill("<p>Hello {{first_name}}, welcome to {{company}}.</p>");
   await page
     .getByRole("button", { name: "Save template", exact: true })
@@ -108,6 +108,8 @@ test("complete browser workflow against Django with mocked provider", async ({
   await page
     .getByRole("option", { name: "Personal introduction", exact: true })
     .click();
+  await page.getByLabel("Campaign attachment").setInputFiles({ name: "proposal.txt", mimeType: "text/plain", buffer: Buffer.from("Proposal attachment test") });
+  await expect(page.getByText("proposal.txt", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Save & continue" }).click();
   await page.getByLabel("From email").fill("sender@example.com");
   await page.getByRole("button", { name: "Save & continue" }).click();

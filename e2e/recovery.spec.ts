@@ -64,7 +64,7 @@ test("contact editing, confirmation, keyboard and connection recovery", async ({
   await context.setOffline(true);
   await page.getByRole("link", { name: "Settings", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText(
-    "Unable to reach the server",
+    "Unable to reach the service",
   );
   await context.setOffline(false);
   await page.getByRole("button", { name: "Retry", exact: true }).click();
